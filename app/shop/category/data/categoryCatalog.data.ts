@@ -50,9 +50,9 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
     seasonTitle: "SEASON DROP 2026",
     intro:
       "Fresh structure. Personal fit. Denim selected across the network and ready for AI sizing.",
-    heroImage: "/media/global-shop/denim-category-shoe-two-models-banner.png",
+    heroImage: "/media/global-shop/denim-category-shoe-two-models-banner.webp",
     mobileHeroImage:
-      "/media/global-shop/denim-category-shoe-two-models-mobile.png",
+      "/media/global-shop/denim-category-shoe-two-models-mobile.webp",
     heroAlt:
       "Two women in denim posed with an enormous denim-covered high-heel shoe",
     heroObjectPosition: "center",
@@ -69,7 +69,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         name: "Lumen Wide Leg",
         brand: "Northline",
         priceCents: 13800,
-        image: "/media/global-shop/denim-pdp/lumen-wide-leg-hero.png",
+        image: "/media/global-shop/denim-pdp/lumen-wide-leg-hero.webp",
         note: "AI fit ready",
         position: 1,
         facets: [
@@ -87,7 +87,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Assembly 01",
         priceCents: 12800,
         image:
-          "/media/global-shop/denim-products/denim-jeans-02-indigo-straight-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-02-indigo-straight-v2.webp",
         note: "Virtual try-on",
         position: 2,
         facets: [
@@ -105,7 +105,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Onda Studio",
         priceCents: 14200,
         image:
-          "/media/global-shop/denim-products/denim-jeans-03-barrel-vintage-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-03-barrel-vintage-v2.webp",
         note: "Fit verified",
         position: 3,
         facets: [
@@ -123,7 +123,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Mara & Form",
         priceCents: 16800,
         image:
-          "/media/global-shop/denim-products/denim-jeans-04-raw-bootcut-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-04-raw-bootcut-v2.webp",
         note: "Limited drop",
         position: 4,
         facets: [
@@ -141,7 +141,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Northline",
         priceCents: 14800,
         image:
-          "/media/global-shop/denim-products/denim-jeans-05-carpenter-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-05-carpenter-v2.webp",
         note: "Creator favorite",
         position: 5,
         facets: [
@@ -159,7 +159,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Onda Studio",
         priceCents: 15600,
         image:
-          "/media/global-shop/denim-products/denim-jeans-06-low-rise-baggy-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-06-low-rise-baggy-v2.webp",
         note: "New season",
         position: 6,
         facets: [
@@ -177,7 +177,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Assembly 01",
         priceCents: 17200,
         image:
-          "/media/global-shop/denim-products/denim-jeans-07-dark-flare-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-07-dark-flare-v2.webp",
         note: "AI fit ready",
         position: 7,
         facets: [
@@ -195,7 +195,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Mara & Form",
         priceCents: 11800,
         image:
-          "/media/global-shop/denim-products/denim-jeans-08-cropped-cigarette-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-08-cropped-cigarette-v2.webp",
         note: "Virtual try-on",
         position: 8,
         facets: [
@@ -213,7 +213,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Northline",
         priceCents: 18800,
         image:
-          "/media/global-shop/denim-products/denim-jeans-09-patchwork-wide-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-09-patchwork-wide-v2.webp",
         note: "Limited drop",
         position: 9,
         facets: [
@@ -231,7 +231,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
         brand: "Onda Studio",
         priceCents: 16200,
         image:
-          "/media/global-shop/denim-products/denim-jeans-10-tailored-cargo-v2.png",
+          "/media/global-shop/denim-products/denim-jeans-10-tailored-cargo-v2.webp",
         note: "Fit verified",
         position: 10,
         facets: [
@@ -251,7 +251,7 @@ export const legacyCategoryCatalogData: RawCategoryCatalog[] = [
     seasonTitle: "WOMEN’S EDIT 2026",
     intro:
       "Expressive color, sculpted tailoring, and connected looks sized around you.",
-    heroImage: "/media/global-shop/outfit-editorial-orange-source.png",
+    heroImage: "/media/global-shop/outfit-editorial-orange-source.webp",
     heroAlt:
       "Editorial cream outfit styled with a vivid orange quilted handbag",
     heroObjectPosition: "center",
@@ -506,7 +506,7 @@ function filtersFromProducts(
 }
 
 function showcaseEditorialAsset(product: ShowcaseProduct, file: string) {
-  return `/media/global-shop/showcase-v5/${product.gender}/${product.id}/${file}.png`;
+  return `/media/global-shop/showcase-v5/${product.gender}/${product.id}/${file}.webp`;
 }
 
 function showcaseGallery(product: ShowcaseProduct) {

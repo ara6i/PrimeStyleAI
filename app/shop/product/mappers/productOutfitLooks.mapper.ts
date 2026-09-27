@@ -36,7 +36,7 @@ function showcaseCompanion(product: ShowcaseProduct): ProductOutfitCompanion {
     productId: product.id,
     title: product.name,
     image: showcaseAsset(product, "01-product-front"),
-    url: `/shop/product/${product.id}`,
+    url: `/product/${product.id}`,
     color: product.color,
     recommendedSize: showcaseRecommendedSize(product),
   };
@@ -52,7 +52,13 @@ function companionsFor(
   ).map(showcaseCompanion);
 
   if (pinnedProduct.gender === "men") {
-    return MEN_SDK_COMPANIONS[slot] ?? showcaseCompanions;
+    if (pinnedProduct.id === "men-espresso-double-breasted-blazer") {
+      return showcaseCompanions;
+    }
+    const preparedCompanions = MEN_SDK_COMPANIONS[slot] ?? [];
+    return preparedCompanions.length
+      ? preparedCompanions
+      : showcaseCompanions;
   }
 
   return [

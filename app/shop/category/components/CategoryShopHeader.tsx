@@ -39,7 +39,7 @@ export function CategoryShopHeader({
     <header className={styles.header}>
       <Link
         className={styles.brand}
-        href="/shop"
+        href="/"
         aria-label="PrimeStyleAI shop home"
       >
         <Image
@@ -57,12 +57,12 @@ export function CategoryShopHeader({
       </Link>
 
       <nav className={styles.navigation} aria-label="Shop categories">
-        <Link href="/shop">Home</Link>
+        <Link href="/">Home</Link>
         {navigation.map((item) => (
           <Link
             key={item.id}
             data-active={item.id === categoryId}
-            href={`/shop/category/${item.id}`}
+            href={`/category/${item.id}`}
           >
             {item.label}
           </Link>
@@ -108,9 +108,9 @@ export function CategoryShopHeader({
           className={styles.mobileNavigation}
           aria-label="Mobile shop categories"
         >
-          <Link href="/shop">Home</Link>
+          <Link href="/">Home</Link>
           {navigation.map((item) => (
-            <Link key={item.id} href={`/shop/category/${item.id}`}>
+            <Link key={item.id} href={`/category/${item.id}`}>
               {item.label}
             </Link>
           ))}

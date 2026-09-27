@@ -55,9 +55,9 @@ export function BrandEditorialLanding({
           <h2 id="just-dropped">Just dropped</h2>
           <nav aria-label="New collection categories">
             <Link href="#collection">New in</Link>
-            <Link href="/shop/category/men">Men</Link>
-            <Link href="/shop/category/women">Women</Link>
-            <Link href="/shop/category/accessories">Accessories</Link>
+            <Link href="/category/men">Men</Link>
+            <Link href="/category/women">Women</Link>
+            <Link href="/category/accessories">Accessories</Link>
           </nav>
         </header>
       </section>
@@ -147,7 +147,7 @@ export function BrandEditorialLanding({
       >
         <div className={styles.droppedCards}>
           {droppedProducts.map(({ product, eyebrow }) => (
-            <Link key={product.id} href={`/shop/product/${product.id}`}>
+            <Link key={product.id} href={`/product/${product.id}`}>
               <span className={styles.droppedProductImage}>
                 <Image
                   src={product.image}
@@ -174,10 +174,10 @@ export function BrandEditorialLanding({
           sizes="100vw"
           loading="eager"
         />
-        <Link className={styles.womenStory} href="/shop/category/women">
+        <Link className={styles.womenStory} href="/category/women">
           Women
         </Link>
-        <Link className={styles.menStory} href="/shop/category/men">
+        <Link className={styles.menStory} href="/category/men">
           Men
         </Link>
       </section>

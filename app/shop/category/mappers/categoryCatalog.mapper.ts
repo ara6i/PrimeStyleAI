@@ -35,5 +35,5 @@ export function mapCategoryLabelToId(label: string): ShopCategoryId {
 }
 
 export function getCategoryHref(labelOrId: string): string {
-  return `/shop/category/${mapCategoryLabelToId(labelOrId)}`;
+  return `/category/${mapCategoryLabelToId(labelOrId)}`;
 }

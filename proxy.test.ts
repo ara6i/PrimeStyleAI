@@ -11,10 +11,9 @@ import {
 const ENVIRONMENT_KEYS = [
   "ADMIN_HOSTS",
   "CREATOR_HOSTS",
-  "CREATOR_PUBLIC_URL",
   "PRIME_PRODUCTS_SITE_AUTH_ENABLED",
   "PRIME_PRODUCTS_SITE_AUTH_JWT_SECRET",
-  "PUBLIC_SITE_HOSTS",
+  "SUPPLIER_HOSTS",
 ] as const;
 
 const originalEnvironment = Object.fromEntries(
@@ -52,7 +51,7 @@ describe("creator subdomain routing", () => {
     const response = await proxy(request("/?utm_source=test"));
 
     expect(response.headers.get("x-middleware-rewrite")).toBe(
-      "http://creators.localhost:3000/influencers?utm_source=test",
+      "http://creators.localhost:3000/creators?utm_source=test",
     );
   });
 
@@ -87,23 +86,28 @@ describe("creator subdomain routing", () => {
     expect(anotherApi.status).toBe(404);
   });
 
-  it("redirects the old public landing URL without moving nested routes", async () => {
-    const landing = await proxy(
-      request("/influencers?utm_source=legacy", {
-        host: "primestyleai.com",
-      }),
-    );
-    const profile = await proxy(
-      request("/influencers/maya-laurent", {
-        host: "primestyleai.com",
-      }),
+});
+
+describe("supplier subdomain routing", () => {
+  it("serves the supplier landing at the supplier-domain root", async () => {
+    const response = await proxy(
+      request("/?utm_source=test", { host: "suppliers.localhost:3000" }),
     );
 
-    expect(landing.status).toBe(308);
-    expect(landing.headers.get("location")).toBe(
-      "https://creators.primestyleai.com/?utm_source=legacy",
+    expect(response.headers.get("x-middleware-rewrite")).toBe(
+      "http://suppliers.localhost:3000/suppliers?utm_source=test",
     );
-    expect(profile.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("honors configured supplier hosts", async () => {
+    process.env.SUPPLIER_HOSTS = "supply.example.com";
+    const response = await proxy(
+      request("/", { host: "supply.example.com" }),
+    );
+
+    expect(response.headers.get("x-middleware-rewrite")).toBe(
+      "http://supply.example.com/suppliers",
+    );
   });
 });
 
@@ -121,6 +125,12 @@ describe("staging protected-route login", () => {
     "/merchants/dashboard/billing",
     "/suppliers",
     "/suppliers/dashboard/products",
+    "/",
+    "/product/judy-blue-01",
+    "/category/women",
+    "/brand/judy-blue",
+    "/creators",
+    "/creators/dashboard",
     "/shop",
     "/shop/brand/judy-blue",
     "/shop/product/judy-blue-01",
@@ -133,10 +143,8 @@ describe("staging protected-route login", () => {
   });
 
   it.each([
-    "/",
     "/test-lab",
     "/try-on-test/ai-stylist",
-    "/influencers",
     "/influencers/maya-laurent",
     "/shop-private",
     "/merchants-private",

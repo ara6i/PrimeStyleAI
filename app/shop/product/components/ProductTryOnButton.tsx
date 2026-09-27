@@ -115,7 +115,7 @@ export function ProductTryOnButton({
       productPrice={product.priceLabel}
       productCompareAtPrice={product.compareAtPriceLabel}
       productCurrency={product.currency ?? "USD"}
-      productUrl={product.canonicalHref ?? `/shop/product/${product.id}`}
+      productUrl={product.canonicalHref ?? `/product/${product.id}`}
       outfitBuilderSource="ai-stylist"
       instantOutfitLooks={sdkDemo.instantOutfitLooks}
       instantOutfitResults={sdkDemo.instantOutfitResults}

@@ -14,17 +14,17 @@ export const editorialPromoStories: EditorialStory[] = [
   {
     eyebrow: "Sunglasses",
     title: "Beach days, sharpened",
-    href: "/shop/category/accessories",
+    href: "/category/accessories",
   },
   {
     eyebrow: "Movement",
     title: "Activewear, reworked",
-    href: "/shop/category/men",
+    href: "/category/men",
   },
   {
     eyebrow: "Accessories",
     title: "The new carry",
-    href: "/shop/category/accessories",
+    href: "/category/accessories",
   },
 ];
 
@@ -32,16 +32,16 @@ export const editorialNewsStories: EditorialStory[] = [
   {
     eyebrow: "Summer edit",
     title: "The coast collection",
-    href: "/shop/category/women",
+    href: "/category/women",
   },
   {
     eyebrow: "Travel edit",
     title: "Looks built to move",
-    href: "/shop/category/men",
+    href: "/category/men",
   },
   {
     eyebrow: "Cold weather",
     title: "The luxury layer",
-    href: "/shop/category/women",
+    href: "/category/women",
   },
 ];

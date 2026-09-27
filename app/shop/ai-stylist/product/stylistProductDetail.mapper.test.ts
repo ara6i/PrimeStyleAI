@@ -61,7 +61,7 @@ describe("mapStylistProductDetail", () => {
     expect(result.ratingLabel).toBeUndefined();
     expect(result.reviewLabel).toBeUndefined();
     expect(result.sizeRecommendation?.status).toBe("unavailable");
-    expect(result.canonicalHref).toBe("/shop/ai-stylist/product/style-1");
+    expect(result.canonicalHref).toBe("/ai-stylist/product/style-1");
   });
 
   it("carries a verified personal size into the PDP", () => {

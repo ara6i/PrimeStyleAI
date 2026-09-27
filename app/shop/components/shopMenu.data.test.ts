@@ -13,10 +13,10 @@ const productIds = new Set(getStaticProductIds());
 function hasPage(href: string) {
   const pathname = href.split(/[?#]/)[0];
   const parts = pathname.split("/").filter(Boolean);
-  if (parts[0] === "shop" && parts.length === 3) {
-    if (parts[1] === "product") return productIds.has(parts[2]);
-    if (parts[1] === "category") return SHOP_CATEGORY_IDS.some((id) => id === parts[2]);
-  }
+  if (parts[0] === "product" && parts.length === 2)
+    return productIds.has(parts[1]);
+  if (parts[0] === "category" && parts.length === 2)
+    return SHOP_CATEGORY_IDS.some((id) => id === parts[1]);
   if (parts[0] === "merchants" && parts[1] === "dashboard" && parts.length === 3) {
     return MERCHANT_DASHBOARD_ROUTE_SECTIONS.some((id) => id === parts[2]);
   }
@@ -27,11 +27,11 @@ describe("Platform menu destinations", () => {
   it("shows the active Shop categories without a standalone Denim route", () => {
     const shop = shopMenuSections.find((section) => section.id === "shop");
     expect(shop?.groups.find((group) => group.label === "Categories")?.links).toEqual([
-      { label: "Women", href: "/shop/category/women" },
-      { label: "Men", href: "/shop/category/men" },
-      { label: "Accessories", href: "/shop/category/accessories" },
+      { label: "Women", href: "/category/women" },
+      { label: "Men", href: "/category/men" },
+      { label: "Accessories", href: "/category/accessories" },
     ]);
-    expect(JSON.stringify(shop)).not.toContain("/shop/category/denim");
+    expect(JSON.stringify(shop)).not.toContain("/category/denim");
   });
 
   it("uses only existing Women’s and Men’s products in the featured product group", () => {
@@ -42,12 +42,12 @@ describe("Platform menu destinations", () => {
     expect(productLinks).toHaveLength(4);
     expect(
       productLinks?.every((link) =>
-        link.href.startsWith("/shop/product/") &&
+        link.href.startsWith("/product/") &&
         productIds.has(link.href.split("/").at(-1) ?? ""),
       ),
     ).toBe(true);
-    expect(JSON.stringify(shop)).not.toContain("/shop/ai-stylist");
-    expect(JSON.stringify(shop)).not.toContain("/shop/dressing-room");
+    expect(JSON.stringify(shop)).not.toContain("/ai-stylist");
+    expect(JSON.stringify(shop)).not.toContain("/dressing-room");
   });
 
   it.each(shopMenuSections)("uses existing pages and original image assets for $label", (section) => {

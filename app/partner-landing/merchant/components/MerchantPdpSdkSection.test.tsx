@@ -31,7 +31,7 @@ afterEach(() => {
 
 describe("Arc Jacket SDK wiring", () => {
   it("introduces the fitting experience above the product layout", async () => {
-    render(<MerchantPdpSdkSection productUrl="/shop#ai-fitting" />);
+    render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
     expect(
       screen.getByRole("heading", {
@@ -48,7 +48,7 @@ describe("Arc Jacket SDK wiring", () => {
   });
 
   it("keeps colour selection in the product controls without the old footer", async () => {
-    render(<MerchantPdpSdkSection productUrl="/shop#ai-fitting" />);
+    render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
     await waitFor(() => expect(sdk.props).not.toBeNull());
 
@@ -74,11 +74,11 @@ describe("Arc Jacket SDK wiring", () => {
     "sends only the selected %s garment to the Shop SDK",
     async (name, slug) => {
       const user = userEvent.setup();
-      render(<MerchantPdpSdkSection productUrl="/shop#ai-fitting" />);
+      render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
       await user.click(screen.getByRole("button", { name: `Select ${name}` }));
 
-      const image = `/media/partner-landing/merchant-network/studio-jacket-${slug}.png`;
+      const image = `/media/partner-landing/merchant-network/studio-jacket-${slug}.webp`;
       await waitFor(() =>
         expect(sdk.props).toEqual(
           expect.objectContaining({
@@ -88,7 +88,7 @@ describe("Arc Jacket SDK wiring", () => {
             garmentReferenceImage: image,
             garmentDetailImage: image,
             productTitle: `Arc Jacket — ${name}`,
-            productUrl: "/shop#ai-fitting",
+            productUrl: "/#ai-fitting",
           }),
         ),
       );
@@ -96,7 +96,7 @@ describe("Arc Jacket SDK wiring", () => {
   );
 
   it("configures the Arc Jacket as menswear with five replaceable options per category", async () => {
-    render(<MerchantPdpSdkSection productUrl="/shop#ai-fitting" />);
+    render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
     await waitFor(() => expect(sdk.props).not.toBeNull());
 
@@ -111,7 +111,7 @@ describe("Arc Jacket SDK wiring", () => {
         presetProfile: expect.objectContaining({
           id: "arc-jacket-demo-model",
           gender: "male",
-          photoUrl: "/media/global-shop/arc-jacket-demo-v2/model-source.png",
+          photoUrl: "/media/global-shop/arc-jacket-demo-v2/model-source.webp",
           height: 180,
           weight: 78,
           heightUnit: "cm",
@@ -189,14 +189,14 @@ describe("Arc Jacket SDK wiring", () => {
     ["Lilac", "lilac"],
   ])("uses the raw upload photo with prepared %s outfit results", async (name, slug) => {
     const user = userEvent.setup();
-    render(<MerchantPdpSdkSection productUrl="/shop#ai-fitting" />);
+    render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
     await user.click(screen.getByRole("button", { name: `Select ${name}` }));
 
     await waitFor(() =>
       expect(sdk.props?.presetProfile).toEqual(
         expect.objectContaining({
-          photoUrl: "/media/global-shop/arc-jacket-demo-v2/model-source.png",
+          photoUrl: "/media/global-shop/arc-jacket-demo-v2/model-source.webp",
         }),
       ),
     );

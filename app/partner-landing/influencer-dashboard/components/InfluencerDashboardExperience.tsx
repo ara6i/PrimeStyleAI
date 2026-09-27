@@ -602,13 +602,13 @@ export function InfluencerDashboardExperience() {
     <main className={styles.stage}>
       <section className={styles.dashboard} aria-label="PrimeStyleAI influencer dashboard UI preview">
         <aside className={styles.sidebar}>
-          <Link href="/influencers" className={styles.brand} aria-label="Back to PrimeStyleAI influencers"><Image src="/icon.svg" alt="PrimeStyleAI" width={42} height={42} priority /></Link>
+          <Link href="/creators" className={styles.brand} aria-label="Back to PrimeStyleAI influencers"><Image src="/icon.svg" alt="PrimeStyleAI" width={42} height={42} priority /></Link>
           <nav className={styles.primaryNav} aria-label="Creator dashboard">
             {navigation.map((item) => {
               const Icon = item.icon;
               return <button key={item.id} type="button" title={item.label} aria-label={item.label} aria-pressed={dashboard.section === item.id} className={dashboard.section === item.id ? styles.navActive : undefined} onClick={() => dashboard.setSection(item.id)}><Icon size={21} weight={dashboard.section === item.id ? "fill" : "regular"} /></button>;
             })}
-            <Link href="/influencers/dashboard/outfit-studio" className={styles.studioNavLink} title="Outfit Studio" aria-label="Outfit Studio"><MagicWand size={21} /></Link>
+            <Link href="/creators/dashboard/outfit-studio" className={styles.studioNavLink} title="Outfit Studio" aria-label="Outfit Studio"><MagicWand size={21} /></Link>
           </nav>
           <div className={styles.sidebarBottom}>
             <button type="button" title="Support and claims" aria-label="Support and claims" aria-pressed={dashboard.section === "support"} onClick={() => dashboard.setSection("support")}><Lifebuoy size={21} /></button>
@@ -619,7 +619,7 @@ export function InfluencerDashboardExperience() {
 
         <section className={styles.workspace}>
           <header className={styles.workspaceHeader}>
-            <Link href="/influencers" aria-label="Back to influencer page"><ArrowLeft size={19} /></Link>
+            <Link href="/creators" aria-label="Back to influencer page"><ArrowLeft size={19} /></Link>
             <span>{dashboard.section === "overview" ? "Creator workspace" : `Creator workspace · ${meta.eyebrow}`}</span>
             <button type="button" aria-label="Notifications" onClick={() => dashboard.setSection("support")}><Bell size={20} /><i /></button>
           </header>

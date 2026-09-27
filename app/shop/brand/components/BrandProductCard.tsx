@@ -20,7 +20,7 @@ export function BrandProductCard({
       data-product-id={product.id}
     >
       <Link
-        href={`/shop/product/${product.id}`}
+        href={`/product/${product.id}`}
         aria-label={`View ${product.name}`}
       >
         <span className={styles.productImage}>
@@ -29,6 +29,7 @@ export function BrandProductCard({
             alt={product.name}
             fill
             sizes="(max-width: 47.5rem) 44vw, (max-width: 65.625rem) 38vw, 24vw"
+            quality={90}
             priority={priority}
             unoptimized={product.image.startsWith("http")}
           />

@@ -15,19 +15,19 @@ export const shopMenuSections: MenuSection[] = [
       {
         label: "Explore",
         links: [
-          { label: "Shop landing", href: "/shop" },
+          { label: "Shop landing", href: "/" },
           {
             label: "Product page · PDP",
-            href: "/shop/product/daily-edit-vela-denim",
+            href: "/product/daily-edit-vela-denim",
           },
         ],
       },
       {
         label: "Categories",
         links: [
-          { label: "Women", href: "/shop/category/women" },
-          { label: "Men", href: "/shop/category/men" },
-          { label: "Accessories", href: "/shop/category/accessories" },
+          { label: "Women", href: "/category/women" },
+          { label: "Men", href: "/category/men" },
+          { label: "Accessories", href: "/category/accessories" },
         ],
       },
       {
@@ -35,19 +35,19 @@ export const shopMenuSections: MenuSection[] = [
         links: [
           {
             label: "Camel Tailored Blazer",
-            href: "/shop/product/women-camel-pinstripe-tailored-blazer",
+            href: "/product/women-camel-pinstripe-tailored-blazer",
           },
           {
             label: "Chocolate Tailored Trouser",
-            href: "/shop/product/women-chocolate-tailored-trouser",
+            href: "/product/women-chocolate-tailored-trouser",
           },
           {
             label: "Espresso Double-Breasted Blazer",
-            href: "/shop/product/men-espresso-double-breasted-blazer",
+            href: "/product/men-espresso-double-breasted-blazer",
           },
           {
             label: "Charcoal Pleated Trouser",
-            href: "/shop/product/men-charcoal-pleated-trouser",
+            href: "/product/men-charcoal-pleated-trouser",
           },
         ],
       },
@@ -55,27 +55,27 @@ export const shopMenuSections: MenuSection[] = [
     features: [
       {
         label: "Women’s edit",
-        href: "/shop/category/women",
+        href: "/category/women",
         image:
           "/media/global-shop/showcase-v4/category-banners/women-category-mobile.webp",
       },
       {
         label: "Men’s edit",
-        href: "/shop/category/men",
+        href: "/category/men",
         image:
           "/media/global-shop/showcase-v4/category-banners/men-category-mobile.webp",
       },
       {
         label: "Camel Tailored Blazer",
-        href: "/shop/product/women-camel-pinstripe-tailored-blazer",
+        href: "/product/women-camel-pinstripe-tailored-blazer",
         image:
-          "/media/global-shop/showcase-v4/women/women-camel-pinstripe-tailored-blazer/03-model-front.png",
+          "/media/global-shop/showcase-v4/women/women-camel-pinstripe-tailored-blazer/03-model-front.webp",
       },
       {
         label: "Espresso Double-Breasted Blazer",
-        href: "/shop/product/men-espresso-double-breasted-blazer",
+        href: "/product/men-espresso-double-breasted-blazer",
         image:
-          "/media/global-shop/showcase-v4/men/men-espresso-double-breasted-blazer/03-model-front.png",
+          "/media/global-shop/showcase-v4/men/men-espresso-double-breasted-blazer/03-model-front.webp",
       },
     ],
   },
@@ -86,30 +86,30 @@ export const shopMenuSections: MenuSection[] = [
       {
         label: "Explore",
         links: [
-          { label: "Creator landing", href: "/influencers" },
-          { label: "Creator dashboard", href: "/influencers/dashboard" },
-          { label: "Creator storefront", href: "/influencers/maya-laurent" },
+          { label: "Creator landing", href: "/creators" },
+          { label: "Creator dashboard", href: "/creators/dashboard" },
+          { label: "Creator storefront", href: "/creators/maya-laurent" },
           {
             label: "Outfit Studio",
-            href: "/influencers/dashboard/outfit-studio",
+            href: "/creators/dashboard/outfit-studio",
           },
         ],
       },
       {
         label: "Workspace",
         links: [
-          { label: "Campaigns", href: "/influencers/dashboard#campaigns" },
+          { label: "Campaigns", href: "/creators/dashboard#campaigns" },
           {
             label: "Products & links",
-            href: "/influencers/dashboard#products",
+            href: "/creators/dashboard#products",
           },
-          { label: "Tracked links", href: "/influencers/dashboard#links" },
-          { label: "Earnings", href: "/influencers/dashboard#earnings" },
+          { label: "Tracked links", href: "/creators/dashboard#links" },
+          { label: "Earnings", href: "/creators/dashboard#earnings" },
           {
             label: "Transactions",
-            href: "/influencers/dashboard#transactions",
+            href: "/creators/dashboard#transactions",
           },
-          { label: "Payouts", href: "/influencers/dashboard#payouts" },
+          { label: "Payouts", href: "/creators/dashboard#payouts" },
         ],
       },
       {
@@ -117,31 +117,31 @@ export const shopMenuSections: MenuSection[] = [
         links: [
           {
             label: "Profile & compliance",
-            href: "/influencers/dashboard#profile",
+            href: "/creators/dashboard#profile",
           },
-          { label: "Support & claims", href: "/influencers/dashboard#support" },
+          { label: "Support & claims", href: "/creators/dashboard#support" },
         ],
       },
     ],
     features: [
       {
         label: "Meet the creators",
-        href: "/influencers",
+        href: "/creators",
         image: "/media/partner-landing/creator-match-zoe.png",
       },
       {
         label: "Creator shop",
-        href: "/influencers/maya-laurent",
+        href: "/creators/maya-laurent",
         image: "/media/partner-landing/optimized/creator-match-maya.webp",
       },
       {
         label: "Create a look",
-        href: "/influencers/dashboard/outfit-studio",
+        href: "/creators/dashboard/outfit-studio",
         image: "/media/global-shop/product-coral-black-3d.webp",
       },
       {
         label: "Your campaigns",
-        href: "/influencers/dashboard#campaigns",
+        href: "/creators/dashboard#campaigns",
         image: "/media/partner-landing/creator-match-rae.png",
       },
     ],
@@ -224,9 +224,15 @@ export const shopMenuSections: MenuSection[] = [
         label: "Explore",
         links: [
           { label: "Supplier landing", href: "/suppliers" },
-          { label: "Join supplier waitlist", href: "/suppliers" },
+          {
+            label: "Join supplier waitlist",
+            href: "/suppliers#supplier-final-title",
+          },
           { label: "Catalog overview", href: "/suppliers#catalog-story" },
-          { label: "Performance preview", href: "/suppliers#supplier-dashboard" },
+          {
+            label: "Performance preview",
+            href: "/suppliers/dashboard/performance",
+          },
         ],
       },
       {
@@ -234,38 +240,41 @@ export const shopMenuSections: MenuSection[] = [
         links: [
           {
             label: "Merchant matches",
-            href: "/suppliers#merchants",
+            href: "/suppliers/dashboard/merchant-matches",
           },
           {
             label: "Creator matches",
-            href: "/suppliers#influencers",
+            href: "/suppliers/dashboard/influencer-matches",
           },
           {
             label: "Merchant relationships",
-            href: "/suppliers#merchants",
+            href: "/suppliers/dashboard/relationships",
           },
           {
             label: "Selling options",
-            href: "/suppliers#selling-routes",
+            href: "/suppliers/dashboard/selling-options",
           },
           {
             label: "Creator campaigns",
-            href: "/suppliers#influencers",
+            href: "/suppliers/dashboard/campaigns",
           },
-          { label: "Messages & RFQs", href: "/suppliers" },
+          { label: "Messages & RFQs", href: "/suppliers/dashboard/messages" },
         ],
       },
       {
         label: "Manage",
         links: [
-          { label: "Partner orders preview", href: "/suppliers#supplier-dashboard" },
           {
-            label: "Partner terms",
-            href: "/suppliers#selling-routes",
+            label: "Partner orders preview",
+            href: "/suppliers/dashboard/orders",
           },
-          { label: "Performance", href: "/suppliers#supplier-dashboard" },
-          { label: "Policies", href: "/terms" },
-          { label: "Team", href: "/suppliers" },
+          {
+            label: "Payments",
+            href: "/suppliers/dashboard/payments",
+          },
+          { label: "Products", href: "/suppliers/dashboard/products" },
+          { label: "Policies", href: "/suppliers/dashboard/policies" },
+          { label: "Team", href: "/suppliers/dashboard/team" },
         ],
       },
     ],
@@ -283,13 +292,13 @@ export const shopMenuSections: MenuSection[] = [
       },
       {
         label: "Retail partners",
-        href: "/suppliers#merchants",
+        href: "/suppliers/dashboard/merchant-matches",
         image:
           "/media/partner-landing/merchant-network/store-example/example-store-hero-model.webp",
       },
       {
         label: "Creator partners",
-        href: "/suppliers#influencers",
+        href: "/suppliers/dashboard/influencer-matches",
         image: "/media/partner-landing/optimized/creator-match-maya.webp",
       },
     ],

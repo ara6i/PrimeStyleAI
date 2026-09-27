@@ -43,11 +43,11 @@ const SOURCE_OCCASIONS: readonly ShopAIStylistScenarioLook["occasion"][] = [
 const SEASONS = ["Spring", "Summer", "Fall", "Winter"] as const;
 const BUDGETS = ["Under $150", "$150–$300", "$300+"] as const;
 const MEN_STYLIST_PREVIEW_IMAGES: string[] = [
-  "/media/global-shop/ai-stylist-men-v2/preview/look-01-charcoal-tailoring.png",
-  "/media/global-shop/ai-stylist-men-v2/preview/look-02-sage-overshirt.png",
-  "/media/global-shop/ai-stylist-men-v2/preview/look-03-camel-suede.png",
-  "/media/global-shop/ai-stylist-men-v2/preview/look-04-ivory-blazer.png",
-  "/media/global-shop/ai-stylist-men-v2/preview/look-05-indigo-denim.png",
+  "/media/global-shop/ai-stylist-men-v2/preview/look-01-charcoal-tailoring.webp",
+  "/media/global-shop/ai-stylist-men-v2/preview/look-02-sage-overshirt.webp",
+  "/media/global-shop/ai-stylist-men-v2/preview/look-03-camel-suede.webp",
+  "/media/global-shop/ai-stylist-men-v2/preview/look-04-ivory-blazer.webp",
+  "/media/global-shop/ai-stylist-men-v2/preview/look-05-indigo-denim.webp",
 ];
 
 const SHOP_PLATFORM_TUNING = {
@@ -234,7 +234,6 @@ export function ShopAIStylistScenarioSection() {
   const [activeLook, setActiveLook] = useState(0);
   const [mode, setMode] = useState<ExperienceMode>("intro");
   const [step, setStep] = useState(0);
-  const [manualCity, setManualCity] = useState("");
 
   const scenarioLooks = useMemo(
     () =>
@@ -271,13 +270,11 @@ export function ShopAIStylistScenarioSection() {
   const scenarioSummary = isAppliedWedding
     ? `${activeGender.label} · Wedding · ${ROLE_LABELS[appliedScenario.weddingRole]} · ${appliedScenario.budget}`
     : `${activeGender.label} · ${activeOccasion.label} · ${appliedScenario.season} · ${appliedScenario.budget}`;
-  const liveWeatherSummary = manualCity.trim()
-    ? `${manualCity.trim()} · manually selected location`
-    : shopWeather
-      ? `${shopWeather.location}${shopWeather.country ? `, ${shopWeather.country}` : ""} · ${shopWeather.temperature} · ${shopWeather.condition}`
-      : isWeatherLoading
-        ? "Detecting approximate location and weather…"
-        : "Weather unavailable";
+  const liveWeatherSummary = shopWeather
+    ? `${shopWeather.location}${shopWeather.country ? `, ${shopWeather.country}` : ""} · ${shopWeather.temperature} · ${shopWeather.condition}`
+    : isWeatherLoading
+      ? "Detecting approximate location and weather…"
+      : "Weather unavailable";
 
   function chooseGender(nextGender: ShopStylistGender) {
     setGender(nextGender);
@@ -305,9 +302,9 @@ export function ShopAIStylistScenarioSection() {
           <em>Five complete looks.</em>
         </h2>
         <span>
-          Tell us who you&apos;re styling, the occasion, and the budget. We&apos;ll build
-          five ready outfit ideas around your preferences. Wedding switches to
-          role-based styling with no season step.
+          Your next look starts with the moment. Choose who we&apos;re styling, set
+          the occasion, and let your personal stylist turn it into five complete
+          outfits.
         </span>
       </div>
 
@@ -340,15 +337,6 @@ export function ShopAIStylistScenarioSection() {
                   </span>
                 )}
               </div>
-              <label className={styles.locationControl}>
-                <span>Style for another city</span>
-                <input
-                  type="text"
-                  value={manualCity}
-                  onChange={(event) => setManualCity(event.target.value)}
-                  placeholder="Enter a city manually"
-                />
-              </label>
               <div className={styles.startCopy}>
                 <p>
                   Tell us who you&apos;re styling and where you&apos;re headed. We&apos;ll
@@ -589,7 +577,7 @@ export function ShopAIStylistScenarioSection() {
               <div className={styles.locationPill}>
                 <MapPin size={17} weight="fill" />
                 <span>
-                  <small>{manualCity.trim() ? "Manual location" : "Approximate IP location"}</small>
+                  <small>Approximate IP location</small>
                   {liveWeatherSummary}
                 </span>
               </div>

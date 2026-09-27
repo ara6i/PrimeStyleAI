@@ -42,8 +42,8 @@ const PRESET_MEASUREMENTS = {
 } as const;
 
 const PRESET_BASE_MODEL_IMAGES = {
-  women: "/media/global-shop/sdk-base-models/women-pdp-model-raw-v2.png",
-  men: "/media/global-shop/sdk-base-models/men-pdp-model-raw-v2.png",
+  women: "/media/global-shop/sdk-base-models/women-pdp-model-raw-v2.webp",
+  men: "/media/global-shop/sdk-base-models/men-pdp-model-raw-v2.webp",
 } as const;
 
 const GENERIC_LOOK_LABELS = [
@@ -148,7 +148,7 @@ function showcaseCompanion(product: ShowcaseProduct): ProductOutfitCompanion {
     productId: product.id,
     title: product.name,
     image: showcaseAsset(product, "01-product-front"),
-    url: `/shop/product/${product.id}`,
+    url: `/product/${product.id}`,
     color: product.color,
     recommendedSize: recommendedShowcaseSize(product),
   };

@@ -1906,13 +1906,6 @@
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
 }
-.brandsTop p {
-  max-width: 41ch;
-  margin: 0 0 4px;
-  color: #b7bac1;
-  font-size: 11px;
-  line-height: 1.65;
-}
 .brandRail {
   display: grid;
   grid-template-columns: repeat(6, 1fr);

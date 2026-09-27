@@ -15,8 +15,8 @@ import { getRawProductDetail } from "../services/productDetail.service";
 const root = process.cwd();
 
 const expectedShowcaseBasePhoto = {
-  women: "/media/global-shop/sdk-base-models/women-pdp-model-raw-v2.png",
-  men: "/media/global-shop/sdk-base-models/men-pdp-model-raw-v2.png",
+  women: "/media/global-shop/sdk-base-models/women-pdp-model-raw-v2.webp",
+  men: "/media/global-shop/sdk-base-models/men-pdp-model-raw-v2.webp",
 } as const;
 
 async function getProduct(productId: string) {
@@ -48,12 +48,12 @@ describe("prepared Shop PDP SDK demos", () => {
       for (const look of demo?.instantOutfitLooks ?? []) {
         for (const item of look.items) {
           expect(item.image, item.productId).toMatch(
-            /(?:\/01-product-front\.png|\/sdk-companions-v1\/|\/arc-jacket-demo-v2\/|\/daily-edit-pdp-v1\/)/,
+            /(?:\/01-product-front\.webp|\/sdk-companions-v1\/|\/arc-jacket-demo-v2\/|\/daily-edit-pdp-v1\/)/,
           );
           expect(item.displayImage, item.productId).toBe(item.image);
           for (const alternative of item.alternatives ?? []) {
             expect(alternative.image, alternative.productId).toMatch(
-              /(?:\/01-product-front\.png|\/sdk-companions-v1\/|\/arc-jacket-demo-v2\/|\/daily-edit-pdp-v1\/)/,
+              /(?:\/01-product-front\.webp|\/sdk-companions-v1\/|\/arc-jacket-demo-v2\/|\/daily-edit-pdp-v1\/)/,
             );
             expect(alternative.displayImage, alternative.productId).toBe(
               alternative.image,
@@ -68,7 +68,7 @@ describe("prepared Shop PDP SDK demos", () => {
       expect(
         demo?.instantOutfitResults.every((result, index) =>
           result.image.endsWith(
-            `/shop/prepared-results/${product.gender}/${product.id}/look-${String(index + 1).padStart(2, "0")}.png`,
+            `/prepared-results/${product.gender}/${product.id}/look-${String(index + 1).padStart(2, "0")}.webp`,
           ),
         ),
       ).toBe(true);
@@ -81,7 +81,7 @@ describe("prepared Shop PDP SDK demos", () => {
               "public/media/global-shop/showcase-v5",
               product.gender,
               product.id,
-              `${view}.png`,
+              `${view}.webp`,
             ),
           ),
         ).toBe(true);
@@ -132,6 +132,61 @@ describe("prepared Shop PDP SDK demos", () => {
         (look) => look.items.find((item) => item.slot === slot)?.productId,
       );
       expect(new Set(selectedIds).size).toBe(5);
+    }
+  });
+
+  it("keeps the Espresso Blazer in its tailored Shop edit and serves five full prepared looks", async () => {
+    const product = await getProduct("men-espresso-double-breasted-blazer");
+    const demo = getProductSdkDemo(product);
+    const expectedCompanions = new Set([
+      "men-charcoal-pleated-trouser",
+      "men-sand-straight-tailored-trouser",
+      "men-chocolate-suede-court-sneaker",
+      "men-oxblood-penny-loafer",
+      "men-tortoiseshell-acetate-sunglasses",
+      "men-burgundy-leather-strap-watch",
+    ]);
+
+    expect(demo.instantOutfitLooks).toHaveLength(5);
+    expect(
+      new Set(
+        demo.instantOutfitLooks.map((look) =>
+          look.items.map((item) => item.productId).join("|"),
+        ),
+      ).size,
+    ).toBe(5);
+
+    for (const look of demo.instantOutfitLooks) {
+      expect(look.items.map((item) => item.slot)).toEqual([
+        "bottom",
+        "shoe",
+        "accessory",
+      ]);
+      for (const item of look.items) {
+        for (const option of [item, ...(item.alternatives ?? [])]) {
+          expect(expectedCompanions.has(option.productId)).toBe(true);
+          expect(option.image).toContain("/showcase-v4/men/");
+          expect(option.image).toMatch(/\/01-product-front\.webp$/);
+          expect(option.image).not.toContain("/arc-jacket-demo-v2/");
+        }
+      }
+    }
+
+    for (const [index, result] of demo.instantOutfitResults.entries()) {
+      expect(result.image).toBe(
+        `/prepared-results/men/${product.id}/look-${String(index + 1).padStart(2, "0")}.webp`,
+      );
+      const response = await getPreparedResult(new Request("http://localhost"), {
+        params: Promise.resolve({
+          gender: "men",
+          productId: product.id,
+          fileName: `look-${String(index + 1).padStart(2, "0")}.webp`,
+        }),
+      });
+      expect(response.status).toBe(200);
+      expect(response.headers.get("x-primestyle-prepared-asset")).toBe(
+        "prepared",
+      );
     }
   });
 
@@ -197,7 +252,7 @@ describe("prepared Shop PDP SDK demos", () => {
       expect(demo.instantOutfitResults).toHaveLength(5);
       for (const [index, result] of demo.instantOutfitResults.entries()) {
         expect(result.image).toBe(
-          `/media/global-shop/daily-edit-sdk-v1/${productId}/results/look-${String(index + 1).padStart(2, "0")}.png`,
+          `/media/global-shop/daily-edit-sdk-v1/${productId}/results/look-${String(index + 1).padStart(2, "0")}.webp`,
         );
         expect(
           existsSync(path.join(root, "public", result.image)),
@@ -233,7 +288,7 @@ describe("prepared Shop PDP SDK demos", () => {
   it("uses one stable asset convention for later generated results", () => {
     const product = SHOWCASE_PRODUCTS[0];
     expect(showcasePreparedResultFile(product, 0)).toBe(
-      `media/global-shop/showcase-sdk-results/${product.gender}/${product.id}/look-01.png`,
+      `media/global-shop/showcase-sdk-results/${product.gender}/${product.id}/look-01.webp`,
     );
   });
 
@@ -243,12 +298,12 @@ describe("prepared Shop PDP SDK demos", () => {
       params: Promise.resolve({
         gender: product.gender,
         productId: product.id,
-        fileName: "look-01.png",
+        fileName: "look-01.webp",
       }),
     });
 
     expect(response.status).toBe(200);
-    expect(response.headers.get("content-type")).toBe("image/png");
+    expect(response.headers.get("content-type")).toBe("image/webp");
     expect(["fallback", "prepared"]).toContain(
       response.headers.get("x-primestyle-prepared-asset"),
     );

@@ -1,18 +1,31 @@
-import { headers } from "next/headers";
-import { DeveloperLanding } from "./components/DeveloperLanding";
-import { MobileDeveloperLanding } from "./components/MobileDeveloperLanding";
+import type { Metadata } from "next";
+import { Bodoni_Moda } from "next/font/google";
+import { GlobalShopExperience } from "./shop/components/GlobalShopExperience";
+import { ShopReceiptSidebar } from "./shop/components/ShopReceiptSidebar";
 
-const MOBILE_UA_REGEX = /Mobile|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i;
+const shopSerif = Bodoni_Moda({
+  variable: "--font-supplier-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
 
-export const metadata = {
-  title: "PrimeStyle AI · The Decision Engine for fit",
+export const metadata: Metadata = {
+  title: "PrimeStyleAI · Fashion, styled and fitted for you",
   description:
-    "AI sizing by photo, virtual try-on, and smart size recommendations — trained on your own size chart. Built for Shopify.",
+    "Discover fashion from connected brands, build complete outfits with an AI stylist, virtually try them on, and shop your best size through PrimeStyleAI.",
+  icons: {
+    icon: "/merchants/icon.png",
+    shortcut: "/merchants/icon.png",
+    apple: "/merchants/icon.png",
+  },
 };
 
-export default async function DeveloperPage() {
-  const headersList = await headers();
-  const initialIsMobile = MOBILE_UA_REGEX.test(headersList.get("user-agent") ?? "");
-
-  return initialIsMobile ? <MobileDeveloperLanding /> : <DeveloperLanding />;
+export default function PrimeStyleAIHomePage() {
+  return (
+    <div className={shopSerif.variable}>
+      <GlobalShopExperience />
+      <ShopReceiptSidebar />
+    </div>
+  );
 }

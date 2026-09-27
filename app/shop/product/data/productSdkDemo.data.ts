@@ -3,7 +3,7 @@ import type { ShowcaseProduct } from "../../data/showcaseCatalog.data";
 /**
  * The five existing editorial views used while final multi-item outfit renders
  * are being produced. A generated render can replace a fallback by adding a
- * PNG at the matching showcase-sdk-results path; the public URL stays stable.
+ * WebP at the matching showcase-sdk-results path; the public URL stays stable.
  */
 export const SHOWCASE_DEMO_RESULT_VIEWS = [
   "03-model-front",
@@ -17,7 +17,7 @@ export function showcaseEditorialAsset(
   product: Pick<ShowcaseProduct, "id" | "gender">,
   view: (typeof SHOWCASE_DEMO_RESULT_VIEWS)[number],
 ) {
-  return `/media/global-shop/showcase-v5/${product.gender}/${product.id}/${view}.png`;
+  return `/media/global-shop/showcase-v5/${product.gender}/${product.id}/${view}.webp`;
 }
 
 export function showcasePreparedResultAsset(
@@ -25,7 +25,7 @@ export function showcasePreparedResultAsset(
   lookIndex: number,
 ) {
   const lookNumber = String(lookIndex + 1).padStart(2, "0");
-  return `/shop/prepared-results/${product.gender}/${product.id}/look-${lookNumber}.png`;
+  return `/prepared-results/${product.gender}/${product.id}/look-${lookNumber}.webp`;
 }
 
 export function showcasePreparedResultFile(
@@ -33,7 +33,7 @@ export function showcasePreparedResultFile(
   lookIndex: number,
 ) {
   const lookNumber = String(lookIndex + 1).padStart(2, "0");
-  return `media/global-shop/showcase-sdk-results/${product.gender}/${product.id}/look-${lookNumber}.png`;
+  return `media/global-shop/showcase-sdk-results/${product.gender}/${product.id}/look-${lookNumber}.webp`;
 }
 
 export function dailyEditPreparedResultAsset(
@@ -41,5 +41,5 @@ export function dailyEditPreparedResultAsset(
   lookIndex: number,
 ) {
   const lookNumber = String(lookIndex + 1).padStart(2, "0");
-  return `/media/global-shop/daily-edit-sdk-v1/${productId}/results/look-${lookNumber}.png`;
+  return `/media/global-shop/daily-edit-sdk-v1/${productId}/results/look-${lookNumber}.webp`;
 }

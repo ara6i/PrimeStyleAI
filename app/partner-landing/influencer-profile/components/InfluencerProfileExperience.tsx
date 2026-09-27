@@ -150,7 +150,7 @@ export function InfluencerProfileExperience() {
         </Link>
         <nav className={styles.publicNav} aria-label="Public navigation">
           <Link href="/">Discover</Link>
-          <Link href="/influencers">Creators</Link>
+          <Link href="/creators">Creators</Link>
         </nav>
         <div className={styles.headerActions}>
           <div className={styles.searchWrap}>
@@ -193,7 +193,7 @@ export function InfluencerProfileExperience() {
               </div>
             ) : null}
           </div>
-          <Link href="/influencers" className={styles.joinButton}>
+          <Link href="/creators" className={styles.joinButton}>
             Join PrimeStyleAI
           </Link>
         </div>

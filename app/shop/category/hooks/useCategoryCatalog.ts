@@ -85,7 +85,7 @@ export function useCategoryCatalog(
       const oneSize =
         product.sizes?.length === 1 && product.sizes[0] === "One size";
       if (!oneSize) {
-        router.push(`/shop/product/${product.id}#size`);
+        router.push(`/product/${product.id}#size`);
         return;
       }
       bag.add({
@@ -93,7 +93,7 @@ export function useCategoryCatalog(
         name: product.name,
         brandName: product.brand,
         image: product.image,
-        href: `/shop/product/${product.id}`,
+        href: `/product/${product.id}`,
         size: "One size",
         color:
           product.facets.find((facet) => facet.groupId === "color")?.value ??

@@ -45,7 +45,7 @@ export const showcaseAsset = (
   product: Pick<ShowcaseProduct, "id" | "gender">,
   file: string,
 ) =>
-  `/media/global-shop/showcase-v4/${product.gender}/${product.id}/${file}.png`;
+  `/media/global-shop/showcase-v4/${product.gender}/${product.id}/${file}.webp`;
 
 export const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
   {

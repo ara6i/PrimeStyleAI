@@ -78,7 +78,7 @@ export function ShopAIStylistClient({
       <header className={styles.header}>
         <Link
           className={styles.brand}
-          href="/shop"
+          href="/"
           aria-label="PrimeStyleAI shop home"
         >
           <Image
@@ -100,7 +100,7 @@ export function ShopAIStylistClient({
           <span>Your personal outfit studio</span>
         </div>
 
-        <Link className={styles.backLink} href="/shop">
+        <Link className={styles.backLink} href="/">
           <ArrowLeft aria-hidden="true" />
           <span>Back to shop</span>
         </Link>

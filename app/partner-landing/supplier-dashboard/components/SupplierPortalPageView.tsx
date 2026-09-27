@@ -160,7 +160,7 @@ const influencerMatches = [
     rate: "12%",
     score: 96,
     products: 84,
-    href: "/influencers/maya-laurent",
+    href: "/creators/maya-laurent",
   },
   {
     name: "Sienna Brooks",
@@ -171,7 +171,7 @@ const influencerMatches = [
     rate: "10%",
     score: 93,
     products: 66,
-    href: "/influencers/maya-laurent",
+    href: "/creators/maya-laurent",
   },
   {
     name: "Rae Morgan",
@@ -182,7 +182,7 @@ const influencerMatches = [
     rate: "14%",
     score: 90,
     products: 71,
-    href: "/influencers/maya-laurent",
+    href: "/creators/maya-laurent",
   },
 ];
 

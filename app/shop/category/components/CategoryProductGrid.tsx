@@ -35,7 +35,7 @@ export function CategoryProductGrid({
           <article className={styles.productCard} key={product.id}>
             <div className={styles.productImage}>
               <Link
-                href={`/shop/product/${product.id}`}
+                href={`/product/${product.id}`}
                 aria-label={`View ${product.name}`}
               >
                 <Image
@@ -44,6 +44,7 @@ export function CategoryProductGrid({
                   fill
                   className={styles.productFrontImage}
                   sizes="(max-width: 760px) 88vw, (max-width: 1100px) 40vw, 25vw"
+                  quality={90}
                   unoptimized={product.image.startsWith("http")}
                 />
                 {product.hoverImage ? (
@@ -53,6 +54,7 @@ export function CategoryProductGrid({
                     fill
                     className={styles.productHoverImage}
                     sizes="(max-width: 760px) 88vw, (max-width: 1100px) 40vw, 25vw"
+                    quality={90}
                     unoptimized={product.hoverImage.startsWith("http")}
                   />
                 ) : null}
@@ -68,7 +70,7 @@ export function CategoryProductGrid({
               </Button>
               <span>{product.note}</span>
             </div>
-            <Link href={`/shop/product/${product.id}`}>
+            <Link href={`/product/${product.id}`}>
               <p>{product.brand}</p>
               <h3>{product.name}</h3>
             </Link>

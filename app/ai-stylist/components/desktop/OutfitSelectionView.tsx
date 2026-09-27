@@ -413,7 +413,7 @@ function PiecesDialog({
                         </span>
                       ) : (
                         <a
-                          href={`/shop/ai-stylist/product/${encodeURIComponent(catalogProductId(item))}`}
+                          href={`/product/${encodeURIComponent(catalogProductId(item))}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-1 text-[11px] font-medium text-[#2154ef] hover:underline"

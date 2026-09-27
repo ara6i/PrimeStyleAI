@@ -76,13 +76,13 @@ const products: StudioProduct[] = [
 ];
 
 const dashboardNavItems = [
-  { label: "Overview", href: "/influencers/dashboard", icon: House },
-  { label: "Campaigns", href: "/influencers/dashboard#campaigns", icon: Storefront },
-  { label: "Products and links", href: "/influencers/dashboard#products", icon: Package },
-  { label: "Tracked links", href: "/influencers/dashboard#links", icon: LinkSimple },
-  { label: "Earnings", href: "/influencers/dashboard#earnings", icon: ChartLineUp },
-  { label: "Transactions", href: "/influencers/dashboard#transactions", icon: Receipt },
-  { label: "Payouts", href: "/influencers/dashboard#payouts", icon: Wallet },
+  { label: "Overview", href: "/creators/dashboard", icon: House },
+  { label: "Campaigns", href: "/creators/dashboard#campaigns", icon: Storefront },
+  { label: "Products and links", href: "/creators/dashboard#products", icon: Package },
+  { label: "Tracked links", href: "/creators/dashboard#links", icon: LinkSimple },
+  { label: "Earnings", href: "/creators/dashboard#earnings", icon: ChartLineUp },
+  { label: "Transactions", href: "/creators/dashboard#transactions", icon: Receipt },
+  { label: "Payouts", href: "/creators/dashboard#payouts", icon: Wallet },
 ];
 
 const initialReferences: Record<ReferenceKey, string | null> = {
@@ -222,7 +222,7 @@ export function OutfitStudioExperience() {
   return (
     <main className={styles.stage}>
       <aside className={styles.sidebar}>
-        <Link href="/influencers" className={styles.brand} aria-label="Back to PrimeStyleAI influencers">
+        <Link href="/creators" className={styles.brand} aria-label="Back to PrimeStyleAI influencers">
           <Image src="/icon.svg" alt="PrimeStyleAI" width={42} height={42} priority />
         </Link>
         <nav className={styles.primaryNav} aria-label="Creator dashboard">
@@ -230,14 +230,14 @@ export function OutfitStudioExperience() {
             const Icon = item.icon;
             return <Link key={item.label} href={item.href} title={item.label} aria-label={item.label}><Icon size={21} /></Link>;
           })}
-          <Link className={styles.navActive} href="/influencers/dashboard/outfit-studio" title="Outfit Studio" aria-label="Outfit Studio" aria-current="page">
+          <Link className={styles.navActive} href="/creators/dashboard/outfit-studio" title="Outfit Studio" aria-label="Outfit Studio" aria-current="page">
             <MagicWand size={21} weight="fill" />
           </Link>
         </nav>
         <div className={styles.sidebarBottom}>
-          <Link href="/influencers/dashboard#support" title="Support and claims" aria-label="Support and claims"><Lifebuoy size={21} /></Link>
-          <Link href="/influencers/dashboard#profile" title="Profile and compliance" aria-label="Profile and compliance"><GearSix size={21} /></Link>
-          <Link href="/influencers/dashboard#profile" className={styles.miniAvatar} title="Creator profile" aria-label="Creator profile">
+          <Link href="/creators/dashboard#support" title="Support and claims" aria-label="Support and claims"><Lifebuoy size={21} /></Link>
+          <Link href="/creators/dashboard#profile" title="Profile and compliance" aria-label="Profile and compliance"><GearSix size={21} /></Link>
+          <Link href="/creators/dashboard#profile" className={styles.miniAvatar} title="Creator profile" aria-label="Creator profile">
             <Image src="/images/landing/avatar-elena.png" alt="" width={36} height={36} />
           </Link>
         </div>
@@ -245,7 +245,7 @@ export function OutfitStudioExperience() {
 
       <section className={styles.workspace}>
         <header className={styles.workspaceHeader}>
-          <Link href="/influencers" aria-label="Back to influencer page"><ArrowLeft size={19} /></Link>
+          <Link href="/creators" aria-label="Back to influencer page"><ArrowLeft size={19} /></Link>
           <span>Creator workspace · Outfit studio</span>
           <button type="button" aria-label="Notifications" onClick={() => setNoticeVisible((current) => !current)}><Bell size={20} /><i /></button>
           {noticeVisible ? <div className={styles.notification} role="status">You&apos;re all caught up.</div> : null}

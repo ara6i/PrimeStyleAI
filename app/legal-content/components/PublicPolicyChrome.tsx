@@ -43,7 +43,7 @@ function LocalizedPublicPolicyChrome({ children }: PublicPolicyChromeProps) {
   );
   const openInfluencerSection = (id: string) => {
     setMobileMenuOpen(false);
-    router.push(`/influencers#${id}`);
+    router.push(`/creators#${id}`);
   };
 
   return (

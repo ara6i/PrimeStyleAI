@@ -33,7 +33,7 @@ export function InfluencerFooter({
     >
       <div className={styles.footerFrame}>
         <section className={styles.footerMain} aria-label={t("PrimeStyleAI footer")}>
-          <Link href="/shop" className={styles.footerMark} aria-label="PrimeStyleAI home">
+          <Link href="/" className={styles.footerMark} aria-label="PrimeStyleAI home">
             <Image
               src="/media/partner-landing/optimized/primestyleai-mark-256.webp"
               alt="PrimeStyleAI"
@@ -70,17 +70,17 @@ export function InfluencerFooter({
                 </>
               ) : (
                 <>
-                  <Link href="/shop#ai-stylist-scenario">{t("Try the AI Stylist")} <ArrowUpRight size={14} weight="bold" /></Link>
-                  <Link href="/shop#merchant-system">{t("How the network works")} <ArrowUpRight size={14} weight="bold" /></Link>
+                  <Link href="/#ai-stylist-scenario">{t("Try the AI Stylist")} <ArrowUpRight size={14} weight="bold" /></Link>
+                  <Link href="/#merchant-system">{t("How the network works")} <ArrowUpRight size={14} weight="bold" /></Link>
                 </>
               )}
             </div>
 
             <nav className={styles.footerQuickLinks} aria-label={t("Footer navigation")}>
               <h3>{t("Quick links")}</h3>
-              <Link href="/shop">{t("Shop")}</Link>
+              <Link href="/">{t("Shop")}</Link>
               <Link href="/merchants">{t("Merchants")}</Link>
-              <Link href="/influencers">{t("Creators")}</Link>
+              <Link href="/creators">{t("Creators")}</Link>
               <Link href="/suppliers">{t("Suppliers")}</Link>
             </nav>
           </div>

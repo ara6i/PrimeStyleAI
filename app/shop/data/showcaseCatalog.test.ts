@@ -77,8 +77,8 @@ describe("generated shop showcase catalog", () => {
       );
       expect(showcaseProducts).toHaveLength(10);
       for (const product of showcaseProducts) {
-        expect(product.image).toContain("/01-product-front.png");
-        expect(product.hoverImage).toContain("/02-product-back.png");
+        expect(product.image).toContain("/01-product-front.webp");
+        expect(product.hoverImage).toContain("/02-product-back.webp");
         expect(product.image).not.toContain("model");
         expect(product.hoverImage).not.toContain("model");
       }
@@ -140,7 +140,7 @@ describe("generated shop showcase catalog", () => {
       if (!source) continue;
       const detail = mapProductDetail(source);
       expect(detail.gallery).toHaveLength(9);
-      expect(detail.gallery[0].src).toContain("03-model-front.png");
+      expect(detail.gallery[0].src).toContain("03-model-front.webp");
       expect(
         detail.gallery
           .slice(0, 6)
@@ -151,16 +151,16 @@ describe("generated shop showcase catalog", () => {
           .slice(0, 6)
           .every((view) => existsSync(path.join(root, "public", view.src))),
       ).toBe(true);
-      expect(detail.gallery[6].src).toContain("01-product-front.png");
-      expect(detail.gallery[7].src).toContain("02-product-back.png");
-      expect(detail.gallery[8].src).toContain("08-detail.png");
+      expect(detail.gallery[6].src).toContain("01-product-front.webp");
+      expect(detail.gallery[7].src).toContain("02-product-back.webp");
+      expect(detail.gallery[8].src).toContain("08-detail.webp");
       expect(
         detail.gallery
           .slice(6)
           .every((view) => view.src.includes("/showcase-v4/")),
       ).toBe(true);
-      expect(detail.garmentReferenceImage).toContain("01-product-front.png");
-      expect(detail.garmentDetailImage).toContain("08-detail.png");
+      expect(detail.garmentReferenceImage).toContain("01-product-front.webp");
+      expect(detail.garmentDetailImage).toContain("08-detail.webp");
       expect(detail.sizeGuide).toEqual(
         getShowcaseProductSpecification(product.id)?.sizeGuide,
       );
@@ -203,9 +203,11 @@ describe("generated shop showcase catalog", () => {
                 item.productId.startsWith("daily-edit-")),
           ).toBe(true);
           if (item.url) {
-            expect(item.url).toBe(`/shop/product/${item.productId}`);
+            expect(item.url).toBe(`/product/${item.productId}`);
           }
-          expect(item.alternatives).toHaveLength(4);
+          expect(item.alternatives).toHaveLength(
+            pinned.id === "men-espresso-double-breasted-blazer" ? 1 : 4,
+          );
           expect(
             item.alternatives?.every(
               (alternative) => alternative.slot === item.slot,

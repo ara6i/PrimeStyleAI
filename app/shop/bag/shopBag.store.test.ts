@@ -7,7 +7,7 @@ import {
 
 const jeans: ShopBagProduct = {
   productId: "jeans", name: "Lumen Wide Leg", brandName: "Northline",
-  image: "/jeans.png", href: "/shop/product/jeans", size: "24",
+  image: "/jeans.png", href: "/product/jeans", size: "24",
   color: "Light blue", priceCents: 13800, currency: "USD",
 };
 const shirt: ShopBagProduct = { ...jeans, productId: "shirt", name: "Shirt", size: "M", priceCents: 4599 };

@@ -398,7 +398,7 @@ export function MobileOutfitSelectionView({
                       </p>
                     ) : (
                       <a
-                        href={`/shop/ai-stylist/product/${encodeURIComponent(productId(item))}`}
+                        href={`/product/${encodeURIComponent(productId(item))}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-[#2154ef]"

@@ -419,7 +419,7 @@ export function StylistTryOnBatchView({
                             )}
                           </span>
                           <a
-                            href={`/shop/ai-stylist/product/${encodeURIComponent(product.id)}`}
+                            href={`/product/${encodeURIComponent(product.id)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 rounded-full bg-[#2154ef] px-3 py-1.5 text-[10px] font-semibold text-white transition-colors hover:bg-[#1947d6]"

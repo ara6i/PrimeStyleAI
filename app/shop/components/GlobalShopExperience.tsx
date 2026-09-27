@@ -64,18 +64,18 @@ const catalogHighlights = catalogHighlightIds.map((id) => {
 
 const bagLooks = [
   {
-    id: "lavender",
-    name: "Lavender mini",
-    price: 119,
-    image: "/media/global-shop/outfit-builder-lavender-model.webp",
-    color: "#b989e8",
+    id: "scarlet",
+    name: "Scarlet mini",
+    price: 124,
+    image: "/media/global-shop/outfit-builder-red-model-cutout-v1.webp",
+    color: "#e31828",
   },
   {
-    id: "coral",
-    name: "Coral mini",
-    price: 96,
-    image: "/media/global-shop/outfit-builder-coral-model.webp",
-    color: "#ff6756",
+    id: "pink",
+    name: "Pink mini",
+    price: 119,
+    image: "/media/global-shop/outfit-builder-lavender-model.webp",
+    color: "#ef94c8",
   },
 ] as const;
 
@@ -163,7 +163,7 @@ export function GlobalShopExperience() {
         <header className={styles.header}>
           <Link
             className={styles.brand}
-            href="/shop"
+            href="/"
             aria-label="PrimeStyleAI shop home"
           >
             <Image
@@ -181,9 +181,9 @@ export function GlobalShopExperience() {
           </Link>
 
           <nav className={styles.desktopNav} aria-label="Shop navigation">
-            <Link href="/shop/category/women">Women</Link>
-            <Link href="/shop/category/men">Men</Link>
-            <Link href="/influencers">For Creators</Link>
+            <Link href="/category/women">Women</Link>
+            <Link href="/category/men">Men</Link>
+            <Link href="/creators">For Creators</Link>
             <Link href="/merchants">For Merchants</Link>
             <Link href="/suppliers">
               For Suppliers
@@ -198,7 +198,7 @@ export function GlobalShopExperience() {
               rel="noopener noreferrer"
               title="Opens in a new tab"
             >
-              Schedule a Demo
+              Book a Demo
               <ArrowUpRight size={15} weight="bold" />
             </a>
             <button
@@ -271,7 +271,7 @@ export function GlobalShopExperience() {
 
             <Link
               className={styles.menuWordmark}
-              href="/shop"
+              href="/"
               aria-label="PrimeStyleAI shop home"
               target="_blank"
               rel="noopener noreferrer"
@@ -363,6 +363,7 @@ export function GlobalShopExperience() {
               width={1024}
               height={1536}
               sizes="(max-width: 760px) 120vw, 40vw"
+              quality={90}
               priority
             />
           </div>
@@ -409,7 +410,7 @@ export function GlobalShopExperience() {
 
         <ShopAIStylistScenarioSection />
 
-        <MerchantPdpSdkSection productUrl="/shop#ai-fitting" />
+        <MerchantPdpSdkSection productUrl="/#ai-fitting" />
 
         <ShopRunwayExperience onOpenCategory={openCategoryPage} />
 
@@ -459,6 +460,8 @@ export function GlobalShopExperience() {
                   alt={product.name}
                   fill
                   sizes="(max-width: 700px) 82vw, (max-width: 1100px) 44vw, 24vw"
+                  quality={90}
+                  loading="eager"
                 />
               );
               return (
@@ -584,10 +587,11 @@ export function GlobalShopExperience() {
                 <Image
                   key={selectedBag.id}
                   src={selectedBag.image}
-                  alt={`Purple editorial outfit styled with the ${selectedBag.name}`}
+                  alt={`Editorial outfit styled with the ${selectedBag.name}`}
                   fill
                   unoptimized
                   sizes="(max-width: 760px) 100vw, 52vw"
+                  loading="eager"
                 />
               </div>
               <div className={styles.stylistHeroMetric}>
@@ -627,6 +631,8 @@ export function GlobalShopExperience() {
                   alt="Coral fashion look"
                   fill
                   sizes="180px"
+                  quality={90}
+                  loading="eager"
                 />
               </figure>
               <div className={styles.stylistEditorialCopy}>
@@ -650,6 +656,8 @@ export function GlobalShopExperience() {
                   alt="Lilac and lime fashion look"
                   fill
                   sizes="180px"
+                  quality={90}
+                  loading="eager"
                 />
               </figure>
             </div>
@@ -736,17 +744,12 @@ export function GlobalShopExperience() {
                 <br />EDIT.
               </i>
             </h2>
-            <p>
-              Shop only the products already available in our Women’s and
-              Men’s edits. Every piece opens its product page with the prepared
-              sizing, try-on, and outfit demo.
-            </p>
           </div>
           <div className={styles.catalogProductGrid}>
             {catalogHighlights.map((product) => (
               <article key={product.id}>
                 <Link
-                  href={`/shop/product/${product.id}`}
+                  href={`/product/${product.id}`}
                   aria-label={`View ${product.name}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -758,7 +761,9 @@ export function GlobalShopExperience() {
                       src={showcaseAsset(product, "03-model-front")}
                       alt={`${product.name} from the ${product.gender} edit`}
                       fill
-                      sizes="(max-width: 760px) 86vw, (max-width: 1120px) 44vw, 30vw"
+                      sizes="(max-width: 760px) 100vw, (max-width: 1120px) 50vw, 38vw"
+                      quality={90}
+                      loading="eager"
                     />
                   </div>
                   <span>{product.gender} · PrimeStyleAI Atelier</span>

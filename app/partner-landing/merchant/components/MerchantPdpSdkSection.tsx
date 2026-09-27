@@ -38,7 +38,7 @@ const COLOURS = [
     slug: "cobalt",
     hex: "#2458dc",
     ink: "#ffffff",
-    image: "/media/partner-landing/merchant-network/studio-jacket-cobalt.png",
+    image: "/media/partner-landing/merchant-network/studio-jacket-cobalt.webp",
     alt: "Cobalt Arc Jacket with warm ivory panels and a restrained coral accent",
   },
   {
@@ -46,7 +46,7 @@ const COLOURS = [
     slug: "coral",
     hex: "#ff625b",
     ink: "#161616",
-    image: "/media/partner-landing/merchant-network/studio-jacket-coral.png",
+    image: "/media/partner-landing/merchant-network/studio-jacket-coral.webp",
     alt: "Coral Arc Jacket with warm ivory panels and a restrained pink accent",
   },
   {
@@ -54,7 +54,7 @@ const COLOURS = [
     slug: "butter",
     hex: "#f7d65a",
     ink: "#161616",
-    image: "/media/partner-landing/merchant-network/studio-jacket-butter.png",
+    image: "/media/partner-landing/merchant-network/studio-jacket-butter.webp",
     alt: "Butter-yellow Arc Jacket with warm ivory panels and a restrained tangerine accent",
   },
   {
@@ -62,7 +62,7 @@ const COLOURS = [
     slug: "mint",
     hex: "#9edfc9",
     ink: "#132c2c",
-    image: "/media/partner-landing/merchant-network/studio-jacket-mint.png",
+    image: "/media/partner-landing/merchant-network/studio-jacket-mint.webp",
     alt: "Mint Arc Jacket with warm ivory panels and a restrained deep-teal accent",
   },
   {
@@ -70,7 +70,7 @@ const COLOURS = [
     slug: "lilac",
     hex: "#b78bd8",
     ink: "#1c1424",
-    image: "/media/partner-landing/merchant-network/studio-jacket-lilac.png",
+    image: "/media/partner-landing/merchant-network/studio-jacket-lilac.webp",
     alt: "Lilac Arc Jacket with warm ivory panels and a restrained plum accent",
   },
 ] as const;
@@ -88,7 +88,7 @@ const SIZE_GUIDE = {
 };
 
 const ARC_JACKET_RAW_MODEL_PHOTO =
-  "/media/global-shop/arc-jacket-demo-v2/model-source.png";
+  "/media/global-shop/arc-jacket-demo-v2/model-source.webp";
 
 type MerchantPdpSdkSectionProps = {
   productUrl?: string;
@@ -304,9 +304,6 @@ export function MerchantPdpSdkSection({
                 showPoweredBy
                 className={styles.sdkRoot}
                 classNames={{ button: styles.sdkButton }}
-                addToBagLabel="Save to look"
-                continueShoppingLabel="Keep styling"
-                backToProductPageLabel="Back to Arc Jacket"
               />
             </div>
           </article>

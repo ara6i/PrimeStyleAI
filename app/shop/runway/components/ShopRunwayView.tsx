@@ -221,6 +221,7 @@ export function ShopRunwayView({
                   alt={hidden ? "" : product.name}
                   fill
                   sizes="(max-width: 760px) 33vw, 24vw"
+                  quality={90}
                 />
               </div>
               <div className={styles.productCopy}>
@@ -328,6 +329,7 @@ export function ShopRunwayView({
                       priority={index === 0}
                       loading={index === 0 ? "eager" : "lazy"}
                       sizes="(max-width: 760px) 72vw, 36vw"
+                      quality={90}
                     />
                   </div>
                 );

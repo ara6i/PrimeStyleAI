@@ -22,6 +22,7 @@ export function CategoryHero({ catalog, onShopEdit }: CategoryHeroProps) {
           fill
           priority
           sizes="(max-width: 760px) 100vw, 94vw"
+          quality={90}
           className={
             catalog.mobileHeroImage ? styles.heroDesktopImage : undefined
           }

@@ -47,7 +47,7 @@ export function StylistProductDetailClient({ productId }: { productId: string })
           </span>
           <h1 className="mt-5 text-2xl font-bold">Product details unavailable</h1>
           <p className="mt-3 text-sm leading-6 text-[#5f6d8f]">{error}</p>
-          <Link className="mt-6 inline-flex rounded-full bg-[#2154ef] px-5 py-2.5 text-sm font-semibold text-white" href="/shop/ai-stylist">
+          <Link className="mt-6 inline-flex rounded-full bg-[#2154ef] px-5 py-2.5 text-sm font-semibold text-white" href="/ai-stylist">
             Back to AI Stylist
           </Link>
         </section>

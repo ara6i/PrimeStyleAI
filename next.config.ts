@@ -127,6 +127,38 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/shop",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/shop/ai-stylist/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/shop/dressing-room/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/shop/:path*",
+        destination: "/:path*",
+        permanent: true,
+      },
+      {
+        source: "/influencers",
+        destination: "/creators",
+        permanent: true,
+        missing: creatorHostRedirectExclusions,
+      },
+      {
+        source: "/influencers/:path*",
+        destination: "/creators/:path*",
+        permanent: true,
+        missing: creatorHostRedirectExclusions,
+      },
+      {
         source: "/dashboard",
         destination: `${DEVELOPER_PORTAL}/developer/dashboard?preview=1`,
         permanent: false,

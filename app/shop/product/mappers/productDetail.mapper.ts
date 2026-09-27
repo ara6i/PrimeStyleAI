@@ -183,7 +183,7 @@ function mapBrandRelated(
     .slice(0, 4)
     .map((product) => ({
       id: product.id,
-      href: `/shop/product/${product.id}`,
+      href: `/product/${product.id}`,
       brandName,
       name: product.name,
       image: product.image,
@@ -201,7 +201,7 @@ function mapCategoryRelated(
     .slice(0, 4)
     .map((product) => ({
       id: product.id,
-      href: `/shop/product/${product.id}`,
+      href: `/product/${product.id}`,
       brandName: product.brand,
       name: product.name,
       image: product.image,
@@ -262,9 +262,9 @@ function mapBrandProduct(
     imageNotice: product.imageNotice,
     gallery,
     featureImage: gallery.at(-1)?.src ?? product.image,
-    sourceHref: `/shop/category/women?brand=${source.catalog.id}`,
+    sourceHref: `/category/women?brand=${source.catalog.id}`,
     sourceLabel: `${source.catalog.name} edit`,
-    canonicalHref: `/shop/product/${product.id}`,
+    canonicalHref: `/product/${product.id}`,
     note: `${product.color} · ${product.season} ${product.category}`,
     information: getInformation(
       product.category,
@@ -327,9 +327,9 @@ function mapCategoryProduct(
       gallery,
       featureImage:
         product.garmentDetailImage ?? gallery.at(-1)?.src ?? product.image,
-      sourceHref: `/shop/category/${source.catalog.id}`,
+      sourceHref: `/category/${source.catalog.id}`,
       sourceLabel: `${source.catalog.label} generated showcase`,
-      canonicalHref: `/shop/product/${product.id}`,
+      canonicalHref: `/product/${product.id}`,
       tryOnSupported: true,
       isMock: true,
       imageNotice:
@@ -416,7 +416,7 @@ function mapCategoryProduct(
       sizes: ["24", "25", "26", "27", "28", "29", "30", "31", "32", "33"],
       gallery: lumenWideLegGallery,
       featureImage: "/media/global-shop/denim-pdp/lumen-wide-leg-detail.png",
-      sourceHref: `/shop/category/${source.catalog.id}`,
+      sourceHref: `/category/${source.catalog.id}`,
       sourceLabel: `${source.catalog.label} edit`,
       note: "Washed light blue · High rise · Non-stretch denim",
       information: lumenWideLegInformation,
@@ -467,7 +467,7 @@ function mapCategoryProduct(
       },
     ],
     featureImage: source.catalog.heroImage,
-    sourceHref: `/shop/category/${source.catalog.id}`,
+    sourceHref: `/category/${source.catalog.id}`,
     sourceLabel: `${source.catalog.label} edit`,
     note: `${color} · ${category}`,
     information: getInformation(

@@ -23,24 +23,32 @@ const DEFAULT_CREATOR_HOSTS = [
   "creators.primestyleai.com",
   "creators.localhost",
 ];
-const DEFAULT_PUBLIC_HOSTS = ["primestyleai.com", "www.primestyleai.com"];
-const CREATOR_LANDING_PATH = "/influencers";
+const DEFAULT_SUPPLIER_HOSTS = [
+  "suppliers.primestyleai.com",
+  "suppliers.localhost",
+];
+const CREATOR_LANDING_PATH = "/creators";
+const SUPPLIER_LANDING_PATH = "/suppliers";
 const CREATOR_PUBLIC_API_PATHS = new Set([
   "/api/contact/notify",
   "/api/creator-profiles/validate",
 ]);
 const CREATOR_LEGAL_PATHS = new Set(["/privacy-policy", "/terms"]);
-const CREATOR_PUBLIC_URL =
-  process.env.CREATOR_PUBLIC_URL || "https://creators.primestyleai.com";
 const PUBLIC_SITE_AUTH_PATH_PREFIXES = [
   "/merchants",
   "/suppliers",
+  "/creators",
   "/shop",
   "/influencers/dashboard",
+  "/product",
+  "/category",
+  "/brand",
+  "/prepared-results",
   "/pdp-studio",
 ] as const;
 
 export function isPublicSiteAuthPath(pathname: string): boolean {
+  if (pathname === "/") return true;
   return PUBLIC_SITE_AUTH_PATH_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
@@ -69,9 +77,9 @@ export async function proxy(req: NextRequest) {
     process.env.CREATOR_HOSTS,
     DEFAULT_CREATOR_HOSTS,
   ).includes(host);
-  const isPublicHost = getConfiguredHosts(
-    process.env.PUBLIC_SITE_HOSTS,
-    DEFAULT_PUBLIC_HOSTS,
+  const isSupplierHost = getConfiguredHosts(
+    process.env.SUPPLIER_HOSTS,
+    DEFAULT_SUPPLIER_HOSTS,
   ).includes(host);
   const siteAuthEnabled = isSiteAuthEnabled();
 
@@ -113,12 +121,13 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(creatorRoot);
   }
 
-  // Keep the old public URL useful without serving a second copy of the
-  // landing page. Nested profile/dashboard prototypes remain on the main host.
-  if (isPublicHost && pathname === CREATOR_LANDING_PATH) {
-    const creatorLanding = new URL(CREATOR_PUBLIC_URL);
-    creatorLanding.search = url.search;
-    return NextResponse.redirect(creatorLanding, 308);
+  // The supplier subdomain shares the same application release. Its root
+  // renders the canonical supplier landing while /suppliers remains available
+  // on the main domain.
+  if (isSupplierHost && (pathname === "/" || pathname === "")) {
+    const rewritten = url.clone();
+    rewritten.pathname = SUPPLIER_LANDING_PATH;
+    return NextResponse.rewrite(rewritten);
   }
 
   if (

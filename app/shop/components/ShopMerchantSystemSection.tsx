@@ -12,9 +12,9 @@ import styles from "./shopMerchantSystem.module.css";
 const SIZING_VIDEO_SRC =
   "/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-european-omni-box-only-720p-v2.mp4";
 const SIZING_POSTER_SRC =
-  "/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-storyboard-european-v2.png";
+  "/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-storyboard-european-v2.webp";
 const INFLUENCER_IMAGE_SRC =
-  "/media/global-shop/merchant-system/merchant-influencer-editorial-v1.png";
+  "/media/global-shop/merchant-system/merchant-influencer-editorial-v1.webp";
 const SUPPLIER_IMAGE_SRC =
   "/media/global-shop/merchant-system/supplier-apparel-box-v1.webp";
 const WOMENS_COLLECTION_IMAGE_SRC =
@@ -141,6 +141,7 @@ export function ShopMerchantSystemSection() {
                   alt=""
                   fill
                   sizes="(max-width: 720px) calc(100vw - 28px), 22vw"
+                  quality={90}
                 />
               ) : null}
               {slot.key === "suppliers" ? (
@@ -189,6 +190,7 @@ export function ShopMerchantSystemSection() {
                       alt=""
                       fill
                       sizes="(max-width: 720px) 100vw, 24vw"
+                      quality={90}
                     />
                   </div>
 
@@ -199,6 +201,7 @@ export function ShopMerchantSystemSection() {
                         alt=""
                         fill
                         sizes="(max-width: 720px) 50vw, 12vw"
+                        quality={90}
                       />
                       <span>Men&apos;s collection</span>
                     </div>

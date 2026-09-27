@@ -115,7 +115,7 @@ it("links every partner destination in the header to its landing page", () => {
     navigation
       .getByRole("link", { name: "For Creators" })
       .getAttribute("href"),
-  ).toBe("/influencers");
+  ).toBe("/creators");
   expect(
     navigation
       .getByRole("link", { name: "For Merchants" })
@@ -138,10 +138,10 @@ it("labels the shop as a launching-soon demo and uses Shane's latest Google Book
   expect(banner.getByText("Demo site")).toBeTruthy();
   expect(banner.getByText("Launching soon")).toBeTruthy();
   expectNewTabLink(
-    screen.getByRole("link", { name: "Schedule a Demo" }),
+    screen.getByRole("link", { name: "Book a Demo" }),
     "https://calendar.app.google/4LeitboKs5KzemWL7",
   );
-  expect(banner.queryByRole("link", { name: "Schedule a Demo" })).toBeNull();
+  expect(banner.queryByRole("link", { name: "Book a Demo" })).toBeNull();
 });
 
 it("does not duplicate New Arrivals inside the removed runway section", () => {
@@ -207,6 +207,24 @@ describe("New arrivals product links", () => {
 it("presents the focused merchant network hero and the complete creator hero", () => {
   render(<GlobalShopExperience />);
 
+  expect(
+    screen
+      .getByAltText("Editorial outfit styled with the Scarlet mini")
+      .getAttribute("src"),
+  ).toContain("outfit-builder-red-model-cutout-v1.webp");
+  expect(
+    screen.queryByText(/Shop only the products already available/i),
+  ).toBeNull();
+  expect(
+    screen.getAllByRole("button", { name: "Style with Scarlet mini" }),
+  ).toHaveLength(2);
+  expect(
+    screen.getAllByRole("button", { name: "Style with Pink mini" }),
+  ).toHaveLength(2);
+  expect(
+    screen.queryAllByRole("button", { name: "Style with Coral mini" }),
+  ).toHaveLength(0);
+
   const merchant = within(
     screen.getByRole("region", {
       name: /Have a store\?/,
@@ -240,7 +258,7 @@ it("presents the focused merchant network hero and the complete creator hero", (
     name: "Creator image",
   });
   expect(influencerImage.querySelector("img")?.getAttribute("src")).toContain(
-    "merchant-influencer-editorial-v1.png",
+    "merchant-influencer-editorial-v1.webp",
   );
   const merchantStorePreview = merchant.getByRole("article", {
     name: "Merchant store image",
@@ -336,7 +354,7 @@ it("presents one full supplier-focused network section", () => {
     /European supplier handing a garment box to a European merchant while a European Creator films the exchange/i,
   );
   expect(handoffImage.getAttribute("src")).toContain(
-    "supplier-merchant-influencer-cutout-v1.png",
+    "supplier-merchant-influencer-cutout-v1.webp",
   );
   expect(supplier.getByText("Merchant connections")).toBeTruthy();
   expect(supplier.getByText("Creator demand")).toBeTruthy();
@@ -364,7 +382,7 @@ it("shows only real Women’s and Men’s catalog products in the former brand s
     "Chocolate Suede Court Sneaker",
   ]) {
     const link = brands.getByRole("link", { name: `View ${name}` });
-    expect(link.getAttribute("href")).toMatch(/^\/shop\/product\//);
+    expect(link.getAttribute("href")).toMatch(/^\/product\//);
     expect(link.querySelector("img")?.getAttribute("src")).toContain(
       "/media/global-shop/showcase-v4/",
     );
@@ -425,10 +443,10 @@ describe("Shop branded menu", () => {
       shop
         .getByRole("link", { name: "Product page · PDP" })
         .getAttribute("href"),
-    ).toBe("/shop/product/daily-edit-vela-denim");
+    ).toBe("/product/daily-edit-vela-denim");
     expect(shop.queryByRole("link", { name: "Denim" })).toBeNull();
     expect(shop.getByRole("link", { name: "Women" }).getAttribute("href")).toBe(
-      "/shop/category/women",
+      "/category/women",
     );
     expect(
       shop.getAllByRole("link", { name: "Camel Tailored Blazer" }),
@@ -628,7 +646,7 @@ describe("Shop branded menu", () => {
     const { user, menu } = await openMenu();
     const home = menu.getByRole("link", { name: "PrimeStyleAI shop home" });
     const login = menu.getByRole("link", { name: "Log in" });
-    expectNewTabLink(home, "/shop");
+    expectNewTabLink(home, "/");
     expectNewTabLink(login, "/customer/login");
     await user.click(home);
     await user.click(login);

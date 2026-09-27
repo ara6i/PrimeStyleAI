@@ -37,7 +37,7 @@ export async function GET(
   { params }: PreparedResultRouteContext,
 ) {
   const { gender, productId, fileName } = await params;
-  const match = /^look-(0[1-5])\.png$/.exec(fileName);
+  const match = /^look-(0[1-5])\.webp$/.exec(fileName);
   const product = getShowcaseProduct(productId);
 
   if (
@@ -67,14 +67,14 @@ export async function GET(
         "showcase-v5",
         gender as ShowcaseGender,
         product.id,
-        `${SHOWCASE_DEMO_RESULT_VIEWS[lookIndex]}.png`,
+        `${SHOWCASE_DEMO_RESULT_VIEWS[lookIndex]}.webp`,
       ),
     ));
 
   return new Response(new Uint8Array(image), {
     headers: {
       "Cache-Control": "public, max-age=60, stale-while-revalidate=300",
-      "Content-Type": "image/png",
+      "Content-Type": "image/webp",
       "X-PrimeStyle-Prepared-Asset": source,
     },
   });

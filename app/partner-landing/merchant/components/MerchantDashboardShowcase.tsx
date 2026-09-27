@@ -191,7 +191,7 @@ export function MerchantDashboardShowcase({
 
           <article className={`${styles.floatingCard} ${styles.productCard}`}>
             <Image
-              src="/media/partner-landing/merchant-network/studio-jacket-cobalt.png"
+              src="/media/partner-landing/merchant-network/studio-jacket-cobalt.webp"
               alt="Cobalt Arc Jacket"
               width={76}
               height={76}

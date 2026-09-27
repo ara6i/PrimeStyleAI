@@ -45,8 +45,8 @@ describe("Brand product photography", () => {
       expect(pdp.priceCents).toBe(Math.round(original.price * 100));
       expect(pdp.sizes).toEqual(original.sizes);
       expect(pdp.styleCode).toBe(original.styleCode);
-      expect(pdp.canonicalHref).toBe(`/shop/product/${product.id}`);
-      expect(pdp.sourceHref).toBe(`/shop/category/women?brand=${catalog.id}`);
+      expect(pdp.canonicalHref).toBe(`/product/${product.id}`);
+      expect(pdp.sourceHref).toBe(`/category/women?brand=${catalog.id}`);
       expect(pdp.isMock).not.toBe(true);
       expect(pdp.ratingLabel).toBeUndefined();
       expect(pdp.reviewLabel).toBeUndefined();

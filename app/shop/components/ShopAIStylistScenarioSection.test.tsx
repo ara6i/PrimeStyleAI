@@ -55,6 +55,8 @@ it("speaks to shoppers instead of explaining internal flow rules", () => {
     screen.getByText(/let your personal stylist take it from there/i),
   ).toBeTruthy();
   expect(screen.queryByText(/Wedding changes the flow/i)).toBeNull();
+  expect(screen.queryByText("Style for another city")).toBeNull();
+  expect(screen.queryByPlaceholderText("Enter a city manually")).toBeNull();
 });
 
 it("maps 80 unique images for women and 80 for men into five-look scenarios", () => {

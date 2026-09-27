@@ -40,28 +40,28 @@ const BRIDE_LOOKS = [
     outfit:
       "ivory architectural mikado column gown with an asymmetric neckline, long sleeves, and a chapel train",
     image:
-      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-02-architectural-mikado.png",
+      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-02-architectural-mikado.webp",
   },
   {
     title: "Silk Crepe",
     outfit:
       "ivory silk-crepe gown with a bateau neckline, sheer sleeves, pearl waist detail, and soft train",
     image:
-      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-03-silk-crepe.png",
+      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-03-silk-crepe.webp",
   },
   {
     title: "Square Neck Cape",
     outfit:
       "ivory square-neck corseted gown with a pleated A-line skirt and removable sheer shoulder cape",
     image:
-      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-04-square-neck-cape.png",
+      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-04-square-neck-cape.webp",
   },
   {
     title: "Lace Column",
     outfit:
       "ivory high-neck lace column gown with fitted sleeves, covered buttons, and a short veil",
     image:
-      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-05-lace-column.png",
+      "/media/global-shop/ai-stylist-wedding-v2/women/bride/bride-05-lace-column.webp",
   },
 ] as const;
 
@@ -71,35 +71,35 @@ const GROOM_LOOKS = [
     outfit:
       "black wool barathea tuxedo, pleated white tuxedo shirt, black bow tie, and polished wholecut shoes",
     image:
-      "/media/global-shop/ai-stylist-men-v2/groom/groom-01-black-tuxedo.png",
+      "/media/global-shop/ai-stylist-men-v2/groom/groom-01-black-tuxedo.webp",
   },
   {
     title: "Ivory Dinner Jacket",
     outfit:
       "ivory silk dinner jacket with black shawl collar, black trousers, black bow tie, and polished loafers",
     image:
-      "/media/global-shop/ai-stylist-men-v2/groom/groom-02-ivory-dinner-jacket.png",
+      "/media/global-shop/ai-stylist-men-v2/groom/groom-02-ivory-dinner-jacket.webp",
   },
   {
     title: "Espresso Three-Piece",
     outfit:
       "deep espresso three-piece wedding suit, ivory shirt, tonal silk tie, cream boutonniere, and brown cap-toe shoes",
     image:
-      "/media/global-shop/ai-stylist-men-v2/groom/groom-03-espresso-three-piece.png",
+      "/media/global-shop/ai-stylist-men-v2/groom/groom-03-espresso-three-piece.webp",
   },
   {
     title: "Warm Taupe Double-Breasted",
     outfit:
       "warm taupe double-breasted wedding suit, white shirt, chocolate knit tie, cream pocket square, and brown derbies",
     image:
-      "/media/global-shop/ai-stylist-men-v2/groom/groom-04-warm-taupe-double-breasted.png",
+      "/media/global-shop/ai-stylist-men-v2/groom/groom-04-warm-taupe-double-breasted.webp",
   },
   {
     title: "Midnight Velvet",
     outfit:
       "midnight-blue velvet tuxedo jacket, white tuxedo shirt, black bow tie, black trousers, and polished shoes",
     image:
-      "/media/global-shop/ai-stylist-men-v2/groom/groom-05-midnight-velvet.png",
+      "/media/global-shop/ai-stylist-men-v2/groom/groom-05-midnight-velvet.webp",
   },
 ] as const;
 
@@ -107,7 +107,7 @@ const BRIDESMAID_IMAGES = [
   "/media/global-shop/ai-stylist-wedding-v1/women/bridesmaid/disc-bridesmaid-bouquet-1-v2.webp",
   "/media/global-shop/ai-stylist-wedding-v1/women/bridesmaid/disc-bridesmaid-bouquet-2-v2.webp",
   "/media/global-shop/ai-stylist-wedding-v1/women/bridesmaid/disc-bridesmaid-bouquet-3-v2.webp",
-  "/media/global-shop/ai-stylist-wedding-v2/women/bridesmaid/bridesmaid-04-dusty-blush.png",
+  "/media/global-shop/ai-stylist-wedding-v2/women/bridesmaid/bridesmaid-04-dusty-blush.webp",
 ] as const;
 
 const USHER_IMAGES = [
@@ -118,9 +118,9 @@ const USHER_IMAGES = [
 ] as const;
 
 const MOTHER_OF_BRIDE_IMAGE =
-  "/media/global-shop/ai-stylist-wedding-v2/women/mother/mother-of-bride-muted-mauve.png";
+  "/media/global-shop/ai-stylist-wedding-v2/women/mother/mother-of-bride-muted-mauve.webp";
 const MOTHER_OF_GROOM_IMAGE =
-  "/media/global-shop/ai-stylist-wedding-v2/men/mother/mother-of-groom-aubergine.png";
+  "/media/global-shop/ai-stylist-wedding-v2/men/mother/mother-of-groom-aubergine.webp";
 
 const BRIDESMAID_LOOKS = [
   SHOP_WOMEN_WEDDING_CENTER_MODEL_IMAGE,

@@ -16,7 +16,7 @@ export function ProductShopHeader({
     <header className={styles.header}>
       <Link
         className={styles.headerBrand}
-        href="/shop"
+        href="/"
         aria-label="PrimeStyleAI shop home"
       >
         <Image

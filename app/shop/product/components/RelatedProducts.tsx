@@ -18,7 +18,7 @@ export function RelatedProducts({ products, headingId }: RelatedProductsProps) {
           <span>Complete the edit</span>
           <h2 id={headingId}>You may also like</h2>
         </div>
-        <Link href="/shop">View all products</Link>
+        <Link href="/">View all products</Link>
       </header>
       <div className={styles.relatedGrid}>
         {products.map((product) => (
@@ -33,6 +33,7 @@ export function RelatedProducts({ products, headingId }: RelatedProductsProps) {
                 alt={product.name}
                 fill
                 sizes="(max-width: 760px) 74vw, 22vw"
+                quality={90}
                 unoptimized={product.image.startsWith("http")}
               />
               {product.badge ? <b>{product.badge}</b> : null}

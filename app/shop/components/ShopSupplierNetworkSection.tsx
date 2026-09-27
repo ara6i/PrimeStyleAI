@@ -57,10 +57,11 @@ export function ShopSupplierNetworkSection() {
 
           <div className={styles.sceneFrame}>
             <Image
-              src="/media/global-shop/supplier-network/supplier-merchant-influencer-cutout-v1.png"
+              src="/media/global-shop/supplier-network/supplier-merchant-influencer-cutout-v1.webp"
               alt="A European supplier handing a garment box to a European merchant while a European Creator films the exchange"
               fill
               sizes="(max-width: 800px) calc(100vw - 72px), 48vw"
+              quality={90}
               className={styles.sceneImage}
             />
           </div>

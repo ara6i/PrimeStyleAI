@@ -37,7 +37,7 @@ function isProduct(value: unknown): value is ShopBagProduct {
   ) && typeof product.currency === "string" && /^[A-Z]{3}$/.test(product.currency)
     && typeof product.priceCents === "number" && Number.isSafeInteger(product.priceCents)
     && product.priceCents >= 0
-    && (product.href === undefined || (typeof product.href === "string" && product.href.startsWith("/shop/")));
+    && (product.href === undefined || (typeof product.href === "string" && product.href.startsWith("/")));
 }
 
 export function readBagItems(raw: string | null): ShopBagItem[] {

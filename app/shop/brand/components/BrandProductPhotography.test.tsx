@@ -24,7 +24,7 @@ describe.each(brandCatalogData)("$name photography links", (catalog) => {
     for (const product of catalog.products) {
       const card = container.querySelector<HTMLElement>(`[data-product-id="${product.id}"]`)!;
       const link = within(card).getByRole("link", { name: `View ${product.name}` });
-      expect(link.getAttribute("href")).toBe(`/shop/product/${product.id}`);
+      expect(link.getAttribute("href")).toBe(`/product/${product.id}`);
       expect(link.querySelector("img")?.getAttribute("src")).toBe(product.image);
     }
     expect(screen.getAllByText("AI-generated preview")).toHaveLength(8);
@@ -36,7 +36,7 @@ describe.each(brandCatalogData)("$name photography links", (catalog) => {
     const links = section.querySelectorAll("a");
     expect(links).toHaveLength(4);
     catalog.products.slice(0, 4).forEach((product, index) => {
-      expect(links[index].getAttribute("href")).toBe(`/shop/product/${product.id}`);
+      expect(links[index].getAttribute("href")).toBe(`/product/${product.id}`);
       expect(links[index].querySelector("img")?.getAttribute("src")).toBe(product.image);
     });
     expect(section.textContent).toContain("AI-generated preview");

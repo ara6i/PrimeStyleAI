@@ -91,6 +91,7 @@ export function ProductInformation({
                   alt={`${section.title} product context`}
                   fill
                   sizes="46vw"
+                  quality={90}
                   unoptimized={featureImage.startsWith("http")}
                 />
               </div>

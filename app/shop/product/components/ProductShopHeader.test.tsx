@@ -30,7 +30,7 @@ describe("ProductShopHeader", () => {
     const home = screen.getByRole("link", {
       name: "PrimeStyleAI shop home",
     });
-    expect(home.getAttribute("href")).toBe("/shop");
+    expect(home.getAttribute("href")).toBe("/");
     expect(screen.getByAltText("PrimeStyleAI").getAttribute("src")).toBe(
       "/media/partner-landing/primestyleai-commerce-gateway-mark.png",
     );

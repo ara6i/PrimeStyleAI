@@ -19,7 +19,7 @@ type SectionLink = {
 );
 
 const SECTION_LINKS: SectionLink[] = [
-  { label: "For Influencers", href: "/influencers" },
+  { label: "For Creators", href: "/creators" },
   { label: "For Merchants", href: "/merchants" },
   { labelKey: "features", href: "#features" },
   { labelKey: "demo", href: "/demo/products", external: true },

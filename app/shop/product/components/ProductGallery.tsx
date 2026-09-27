@@ -26,6 +26,7 @@ export function ProductGallery({
           alt={activeItem.alt}
           fill
           sizes={mobile ? "(max-width: 47.5rem) 95vw, 49vw" : "49vw"}
+          quality={90}
           loading="eager"
           unoptimized={activeItem.src.startsWith("http")}
         />
@@ -58,6 +59,7 @@ export function ProductGallery({
                 alt=""
                 fill
                 sizes="10vw"
+                quality={90}
                 unoptimized={item.src.startsWith("http")}
               />
             </Button>

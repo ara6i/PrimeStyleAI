@@ -752,7 +752,7 @@ export function DressingRoomExperience() {
       onPointerCancel={handleCatalogPointerCancel}
     >
       <header className={styles.header}>
-        <Link className={styles.backLink} href="/shop">
+        <Link className={styles.backLink} href="/">
           <ArrowLeft size={16} aria-hidden="true" />
           <span>Shop</span>
         </Link>
