@@ -4,6 +4,29 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 const DEVELOPER_PORTAL = "https://myaifitting.com";
+const primaryPublicHostRedirects = [
+  "primestyleai\\.com",
+  "www\\.primestyleai\\.com",
+].flatMap((host) => [
+  {
+    source: "/dashboard",
+    destination: "/",
+    permanent: false,
+    has: [{ type: "host" as const, value: host }],
+  },
+  {
+    source: "/dashboard/:path*",
+    destination: "/",
+    permanent: false,
+    has: [{ type: "host" as const, value: host }],
+  },
+  {
+    source: "/login",
+    destination: "/",
+    permanent: false,
+    has: [{ type: "host" as const, value: host }],
+  },
+]);
 const creatorHostRedirectExclusions = [
   { type: "host" as const, value: "creators\\.primestyleai\\.com" },
   { type: "host" as const, value: "creators\\.localhost(?::\\d+)?" },
@@ -126,6 +149,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      ...primaryPublicHostRedirects,
       {
         source: "/shop",
         destination: "/",
