@@ -31,7 +31,6 @@ export function useCategoryCatalog(
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const bag = useShopBag();
   const [searchQuery, setSearchQuery] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const products = useMemo(() => {
     const filtered = catalog.products.filter((product) =>
@@ -73,11 +72,9 @@ export function useCategoryCatalog(
     bagCount: bag.bagCount,
     openBag: () => bag.setOpen(true),
     searchQuery,
-    menuOpen,
     setExpandedFilterId,
     setSortId,
     setSearchQuery,
-    setMenuOpen,
     toggleFilter,
     toggleFavorite,
     clearFilters: () => setActiveFilters({}),

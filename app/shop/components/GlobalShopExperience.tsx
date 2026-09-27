@@ -4,32 +4,24 @@ import {
   ArrowRight,
   ArrowUpRight,
   Check,
-  Handbag,
   Heart,
-  List,
-  MagnifyingGlass,
   Plus,
   Sparkle,
-  X,
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
-import { Dialog } from "radix-ui";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { InfluencerFooter } from "../../partner-landing/influencer/components/InfluencerFooter";
 import influencerStyles from "../../partner-landing/influencer/components/influencerLanding.module.css";
 import { MerchantPdpSdkSection } from "../../partner-landing/merchant/components/MerchantPdpSdkSection";
 import { dailyEditProducts } from "../data/dailyEdit.data";
-import {
-  SHOWCASE_PRODUCTS,
-  showcaseAsset,
-} from "../data/showcaseCatalog.data";
+import { SHOWCASE_PRODUCTS, showcaseAsset } from "../data/showcaseCatalog.data";
 import { useShopNavigation } from "../hooks/useShopNavigation";
 import { useShopBag } from "../bag/useShopBag";
 import { ShopRunwayExperience } from "../runway/components/ShopRunwayExperience";
-import { ShopMenuNavigation } from "./ShopMenuNavigation";
 import { ShopCreatorHero } from "./ShopCreatorHero";
 import { ShopAIStylistScenarioSection } from "./ShopAIStylistScenarioSection";
+import { GlobalShopHeader } from "./GlobalShopHeader";
 import { ShopMerchantSystemSection } from "./ShopMerchantSystemSection";
 import { ShopSupplierNetworkSection } from "./ShopSupplierNetworkSection";
 import type {
@@ -80,12 +72,8 @@ const bagLooks = [
 ] as const;
 
 const moods = ["Everyday", "Statement", "Weekend"] as const;
-const GOOGLE_BOOKING_URL = "https://calendar.app.google/4LeitboKs5KzemWL7";
 
 export function GlobalShopExperience() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const afterMenuClose = useRef<(() => void) | null>(null);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState<GlobalShopCategoryFilter>("All");
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
@@ -98,15 +86,7 @@ export function GlobalShopExperience() {
   }, []);
   const [mood, setMood] = useState<(typeof moods)[number]>("Everyday");
   const [stylistReady, setStylistReady] = useState(false);
-  const closeNavigation = useCallback(() => setMenuOpen(false), []);
-  const { openCategoryPage } = useShopNavigation({
-    onNavigate: closeNavigation,
-  });
-
-  function closeMenuThen(action: () => void) {
-    afterMenuClose.current = action;
-    closeNavigation();
-  }
+  const { openCategoryPage } = useShopNavigation();
 
   const filteredProducts = useMemo(() => {
     const normalized = searchTerm.trim().toLowerCase();
@@ -126,7 +106,6 @@ export function GlobalShopExperience() {
     document
       .getElementById(id)
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setMenuOpen(false);
   }
 
   function toggleFavorite(id: string) {
@@ -152,191 +131,14 @@ export function GlobalShopExperience() {
   }
 
   return (
-    <Dialog.Root
-      open={menuOpen}
-      onOpenChange={(open) => {
-        if (open) afterMenuClose.current = null;
-        setMenuOpen(open);
-      }}
-    >
+    <>
       <main className={styles.page}>
-        <header className={styles.header}>
-          <Link
-            className={styles.brand}
-            href="/"
-            aria-label="PrimeStyleAI shop home"
-          >
-            <Image
-              src="/media/partner-landing/primestyleai-new-mark.png"
-              alt="PrimeStyleAI"
-              width={1254}
-              height={1254}
-              sizes="38px"
-              priority
-            />
-            <span>
-              <strong>PrimeStyleAI</strong>
-              <small>Global shop</small>
-            </span>
-          </Link>
-
-          <nav className={styles.desktopNav} aria-label="Shop navigation">
-            <Link href="/category/women">Women</Link>
-            <Link href="/category/men">Men</Link>
-            <Link href="/creators">For Creators</Link>
-            <Link href="/merchants">For Merchants</Link>
-            <Link href="/suppliers">
-              For Suppliers
-            </Link>
-          </nav>
-
-          <div className={styles.headerActions}>
-            <a
-              className={styles.headerDemoLink}
-              href={GOOGLE_BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Opens in a new tab"
-            >
-              Book a Demo
-              <ArrowUpRight size={15} weight="bold" />
-            </a>
-            <button
-              type="button"
-              className={styles.bagAction}
-              aria-label={`Saved look with ${bagCount} items`}
-              onClick={() => setCartOpen(true)}
-            >
-              <Handbag size={20} weight="regular" />
-              <span>{bagCount}</span>
-            </button>
-            <Dialog.Trigger asChild>
-              <button
-                type="button"
-                className={styles.menuButton}
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-                onClick={() => setSearchOpen(false)}
-              >
-                {menuOpen ? <X size={22} /> : <List size={22} />}
-              </button>
-            </Dialog.Trigger>
-          </div>
-
-          {searchOpen ? (
-            <div className={styles.searchBar}>
-              <MagnifyingGlass size={18} />
-              <input
-                autoFocus
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Search products, brands, categories"
-                aria-label="Search the global shop"
-              />
-              <button
-                type="button"
-                aria-label="Close search"
-                onClick={() => setSearchOpen(false)}
-              >
-                <X size={18} />
-              </button>
-            </div>
-          ) : null}
-        </header>
-
-        <Dialog.Portal>
-          <Dialog.Overlay className={styles.menuSplash} />
-          <Dialog.Content
-            className={styles.menuOverlay}
-            aria-describedby={undefined}
-            onCloseAutoFocus={(event) => {
-              const action = afterMenuClose.current;
-              afterMenuClose.current = null;
-              if (action) {
-                event.preventDefault();
-                action();
-              }
-            }}
-          >
-            <Dialog.Title className={styles.menuAccessibleTitle}>
-              PrimeStyleAI site menu
-            </Dialog.Title>
-            <button
-              type="button"
-              className={styles.menuClose}
-              aria-label="Close menu"
-              onClick={closeNavigation}
-            >
-              <X size={48} weight="thin" />
-            </button>
-
-            <Link
-              className={styles.menuWordmark}
-              href="/"
-              aria-label="PrimeStyleAI shop home"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Opens in a new tab"
-              prefetch={false}
-            >
-              <span
-                className={styles.menuLogo}
-                role="img"
-                aria-label="PrimeStyleAI — Shopping Network"
-              >
-                <span className={styles.menuLogoMark} aria-hidden="true">
-                  <Image
-                    src="/media/partner-landing/primestyleai-new-mark.png"
-                    alt=""
-                    width={1254}
-                    height={1254}
-                    sizes="(max-width: 760px) 120px, 230px"
-                    quality={90}
-                    loading="eager"
-                  />
-                </span>
-                <span className={styles.menuLogoText} aria-hidden="true">
-                  <span className={styles.menuLogoName}>PrimeStyleAI</span>
-                  <span className={styles.menuLogoTagline}>
-                    Shopping Network
-                  </span>
-                </span>
-              </span>
-            </Link>
-
-            <div className={styles.menuSearchUtility}>
-              <button
-                type="button"
-                onClick={() => closeMenuThen(() => setSearchOpen(true))}
-              >
-                Search
-              </button>
-            </div>
-
-            <nav
-              className={styles.menuUtilityLinks}
-              aria-label="Shop utilities"
-            >
-              <button
-                type="button"
-                onClick={() => closeMenuThen(() => setCartOpen(true))}
-              >
-                Saved look <span>[ {bagCount} ]</span>
-              </button>
-              <Link
-                href="/customer/login"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Opens in a new tab"
-                prefetch={false}
-              >
-                Log in
-              </Link>
-              <a href="mailto:support@primestyleai.com">Help</a>
-            </nav>
-
-            <ShopMenuNavigation />
-          </Dialog.Content>
-        </Dialog.Portal>
+        <GlobalShopHeader
+          bagCount={bagCount}
+          onOpenBag={() => setCartOpen(true)}
+          searchTerm={searchTerm}
+          onSearchTermChange={setSearchTerm}
+        />
 
         <section className={styles.hero} aria-labelledby="shop-hero-title">
           <div
@@ -353,7 +155,9 @@ export function GlobalShopExperience() {
             </div>
           </div>
           <div className={styles.heroHeadline}>
-            <p>PrimeStyleAI Global Shopping Network · One network, every style</p>
+            <p>
+              PrimeStyleAI Global Shopping Network · One network, every style
+            </p>
             <h1 id="shop-hero-title">FEEL THE VIBES</h1>
           </div>
           <div className={styles.heroModelBreakout} aria-hidden="true">
@@ -741,7 +545,8 @@ export function GlobalShopExperience() {
               <br />
               <i>
                 PERSONAL
-                <br />EDIT.
+                <br />
+                EDIT.
               </i>
             </h2>
           </div>
@@ -802,6 +607,6 @@ export function GlobalShopExperience() {
           <InfluencerFooter />
         </div>
       </main>
-    </Dialog.Root>
+    </>
   );
 }

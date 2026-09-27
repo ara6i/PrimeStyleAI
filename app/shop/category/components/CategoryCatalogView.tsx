@@ -1,4 +1,5 @@
 import { ArrowsDownUp } from "@phosphor-icons/react";
+import { GlobalShopHeader } from "@/app/shop/components/GlobalShopHeader";
 import type { useCategoryCatalog } from "../hooks/useCategoryCatalog";
 import type {
   CategoryCatalog,
@@ -7,7 +8,6 @@ import type {
 import { CategoryFilterSidebar } from "./CategoryFilterSidebar";
 import { CategoryHero } from "./CategoryHero";
 import { CategoryProductGrid } from "./CategoryProductGrid";
-import { CategoryShopHeader } from "./CategoryShopHeader";
 import { CategoryTicker } from "./CategoryTicker";
 import styles from "./categoryCatalog.module.css";
 
@@ -31,14 +31,11 @@ export function CategoryCatalogView({
   return (
     <div className={styles.page}>
       <div className={styles.canvas}>
-        <CategoryShopHeader
-          categoryId={catalog.id}
+        <GlobalShopHeader
           bagCount={state.bagCount}
           onOpenBag={state.openBag}
-          searchQuery={state.searchQuery}
-          menuOpen={state.menuOpen}
-          onSearchChange={state.setSearchQuery}
-          onMenuToggle={() => state.setMenuOpen((open) => !open)}
+          searchTerm={state.searchQuery}
+          onSearchTermChange={state.setSearchQuery}
         />
         <main>
           <CategoryHero catalog={catalog} onShopEdit={scrollToProducts} />

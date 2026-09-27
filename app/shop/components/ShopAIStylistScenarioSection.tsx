@@ -49,6 +49,8 @@ const MEN_STYLIST_PREVIEW_IMAGES: string[] = [
   "/media/global-shop/ai-stylist-men-v2/preview/look-04-ivory-blazer.webp",
   "/media/global-shop/ai-stylist-men-v2/preview/look-05-indigo-denim.webp",
 ];
+const MEN_STYLIST_PREVIEW_SCALES = [1.18, 1.18, 1.18, 1.18, 1.18] as const;
+const MEN_STYLIST_RESULT_SCALES = [1.07, 1.07, 1.07, 1.07, 1.07] as const;
 
 const SHOP_PLATFORM_TUNING = {
   centerBrightness: 103,
@@ -120,7 +122,9 @@ export function getScenarioLooks(
     const weddingLooks = getWeddingRoleLooks(gender, weddingRole);
     const mainWeddingLook = weddingLooks[0];
     if (!mainWeddingLook) {
-      throw new Error(`Wedding scenario ${gender}/${weddingRole} has no lead look.`);
+      throw new Error(
+        `Wedding scenario ${gender}/${weddingRole} has no lead look.`,
+      );
     }
     const budgetOffset = BUDGETS.indexOf(budget);
     const orderedWeddingLooks = ["bride", "groom"].includes(weddingRole)
@@ -159,9 +163,7 @@ export function getScenarioLooks(
   const occasionIndex = SOURCE_OCCASIONS.indexOf(occasion);
   const lowerOccasion = SOURCE_OCCASIONS[Math.max(0, occasionIndex - 1)];
   const higherOccasion =
-    SOURCE_OCCASIONS[
-      Math.min(SOURCE_OCCASIONS.length - 1, occasionIndex + 1)
-    ];
+    SOURCE_OCCASIONS[Math.min(SOURCE_OCCASIONS.length - 1, occasionIndex + 1)];
   const lowerMatches = sourceLooks.filter(
     (look) => look.occasion === lowerOccasion && look.season === season,
   );
@@ -222,8 +224,12 @@ export function ShopAIStylistScenarioSection() {
   const { weather: shopWeather, isLoading: isWeatherLoading } = useWeather({
     locationSource: "ip",
   });
-  const [gender, setGender] = useState<ShopStylistGender>(INITIAL_SCENARIO.gender);
-  const [occasion, setOccasion] = useState<OccasionId>(INITIAL_SCENARIO.occasion);
+  const [gender, setGender] = useState<ShopStylistGender>(
+    INITIAL_SCENARIO.gender,
+  );
+  const [occasion, setOccasion] = useState<OccasionId>(
+    INITIAL_SCENARIO.occasion,
+  );
   const [season, setSeason] = useState<Season>(INITIAL_SCENARIO.season);
   const [budget, setBudget] = useState<Budget>(INITIAL_SCENARIO.budget);
   const [weddingRole, setWeddingRole] = useState<ShopWeddingRole>(
@@ -248,7 +254,8 @@ export function ShopAIStylistScenarioSection() {
   );
 
   const activeOccasion =
-    OCCASIONS.find((item) => item.id === appliedScenario.occasion) ?? OCCASIONS[0];
+    OCCASIONS.find((item) => item.id === appliedScenario.occasion) ??
+    OCCASIONS[0];
   const activeGender =
     GENDERS.find((item) => item.id === appliedScenario.gender) ?? GENDERS[0];
   const isWedding = occasion === "wedding";
@@ -267,6 +274,13 @@ export function ShopAIStylistScenarioSection() {
     : weddingStageComposition
       ? [...weddingStageComposition.images]
       : scenarioLooks.map((look) => look.image);
+  const stageImageScales =
+    weddingStageComposition?.imageScales ??
+    (showMenWizardPreview
+      ? MEN_STYLIST_PREVIEW_SCALES
+      : appliedScenario.gender === "men"
+        ? MEN_STYLIST_RESULT_SCALES
+        : undefined);
   const scenarioSummary = isAppliedWedding
     ? `${activeGender.label} · Wedding · ${ROLE_LABELS[appliedScenario.weddingRole]} · ${appliedScenario.budget}`
     : `${activeGender.label} · ${activeOccasion.label} · ${appliedScenario.season} · ${appliedScenario.budget}`;
@@ -302,9 +316,9 @@ export function ShopAIStylistScenarioSection() {
           <em>Five complete looks.</em>
         </h2>
         <span>
-          Your next look starts with the moment. Choose who we&apos;re styling, set
-          the occasion, and let your personal stylist turn it into five complete
-          outfits.
+          Your next look starts with the moment. Choose who we&apos;re styling,
+          set the occasion, and let your personal stylist turn it into five
+          complete outfits.
         </span>
       </div>
 
@@ -339,13 +353,13 @@ export function ShopAIStylistScenarioSection() {
               </div>
               <div className={styles.startCopy}>
                 <p>
-                  Tell us who you&apos;re styling and where you&apos;re headed. We&apos;ll
-                  create five complete looks made for your moment.
+                  Tell us who you&apos;re styling and where you&apos;re headed.
+                  We&apos;ll create five complete looks made for your moment.
                 </p>
                 <p>
                   Dressing for a wedding? Choose your role—Bride, Bridesmaid,
-                  Mother of the Bride, Groom, Usher, or Mother of the Groom—and let
-                  your personal stylist take it from there.
+                  Mother of the Bride, Groom, Usher, or Mother of the Groom—and
+                  let your personal stylist take it from there.
                 </p>
               </div>
               <button
@@ -599,24 +613,28 @@ export function ShopAIStylistScenarioSection() {
         <div className={styles.resultStage}>
           <div className={styles.realTurntable}>
             <StylistPlatform
-              key={showMenWizardPreview
-                ? "men-five-look-preview"
-                : `${appliedScenario.gender}-${appliedScenario.occasion}-${isAppliedWedding ? appliedScenario.weddingRole : appliedScenario.season}-${appliedScenario.budget}`}
+              key={
+                showMenWizardPreview
+                  ? "men-five-look-preview"
+                  : `${appliedScenario.gender}-${appliedScenario.occasion}-${isAppliedWedding ? appliedScenario.weddingRole : appliedScenario.season}-${appliedScenario.budget}`
+              }
               outfits={[]}
               modelImageUrl={null}
               slotImages={stageImages}
               slotImageObjectPositions={
                 weddingStageComposition?.imageObjectPositions
               }
-              slotImageScales={weddingStageComposition?.imageScales}
+              slotImageScales={stageImageScales}
               fillContainer
               modelDepth={1.25}
-              showRotationGuide={!showMenWizardPreview && !weddingStageComposition}
+              showRotationGuide={
+                !showMenWizardPreview && !weddingStageComposition
+              }
               imageAlt={(index) =>
                 showMenWizardPreview
                   ? `The same menswear model in preview outfit ${index + 1}`
                   : weddingStageComposition
-                    ? weddingStageComposition.alt[index] ?? ""
+                    ? (weddingStageComposition.alt[index] ?? "")
                     : `${isAppliedWedding ? ROLE_LABELS[appliedScenario.weddingRole] : "AI Stylist model"} wearing ${scenarioLooks[index].outfit}`
               }
               selectedIndex={

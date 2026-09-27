@@ -60,21 +60,22 @@ it("speaks to shoppers instead of explaining internal flow rules", () => {
 });
 
 it("maps 80 unique images for women and 80 for men into five-look scenarios", () => {
-  [
-    SHOP_AI_STYLIST_SCENARIO_LOOKS,
-    SHOP_AI_STYLIST_MENS_SCENARIO_LOOKS,
-  ].forEach((looks) => {
-    expect(looks).toHaveLength(80);
-    expect(new Set(looks.map((look) => look.image)).size).toBe(80);
+  [SHOP_AI_STYLIST_SCENARIO_LOOKS, SHOP_AI_STYLIST_MENS_SCENARIO_LOOKS].forEach(
+    (looks) => {
+      expect(looks).toHaveLength(80);
+      expect(new Set(looks.map((look) => look.image)).size).toBe(80);
 
-    const scenarioCounts = new Map<string, number>();
-    looks.forEach((look) => {
-      const key = `${look.occasion}/${look.season}`;
-      scenarioCounts.set(key, (scenarioCounts.get(key) ?? 0) + 1);
-    });
-    expect(scenarioCounts.size).toBe(16);
-    expect([...scenarioCounts.values()].every((count) => count === 5)).toBe(true);
-  });
+      const scenarioCounts = new Map<string, number>();
+      looks.forEach((look) => {
+        const key = `${look.occasion}/${look.season}`;
+        scenarioCounts.set(key, (scenarioCounts.get(key) ?? 0) + 1);
+      });
+      expect(scenarioCounts.size).toBe(16);
+      expect([...scenarioCounts.values()].every((count) => count === 5)).toBe(
+        true,
+      );
+    },
+  );
 });
 
 it("counts Wedding once per role instead of multiplying it by four seasons", () => {
@@ -190,7 +191,9 @@ it("places the five initial results on the real interactive disc", async () => {
   );
   const models = section.getAllByAltText(/AI Stylist model wearing/i);
   expect(models).toHaveLength(5);
-  expect(new Set(models.map((model) => model.getAttribute("src"))).size).toBe(5);
+  expect(new Set(models.map((model) => model.getAttribute("src"))).size).toBe(
+    5,
+  );
 
   const disc = section.getByRole("slider", {
     name: /rotate the MyAIFitting styling platform/i,
@@ -210,7 +213,9 @@ it("places the five initial results on the real interactive disc", async () => {
       .value,
   ).toBe("89");
 
-  await user.click(section.getByRole("button", { name: "Rotate platform right" }));
+  await user.click(
+    section.getByRole("button", { name: "Rotate platform right" }),
+  );
   expect(disc.getAttribute("aria-valuenow")).toBe("2");
 });
 
@@ -222,10 +227,18 @@ it("supports the full men's occasion, season, and budget flow", async () => {
   expect(screen.getByText("Step 1 of 4")).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Event" })).toBeNull();
   await user.click(screen.getByRole("button", { name: "Men" }));
-  const previewSources = screen
-    .getAllByAltText(/same menswear model in preview outfit/i)
-    .map((model) => model.getAttribute("src"));
+  const previewModels = screen.getAllByAltText(
+    /same menswear model in preview outfit/i,
+  );
+  const previewSources = previewModels.map((model) =>
+    model.getAttribute("src"),
+  );
   expect(previewSources).toHaveLength(5);
+  expect(
+    previewModels.every((model) =>
+      model.parentElement?.style.transform.includes("scale(1.18)"),
+    ),
+  ).toBe(true);
   expect(new Set(previewSources).size).toBe(5);
   expect(
     previewSources.every((source) =>
@@ -244,10 +257,14 @@ it("supports the full men's occasion, season, and budget flow", async () => {
   await user.click(screen.getByRole("button", { name: "Create 5 outfits" }));
 
   expect(screen.getByText("Men · Event · Winter · $300+")).toBeTruthy();
-  const resultSources = screen
-    .getAllByAltText(/AI Stylist model wearing/i)
-    .map((model) => model.getAttribute("src"));
+  const resultModels = screen.getAllByAltText(/AI Stylist model wearing/i);
+  const resultSources = resultModels.map((model) => model.getAttribute("src"));
   expect(resultSources).toHaveLength(5);
+  expect(
+    resultModels.every((model) =>
+      model.parentElement?.style.transform.includes("scale(1.07)"),
+    ),
+  ).toBe(true);
   expect(
     resultSources.every((source) =>
       source?.includes("ai-stylist-scenarios-men-v1/event-winter"),
@@ -268,10 +285,14 @@ it("shows women's Wedding roles on their own step and skips Season", async () =>
   expect(screen.getByText("Step 3 of 4")).toBeTruthy();
   expect(screen.getByRole("button", { name: "Bride" })).toBeTruthy();
   expect(screen.getByRole("button", { name: "Bridesmaid" })).toBeTruthy();
-  expect(screen.getByRole("button", { name: "Mother of the Bride" })).toBeTruthy();
+  expect(
+    screen.getByRole("button", { name: "Mother of the Bride" }),
+  ).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Groom" })).toBeNull();
   expect(screen.queryByRole("button", { name: "Spring" })).toBeNull();
-  expect(screen.getByText("No season or garment type needed for Wedding.")).toBeTruthy();
+  expect(
+    screen.getByText("No season or garment type needed for Wedding."),
+  ).toBeTruthy();
 
   await user.click(screen.getByRole("button", { name: "Bridesmaid" }));
   await user.click(screen.getByRole("button", { name: "Continue" }));
@@ -289,7 +310,9 @@ it("shows women's Wedding roles on their own step and skips Season", async () =>
     ),
   ).toBeTruthy();
   expect(screen.getAllByAltText(/Bride centered/i)).toHaveLength(1);
-  expect(screen.getAllByAltText(/Bridesmaid \d in the matching/i)).toHaveLength(4);
+  expect(screen.getAllByAltText(/Bridesmaid \d in the matching/i)).toHaveLength(
+    4,
+  );
 });
 
 it("switches Wedding to Groom and Usher for men", async () => {
@@ -304,7 +327,9 @@ it("switches Wedding to Groom and Usher for men", async () => {
   await user.click(screen.getByRole("button", { name: "Continue" }));
   expect(screen.getByRole("button", { name: "Groom" })).toBeTruthy();
   expect(screen.getByRole("button", { name: "Usher" })).toBeTruthy();
-  expect(screen.getByRole("button", { name: "Mother of the Groom" })).toBeTruthy();
+  expect(
+    screen.getByRole("button", { name: "Mother of the Groom" }),
+  ).toBeTruthy();
   await user.click(screen.getByRole("button", { name: "Usher" }));
   await user.click(screen.getByRole("button", { name: "Continue" }));
   await user.click(screen.getByRole("button", { name: "Build wedding party" }));

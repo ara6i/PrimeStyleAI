@@ -11,6 +11,7 @@ import userEvent from "@testing-library/user-event";
 import type { ComponentProps } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { GlobalShopExperience } from "./GlobalShopExperience";
+import { shouldShowShopMenu } from "./GlobalShopHeader";
 import { shopMenuSections } from "./shopMenu.data";
 import { dailyEditProducts } from "../data/dailyEdit.data";
 
@@ -78,6 +79,13 @@ vi.mock("../bag/useShopBag", () => ({
 beforeEach(() => vi.clearAllMocks());
 afterEach(() => cleanup());
 
+it("hides the menu on production while keeping it on test and local hosts", () => {
+  expect(shouldShowShopMenu("primestyleai.com")).toBe(false);
+  expect(shouldShowShopMenu("www.primestyleai.com")).toBe(false);
+  expect(shouldShowShopMenu("test-fe-9a7k.primestyleai.com")).toBe(true);
+  expect(shouldShowShopMenu("127.0.0.1")).toBe(true);
+});
+
 it("places AI Stylist second and the SDK third without reordering later sections", () => {
   const { container } = render(<GlobalShopExperience />);
   const main = container.querySelector("main");
@@ -112,9 +120,7 @@ it("links every partner destination in the header to its landing page", () => {
   expect(navigation.queryByRole("button", { name: "AI Stylist" })).toBeNull();
   expect(navigation.queryByRole("button", { name: "Brands" })).toBeNull();
   expect(
-    navigation
-      .getByRole("link", { name: "For Creators" })
-      .getAttribute("href"),
+    navigation.getByRole("link", { name: "For Creators" }).getAttribute("href"),
   ).toBe("/creators");
   expect(
     navigation
@@ -195,7 +201,9 @@ describe("New arrivals product links", () => {
     ).toBeTruthy();
     expect(actions.add).not.toHaveBeenCalled();
     await user.click(
-      arrivals.getByRole("button", { name: `Save ${product.name} to your look` }),
+      arrivals.getByRole("button", {
+        name: `Save ${product.name} to your look`,
+      }),
     );
     expect(actions.add).toHaveBeenCalledWith(
       expect.objectContaining({ productId: product.id, href: product.href }),
@@ -235,7 +243,9 @@ it("presents the focused merchant network hero and the complete creator hero", (
       name: /Have a store\?/,
     }),
   ).toBeTruthy();
-  expect(merchant.getByText(/Connect your catalog to PrimeStyleAI/)).toBeTruthy();
+  expect(
+    merchant.getByText(/Connect your catalog to PrimeStyleAI/),
+  ).toBeTruthy();
   expect(merchant.getByText(/you remain the seller of record/)).toBeTruthy();
   expect(
     merchant.getByRole("link", { name: "Learn more" }).getAttribute("href"),
@@ -546,9 +556,7 @@ describe("Shop branded menu", () => {
     }
     expect(menu.queryByRole("link", { name: "Merchant dashboard" })).toBeNull();
     expect(menu.queryByRole("link", { name: "Supplier dashboard" })).toBeNull();
-    expect(
-      menu.queryByRole("link", { name: "Creator dashboard" }),
-    ).toBeNull();
+    expect(menu.queryByRole("link", { name: "Creator dashboard" })).toBeNull();
     expect(
       menu.queryByRole("link", { name: "PDP Studio dashboard" }),
     ).toBeNull();
