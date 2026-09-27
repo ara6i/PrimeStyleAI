@@ -132,9 +132,9 @@ for (const htmlFile of htmlFiles) {
 }
 
 const creatorHome = fs.readFileSync(path.join(releaseRoot, "index.html"), "utf8");
-const creatorHomeLinks = creatorHome.match(/href="\/influencers"/g) || [];
+const creatorHomeLinks = creatorHome.match(/href="\/creators"/g) || [];
 if (creatorHomeLinks.length < 2) {
-  throw new Error("Creator header and footer logos must both point to /influencers.");
+  throw new Error("Creator landing must expose its canonical /creators links.");
 }
 NODE
 
