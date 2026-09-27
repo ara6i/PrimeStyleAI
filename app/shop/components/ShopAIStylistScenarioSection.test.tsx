@@ -219,6 +219,19 @@ it("places the five initial results on the real interactive disc", async () => {
   expect(disc.getAttribute("aria-valuenow")).toBe("2");
 });
 
+it("dismisses the rotate guide after any scenario selection", async () => {
+  const user = userEvent.setup();
+  render(<ShopAIStylistScenarioSection />);
+
+  expect(screen.getByText("Rotate the disk!")).toBeTruthy();
+
+  await user.click(screen.getByRole("button", { name: "Start Styling" }));
+  await user.click(screen.getByRole("button", { name: "Women" }));
+
+  expect(screen.queryByText("Rotate the disk!")).toBeNull();
+  expect(screen.queryByText("Grab your mouse.")).toBeNull();
+});
+
 it("supports the full men's occasion, season, and budget flow", async () => {
   const user = userEvent.setup();
   render(<ShopAIStylistScenarioSection />);

@@ -240,6 +240,7 @@ export function ShopAIStylistScenarioSection() {
   const [activeLook, setActiveLook] = useState(0);
   const [mode, setMode] = useState<ExperienceMode>("intro");
   const [step, setStep] = useState(0);
+  const [showRotationGuide, setShowRotationGuide] = useState(true);
 
   const scenarioLooks = useMemo(
     () =>
@@ -291,6 +292,7 @@ export function ShopAIStylistScenarioSection() {
       : "Weather unavailable";
 
   function chooseGender(nextGender: ShopStylistGender) {
+    setShowRotationGuide(false);
     setGender(nextGender);
     setWeddingRole(nextGender === "women" ? "bride" : "groom");
     setActiveLook(0);
@@ -414,6 +416,7 @@ export function ShopAIStylistScenarioSection() {
                         type="button"
                         aria-pressed={occasion === item.id}
                         onClick={() => {
+                          setShowRotationGuide(false);
                           setOccasion(item.id);
                           setActiveLook(0);
                         }}
@@ -437,6 +440,7 @@ export function ShopAIStylistScenarioSection() {
                         type="button"
                         aria-pressed={season === item}
                         onClick={() => {
+                          setShowRotationGuide(false);
                           setSeason(item);
                           setActiveLook(0);
                         }}
@@ -461,6 +465,7 @@ export function ShopAIStylistScenarioSection() {
                           type="button"
                           aria-pressed={weddingRole === item.id}
                           onClick={() => {
+                            setShowRotationGuide(false);
                             setWeddingRole(item.id);
                             setActiveLook(0);
                           }}
@@ -486,6 +491,7 @@ export function ShopAIStylistScenarioSection() {
                         type="button"
                         aria-pressed={budget === item}
                         onClick={() => {
+                          setShowRotationGuide(false);
                           setBudget(item);
                           setActiveLook(0);
                         }}
@@ -628,7 +634,9 @@ export function ShopAIStylistScenarioSection() {
               fillContainer
               modelDepth={1.25}
               showRotationGuide={
-                !showMenWizardPreview && !weddingStageComposition
+                showRotationGuide &&
+                !showMenWizardPreview &&
+                !weddingStageComposition
               }
               imageAlt={(index) =>
                 showMenWizardPreview
