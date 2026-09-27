@@ -685,70 +685,281 @@
 
 @media (max-width: 800px) {
   .section {
-    padding: 68px 14px;
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px 14px 42px;
   }
 
   .intro {
+    order: 2;
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+    padding: 0 4px;
   }
 
   .intro > p {
-    margin-bottom: -4px;
+    margin: 0;
+    font-size: 8px;
   }
 
   .intro h2 {
-    font-size: clamp(48px, 15vw, 72px);
+    font-size: clamp(38px, 11vw, 48px);
+    line-height: 0.9;
+  }
+
+  .intro > span {
+    max-width: 36ch;
+    padding: 0;
+    font-size: 11px;
+    line-height: 1.4;
   }
 
   .experience {
-    grid-template-areas:
-      "controls"
-      "stage";
-    grid-template-columns: 1fr;
-    gap: 20px;
-    height: auto;
-    min-height: 0;
+    display: contents;
   }
 
   .controls {
+    order: 3;
     min-height: 0;
-    padding: 28px 20px 30px;
-    border-radius: 24px;
+    height: auto;
+    padding: 14px 16px 16px;
+    border-radius: 20px;
   }
 
   .resultStage {
-    min-height: 720px;
-    padding: 26px 14px 20px;
-    border-radius: 24px;
+    order: 1;
+    width: 100%;
+    height: clamp(420px, 56svh, 520px);
+    min-height: 420px;
+    padding: 8px;
+    border-radius: 20px;
   }
 
   .startView,
   .wizardView,
   .resultsView {
     min-height: 0;
+    flex: none;
   }
 
   .realTurntable {
-    min-height: 670px;
+    min-height: 0;
+    height: 100%;
     margin: 0;
     border-radius: 17px;
+  }
+
+  .startGreeting {
+    font-size: 24px;
+  }
+
+  .weatherPill {
+    margin-top: 10px;
+  }
+
+  .weatherPill > div,
+  .weatherStatus {
+    min-height: 42px;
+    padding: 8px 12px;
+  }
+
+  .weatherPill span {
+    font-size: 13px;
+  }
+
+  .weatherPill svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .startCopy {
+    gap: 6px;
+    margin: 12px 0;
+  }
+
+  .startCopy p {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .generateButton.startButton {
+    min-height: 44px;
+    font-size: 12px;
+  }
+
+  .controlsHeader {
+    margin-bottom: 8px;
+  }
+
+  .progress {
+    margin-bottom: 10px;
+  }
+
+  .controls legend {
+    max-width: none;
+    margin-bottom: 10px;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .controls legend span {
+    padding-top: 3px;
+    font-size: 8px;
+  }
+
+  .genderGrid button,
+  .occasionGrid button,
+  .roleGrid button,
+  .optionGrid button {
+    min-height: 40px;
+  }
+
+  .wizardActions {
+    margin-top: 10px;
+  }
+
+  .resultsView {
+    padding-top: 0;
+  }
+
+  .readyBadge {
+    margin-bottom: 6px;
+    font-size: 8px;
+  }
+
+  .resultsView h3 {
+    font-size: 22px;
+  }
+
+  .discLooks,
+  .partyComposition {
+    margin-top: 8px;
+  }
+
+  .discLooks button {
+    min-height: 54px;
+  }
+
+  .discLooks > div {
+    grid-template-columns: repeat(5, minmax(92px, 1fr));
+    margin-right: -16px;
+    padding-right: 16px;
+    padding-bottom: 4px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .discLooks button {
+    scroll-snap-align: start;
+  }
+
+  .discLooks button strong {
+    display: -webkit-box;
+    overflow: hidden;
+    line-height: 1.1;
+    text-overflow: clip;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .resultsView .locationPill {
+    margin: 8px 0;
+    padding: 8px 11px;
+  }
+
+  .resultsView > .generateButton {
+    min-height: 42px;
   }
 }
 
 @media (max-width: 430px) {
+  .section {
+    gap: 12px;
+    min-height: 0;
+    padding: 18px 14px 34px;
+  }
+
+  .intro {
+    gap: 5px;
+  }
+
+  .intro h2 {
+    font-size: 34px;
+  }
+
+  .intro > span {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
   .controlsHeader {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    flex-direction: row;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .controlsHeader > span,
+  .controlsHeader small {
+    font-size: 8px;
+  }
+
+  .controls {
+    padding: 10px 14px 12px;
   }
 
   .resultStage {
-    min-height: 660px;
+    height: 400px;
+    min-height: 400px;
   }
 
   .realTurntable {
-    min-height: 610px;
+    min-height: 0;
+  }
+
+  .weatherPill {
+    margin-top: 6px;
+  }
+
+  .weatherPill > div,
+  .weatherStatus {
+    min-height: 38px;
+    padding: 6px 10px;
+  }
+
+  .startCopy {
+    margin: 8px 0;
+  }
+
+  .startCopy p {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .generateButton.startButton {
+    min-height: 42px;
+  }
+
+  .resultsView h3 {
+    font-size: 21px;
+  }
+
+  .resultsView > p {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  .resultsView .budgetMatch,
+  .resultsView .sourceNote,
+  .resultsView .locationPill {
+    display: none;
   }
 }
 

@@ -189,8 +189,7 @@ export function GlobalShopExperience() {
             <span>New season · Curated across the network</span>
             <h2>Fashion, styled around you.</h2>
             <p>
-              Discover new pieces, build a look with your AI stylist, and find
-              the size made for you.
+              Shop the edit, style the look, and find your size.
             </p>
             <div>
               <button type="button" onClick={() => openCategoryPage("Women")}>
@@ -229,8 +228,7 @@ export function GlobalShopExperience() {
               <h2 id="arrival-title">New arrivals, made personal.</h2>
             </div>
             <p>
-              New pieces selected around your style and ready for fit, try-on,
-              and complete-look discovery.
+              Fresh pieces, ready for fit, try-on, and complete looks.
             </p>
           </div>
 
@@ -375,9 +373,7 @@ export function GlobalShopExperience() {
                 <h2 id="stylist-title">Simply</h2>
                 <b>/FASHION</b>
                 <p>
-                  Step into a world where fashion speaks your language. Build a
-                  complete look around your taste, fit, and the products you
-                  love.
+                  Five complete looks, styled around your taste and fit.
                 </p>
                 <button
                   type="button"
@@ -441,10 +437,9 @@ export function GlobalShopExperience() {
               </figure>
               <div className={styles.stylistEditorialCopy}>
                 <span>02 · YOUR AI EDIT</span>
-                <h3>We build complete looks around your style preferences.</h3>
+                <h3>Five looks, styled for you.</h3>
                 <p>
-                  Your stylist reads color, silhouette, occasion, and fit—then
-                  shapes every piece into one coordinated look.
+                  Color, fit, and occasion—pulled into one complete look.
                 </p>
                 <button
                   type="button"

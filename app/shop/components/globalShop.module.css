@@ -703,7 +703,7 @@
 .heroModelBreakout {
   position: absolute;
   z-index: 6;
-  top: 84px;
+  bottom: 0;
   left: 50%;
   width: min(40vw, 600px);
   transform: translateX(-50%);
@@ -2292,26 +2292,33 @@
   .header {
     top: max(10px, env(safe-area-inset-top));
     width: calc(100% - 24px);
-    min-height: 64px;
+    min-height: 56px;
     margin-top: 10px;
-    padding: 6px 7px 6px 10px;
+    padding: 5px 6px 5px 8px;
   }
   .brand img {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
+  }
+  .brand {
+    gap: 7px;
+  }
+  .brand strong {
+    font-size: 12px;
   }
   .brand small {
     display: none;
   }
   .headerActions > button {
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
   }
   .headerDemoLink {
-    min-height: 44px;
-    margin-right: 3px;
-    padding: 0 11px;
-    font-size: 8px;
+    min-height: 38px;
+    gap: 5px;
+    margin-right: 2px;
+    padding: 0 12px;
+    font-size: 11px;
   }
   .searchBar {
     right: 0;
@@ -2448,20 +2455,24 @@
   }
   .heroModelBreakout {
     z-index: 6;
-    top: 88px;
-    left: 58%;
-    width: min(124vw, 500px);
+    top: auto;
+    bottom: 205px;
+    left: 52%;
+    width: min(104vw, 420px);
   }
   .heroMedia {
     min-height: 650px;
   }
   .heroCopy {
+    position: relative;
     z-index: 7;
     top: auto;
-    right: 14px;
-    bottom: 16px;
-    left: 14px;
+    right: auto;
+    bottom: auto;
+    left: auto;
     width: auto;
+    min-height: 205px;
+    margin: 0 14px 16px;
     padding: 18px;
     border-radius: 18px;
     background: rgba(255, 254, 251, 0.93);
@@ -2483,16 +2494,7 @@
     min-height: 44px;
   }
   .heroSpot {
-    z-index: 8;
-    top: auto;
-    right: 14px;
-    bottom: 284px;
-    left: auto;
-    width: 126px;
-    min-height: 82px;
-    border-radius: 14px;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    display: none;
   }
 
   .arrivals,
@@ -2509,7 +2511,7 @@
   }
   .sectionHeading h2,
   .marketTitle h2 {
-    font-size: 48px;
+    font-size: 42px;
   }
   .sectionHeading > p {
     max-width: 43ch;
@@ -2564,62 +2566,84 @@
     display: none;
   }
   .stylistHero {
-    min-height: 700px;
+    display: grid;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
   }
   .stylistHeroCopy {
-    top: 38px;
-    left: 18px;
-    width: 74%;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    padding: 34px 18px 22px;
   }
   .stylistHeroCopy h2 {
-    font-size: 82px;
+    margin-top: 22px;
+    font-size: 72px;
   }
   .stylistHeroCopy p {
-    max-width: 28ch;
-    margin-top: 34px;
+    max-width: 32ch;
+    margin: 22px 0 18px;
   }
   .stylistHeroMetric {
-    top: 42px;
-    right: 17px;
+    top: 38px;
+    right: 18px;
   }
   .stylistHeroMetric strong {
     font-size: 30px;
   }
   .stylistHeroModel {
-    top: 176px;
-    bottom: 0;
-    left: -6%;
-    width: 112%;
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    height: min(135vw, 540px);
   }
   .stylistHeroWord {
-    right: 18px;
-    bottom: 53px;
-    font-size: 59px;
+    display: none;
   }
   .stylistBagDots {
-    bottom: 22px;
+    bottom: 18px;
+    left: 50%;
   }
   .stylistEditorial {
-    min-height: 570px;
-    padding: 94px 32px;
+    min-height: 0;
+    grid-template-areas:
+      "copy copy"
+      "left right";
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 12px;
+    padding: 52px 18px 28px;
+  }
+  .stylistEditorialCopy {
+    grid-area: copy;
+    max-width: none;
+    text-align: left;
   }
   .stylistEditorialCopy h3 {
-    font-size: 54px;
+    margin: 14px 0 16px;
+    font-size: 46px;
   }
   .stylistEditorialLeft,
   .stylistEditorialRight {
-    width: 112px;
-    height: 154px;
-    border-width: 7px;
-    opacity: 0.9;
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    height: 230px;
+    border-width: 6px;
+    opacity: 1;
   }
   .stylistEditorialLeft {
-    top: 34px;
-    left: -12px;
+    grid-area: left;
+    transform: rotate(-3deg);
   }
   .stylistEditorialRight {
-    right: -10px;
-    bottom: 28px;
+    grid-area: right;
+    transform: rotate(3deg);
   }
   .stylistRunway {
     padding: 56px 18px 64px;
@@ -2827,10 +2851,10 @@
   }
   .headerDemoLink {
     width: auto;
-    min-width: 96px;
-    padding: 0 9px;
+    min-width: 104px;
+    padding: 0 10px;
     color: #fff;
-    font-size: 7px;
+    font-size: 11px;
   }
   .headerDemoLink svg {
     color: #fff;
@@ -2839,8 +2863,8 @@
     min-height: 620px;
   }
   .heroModelBreakout {
-    left: 60%;
-    width: 470px;
+    left: 52%;
+    width: min(104vw, 420px);
   }
   .productImage,
   .marketCard > div {

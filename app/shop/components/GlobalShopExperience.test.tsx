@@ -244,9 +244,9 @@ it("presents the focused merchant network hero and the complete creator hero", (
     }),
   ).toBeTruthy();
   expect(
-    merchant.getByText(/Connect your catalog to PrimeStyleAI/),
+    merchant.getByText("Connect your catalog."),
   ).toBeTruthy();
-  expect(merchant.getByText(/you remain the seller of record/)).toBeTruthy();
+  expect(merchant.getByText(/Complete the Look/)).toBeTruthy();
   expect(
     merchant.getByRole("link", { name: "Learn more" }).getAttribute("href"),
   ).toBe("/merchants");
@@ -329,7 +329,7 @@ it("brings the interactive merchant SDK showcase into the Shop landing", () => {
   expect(sdkShowcase.queryByText(/live sdk/i)).toBeNull();
   expect(
     sdkShowcase.getByText(
-      /get your recommended size and see the Arc Jacket on you/i,
+      /Upload one photo\. See your size and try-on/i,
     ),
   ).toBeTruthy();
   expect(sdkShowcase.getByLabelText("Select Cobalt")).toBeTruthy();
@@ -352,7 +352,7 @@ it("presents one full supplier-focused network section", () => {
 
   expect(
     supplier.getByText(
-      /Share products with participating merchants and Creator-led campaigns through one connected supplier system/i,
+      /Reach merchants and Creators through one connected catalog/i,
     ),
   ).toBeTruthy();
   expect(

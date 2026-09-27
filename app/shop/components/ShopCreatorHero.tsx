@@ -40,8 +40,7 @@ export function ShopCreatorHero({
           <p className={styles.eyebrow}>For creators in the global shop</p>
           <p className={styles.promise}>Your influence should pay.</p>
           <p className={styles.body}>
-            Connect with merchants, build shoppable looks, and earn when your
-            audience buys with confidence.
+            Build shoppable looks. Earn when your audience buys.
           </p>
           <button
             className={styles.cta}

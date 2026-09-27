@@ -594,12 +594,12 @@
 @media (max-width: 720px) {
   .shell {
     width: min(100% - 28px, 680px);
-    padding: 58px 0 46px;
+    padding: 48px 0 54px;
   }
 
   .heroGrid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 22px;
   }
 
   .sideNote {
@@ -632,7 +632,7 @@
   .mainCopy h2 {
     max-width: 100%;
     text-align: left;
-    font-size: clamp(38px, 10vw, 54px);
+    font-size: clamp(34px, 9vw, 44px);
     letter-spacing: -0.045em;
     line-height: 0.94;
   }
@@ -649,7 +649,8 @@
   }
 
   .titleEnd {
-    margin-left: 2%;
+    margin-left: 0;
+    white-space: normal;
   }
 
   .titleArrowGroup {
@@ -692,9 +693,9 @@
     grid-template-columns: 1fr;
     grid-template-rows:
       clamp(500px, calc((100vw - 28px) * 1.7778), 700px)
-      270px
-      150px
-      150px;
+      clamp(420px, 118vw, 500px)
+      clamp(410px, 112vw, 460px)
+      clamp(410px, 112vw, 460px);
     gap: 8px;
     margin-top: 42px;
   }
@@ -714,7 +715,7 @@
   }
 
   .storePreview {
-    grid-template-rows: 38px minmax(0, 1fr) 68px;
+    grid-template-rows: 42px minmax(0, 1fr) 112px;
   }
 
   .storePreviewHeader {
@@ -757,11 +758,12 @@
   }
 
   .storePreviewCollections span {
-    right: 5px;
-    bottom: 5px;
-    left: 5px;
-    padding: 4px 6px;
-    font-size: 6px;
+    right: 7px;
+    bottom: 7px;
+    left: 7px;
+    padding: 7px 8px;
+    font-size: 10px;
+    line-height: 1.15;
   }
 
   .suppliersPlaceholder {
@@ -772,6 +774,12 @@
   .influencerPlaceholder {
     grid-column: 1 / -1;
     grid-row: 4;
+  }
+
+  .suppliersPlaceholder .slotImage,
+  .influencerPlaceholder .slotImage {
+    object-fit: contain;
+    object-position: center;
   }
 }
 

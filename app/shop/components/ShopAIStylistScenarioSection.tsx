@@ -315,12 +315,10 @@ export function ShopAIStylistScenarioSection() {
         <h2 id="ai-stylist-scenario-title">
           One you.
           <br />
-          <em>Five complete looks.</em>
+          <em>Five looks.</em>
         </h2>
         <span>
-          Your next look starts with the moment. Choose who we&apos;re styling,
-          set the occasion, and let your personal stylist turn it into five
-          complete outfits.
+          Pick the person and the moment. We&apos;ll style five complete looks.
         </span>
       </div>
 
@@ -355,13 +353,10 @@ export function ShopAIStylistScenarioSection() {
               </div>
               <div className={styles.startCopy}>
                 <p>
-                  Tell us who you&apos;re styling and where you&apos;re headed.
-                  We&apos;ll create five complete looks made for your moment.
+                  Choose who you&apos;re styling and the occasion.
                 </p>
                 <p>
-                  Dressing for a wedding? Choose your role—Bride, Bridesmaid,
-                  Mother of the Bride, Groom, Usher, or Mother of the Groom—and
-                  let your personal stylist take it from there.
+                  Wedding? Pick a role. We&apos;ll handle the rest.
                 </p>
               </div>
               <button

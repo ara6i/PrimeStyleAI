@@ -605,26 +605,26 @@ export function StylistPlatform({
           document.body,
         )}
 
-        <div className="absolute bottom-[7%] left-1/2 z-30 flex -translate-x-1/2 items-center gap-[0.417vw]">
+        <div className="absolute bottom-[7%] left-1/2 z-30 flex -translate-x-1/2 items-center gap-[clamp(8px,0.417vw,12px)]">
           <Button
             type="button"
             variant="icon"
             size="sm"
             aria-label={labels?.previous ?? "Previous outfit"}
-            className="flex h-[1.875vw] w-[1.875vw] items-center justify-center rounded-full bg-brand-blue hover:bg-brand-blue hover:brightness-95 active:brightness-90"
+            className="flex h-[clamp(36px,1.875vw,42px)] w-[clamp(36px,1.875vw,42px)] items-center justify-center rounded-full bg-brand-blue hover:bg-brand-blue hover:brightness-95 active:brightness-90"
             style={{ boxShadow: "2px 2px 8px rgba(0,0,0,0.25)" }}
             onClick={() => navigate("prev")}
           >
             <RotateLeftIcon
               size={16}
-              className="!h-[0.833vw] !w-[0.833vw]"
+              className="!h-[clamp(18px,0.833vw,20px)] !w-[clamp(18px,0.833vw,20px)]"
               color="white"
             />
           </Button>
-          <span className="text-[0.729vw] font-bold leading-[1.146vw] text-brand-blue">
+          <span className="text-[clamp(12px,0.729vw,15px)] font-bold leading-none text-brand-blue">
             {displayedIndex}
           </span>
-          <span className="text-[0.729vw] font-normal leading-[1.146vw] text-text-muted">
+          <span className="text-[clamp(12px,0.729vw,15px)] font-normal leading-none text-text-muted">
             of {displayedCount}
           </span>
           <Button
@@ -632,13 +632,13 @@ export function StylistPlatform({
             variant="icon"
             size="sm"
             aria-label={labels?.next ?? "Next outfit"}
-            className="flex h-[1.875vw] w-[1.875vw] items-center justify-center rounded-full bg-brand-blue hover:bg-brand-blue hover:brightness-95 active:brightness-90"
+            className="flex h-[clamp(36px,1.875vw,42px)] w-[clamp(36px,1.875vw,42px)] items-center justify-center rounded-full bg-brand-blue hover:bg-brand-blue hover:brightness-95 active:brightness-90"
             style={{ boxShadow: "2px 2px 8px rgba(0,0,0,0.25)" }}
             onClick={() => navigate("next")}
           >
             <RotateRightIcon
               size={16}
-              className="!h-[0.833vw] !w-[0.833vw]"
+              className="!h-[clamp(18px,0.833vw,20px)] !w-[clamp(18px,0.833vw,20px)]"
               color="white"
             />
           </Button>

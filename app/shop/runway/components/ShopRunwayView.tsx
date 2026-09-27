@@ -271,9 +271,7 @@ export function ShopRunwayView({
             <div className={styles.intro}>
               <h2 id="runway-title">The Network Edit</h2>
               <p>
-                Drag across the runway to move through the collection. Every
-                look stays connected to participating products where available
-                and your estimated fit.
+                Drag to explore connected looks and your estimated fit.
               </p>
             </div>
 

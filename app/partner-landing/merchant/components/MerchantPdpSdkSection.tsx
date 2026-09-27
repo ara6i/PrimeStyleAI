@@ -218,15 +218,13 @@ export function MerchantPdpSdkSection({
             <h2 id="merchant-sdk-product-title">Arc Jacket</h2>
             <p className={styles.productDescription}>
               A sculpted cropped jacket with curved ivory panels and one clean
-              accent line. Bright enough to feel joyful, restrained enough to
-              wear every day.
+              accent line.
             </p>
 
             <div className={styles.aiFitCopy}>
               <strong>AI sizing + virtual try-on</strong>
               <span>
-                Upload one photo to get your recommended size and see the Arc
-                Jacket on you.
+                Upload one photo. See your size and try-on.
               </span>
               <small>
                 This interactive demo uses a prepared model photo. AI sizing and

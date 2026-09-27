@@ -430,8 +430,8 @@
 
   .sectionIntro {
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-    padding: 68px 20px 42px;
+    gap: 18px;
+    padding: 52px 18px 34px;
   }
 
   .sectionIntro > div {
@@ -439,8 +439,11 @@
   }
 
   .sectionIntro h2 {
-    max-width: 10ch;
-    font-size: clamp(42px, 13vw, 62px);
+    max-width: 12ch;
+    font-size: clamp(32px, 9.3vw, 42px);
+    letter-spacing: -.035em;
+    line-height: .92;
+    word-spacing: .08em;
   }
 
   .sectionDemoCue {

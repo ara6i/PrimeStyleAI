@@ -49,10 +49,10 @@ it("speaks to shoppers instead of explaining internal flow rules", () => {
   render(<ShopAIStylistScenarioSection />);
 
   expect(
-    screen.getByText(/We'll create five complete looks made for your moment/i),
+    screen.getByText(/Choose who you're styling and the occasion/i),
   ).toBeTruthy();
   expect(
-    screen.getByText(/let your personal stylist take it from there/i),
+    screen.getByText(/Wedding\? Pick a role\. We'll handle the rest/i),
   ).toBeTruthy();
   expect(screen.queryByText(/Wedding changes the flow/i)).toBeNull();
   expect(screen.queryByText("Style for another city")).toBeNull();
@@ -187,7 +187,7 @@ it("places the five initial results on the real interactive disc", async () => {
   render(<ShopAIStylistScenarioSection />);
 
   const section = within(
-    screen.getByRole("region", { name: /One you\. Five complete looks\./i }),
+    screen.getByRole("region", { name: /One you\. Five looks\./i }),
   );
   const models = section.getAllByAltText(/AI Stylist model wearing/i);
   expect(models).toHaveLength(5);

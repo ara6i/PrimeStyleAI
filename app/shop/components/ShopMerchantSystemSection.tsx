@@ -91,13 +91,9 @@ export function ShopMerchantSystemSection() {
 
           <div className={styles.pitch}>
             <p>
-              <strong>Connect your catalog to PrimeStyleAI.</strong> Add estimated
-              AI sizing and illustrative virtual try-on, connect with suppliers
-              and Creators, and place your products inside the{" "}
-                <span className={styles.completeLook}>
-                  &ldquo;Complete the Look&rdquo; feature
-                </span>
-                {`. Shoppers continue to your checkout, and you remain the seller of record.`}
+              <strong>Connect your catalog.</strong> Add AI sizing, try-on,
+              Creators, suppliers, and{" "}
+              <span className={styles.completeLook}>Complete the Look.</span>
             </p>
             <Link href="/merchants">
               Learn more <ArrowRight size={17} weight="bold" aria-hidden="true" />

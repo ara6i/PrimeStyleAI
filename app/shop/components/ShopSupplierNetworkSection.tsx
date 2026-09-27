@@ -45,9 +45,7 @@ export function ShopSupplierNetworkSection() {
             <p className={styles.eyebrow}>For suppliers</p>
             <h3>Turn one catalog into more routes to market.</h3>
             <p className={styles.description}>
-              Share products with participating merchants and Creator-led
-              campaigns through one connected supplier system. Availability and
-              distribution depend on each partner relationship.
+              Reach merchants and Creators through one connected catalog.
             </p>
             <Link href="/suppliers" className={styles.primaryCta}>
               Grow as a supplier
