@@ -18,7 +18,10 @@ jobs:
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
+          command_timeout: 20m
           script: |
+            set -euo pipefail
+
             APP_DIR="/var/www/prime-products"
             REPO_URL="git@github.com:${{ github.repository }}.git"
             BRANCH="${{ github.ref_name }}"
@@ -41,10 +44,11 @@ jobs:
             npm install
 
             echo "Building project..."
-            npm run build
+            PRIME_PRODUCTS_LOW_MEMORY_BUILD=true npm run build
 
             echo "Publishing creator static site..."
-            CREATOR_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
+            PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
+              CREATOR_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
               bash scripts/deploy-creator-static.sh
 
             echo "Restarting PM2..."
