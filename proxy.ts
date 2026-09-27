@@ -33,14 +33,18 @@ const PRIMARY_PUBLIC_HOSTS = new Set([
 ]);
 const LIVE_HOMEPAGE_REDIRECT_PREFIXES = [
   "/admin",
+  "/creators/dashboard",
   "/customer",
   "/dashboard",
   "/demo",
   "/developer",
   "/docs",
+  "/influencers/dashboard",
   "/login",
+  "/merchants/dashboard",
   "/pdp-studio",
   "/status",
+  "/suppliers/dashboard",
   "/test-lab",
   "/try-on-test",
 ] as const;
