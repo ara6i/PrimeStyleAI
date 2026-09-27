@@ -27,6 +27,23 @@ const DEFAULT_SUPPLIER_HOSTS = [
   "suppliers.primestyleai.com",
   "suppliers.localhost",
 ];
+const PRIMARY_PUBLIC_HOSTS = new Set([
+  "primestyleai.com",
+  "www.primestyleai.com",
+]);
+const LIVE_HOMEPAGE_REDIRECT_PREFIXES = [
+  "/admin",
+  "/customer",
+  "/dashboard",
+  "/demo",
+  "/developer",
+  "/docs",
+  "/login",
+  "/pdp-studio",
+  "/status",
+  "/test-lab",
+  "/try-on-test",
+] as const;
 const CREATOR_LANDING_PATH = "/creators";
 const SUPPLIER_LANDING_PATH = "/suppliers";
 const CREATOR_PUBLIC_API_PATHS = new Set([
@@ -50,6 +67,17 @@ const PUBLIC_SITE_AUTH_PATH_PREFIXES = [
 export function isPublicSiteAuthPath(pathname: string): boolean {
   if (pathname === "/") return true;
   return PUBLIC_SITE_AUTH_PATH_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
+export function shouldRedirectLivePageToHomepage(
+  host: string,
+  pathname: string,
+): boolean {
+  if (!PRIMARY_PUBLIC_HOSTS.has(normalizeHost(host))) return false;
+
+  return LIVE_HOMEPAGE_REDIRECT_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 }
@@ -89,6 +117,16 @@ export async function proxy(req: NextRequest) {
     pathname === "/login" || pathname.startsWith("/login/");
   const isTryOnTestRoute = isTryOnTestPath(pathname);
   const isTryOnTestApiRoute = isTryOnTestApiPath(pathname);
+
+  if (
+    (req.method === "GET" || req.method === "HEAD") &&
+    shouldRedirectLivePageToHomepage(host, pathname)
+  ) {
+    const homepage = url.clone();
+    homepage.pathname = "/";
+    homepage.search = "";
+    return NextResponse.redirect(homepage);
+  }
 
   // The creator subdomain is a focused public site. Its root serves the
   // influencer landing internally, while its creator Terms and Privacy Policy

@@ -111,6 +111,75 @@ describe("supplier subdomain routing", () => {
   });
 });
 
+describe("live public route containment", () => {
+  it.each([
+    "/demo/products",
+    "/customer/login",
+    "/customer/dashboard/docs",
+    "/pdp-studio",
+    "/pdp-studio/products/demo",
+    "/dashboard",
+    "/dashboard/docs",
+    "/developer/docs",
+    "/docs",
+    "/login",
+    "/admin",
+    "/admin/customers",
+    "/status",
+    "/test-lab",
+    "/try-on-test/ai-stylist",
+  ])("redirects %s to the homepage on the live domain", async (pathname) => {
+    const response = await proxy(
+      request(`${pathname}?preview=1`, { host: "www.primestyleai.com" }),
+    );
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
+      "http://www.primestyleai.com/",
+    );
+  });
+
+  it.each([
+    "/product/daily-edit-vela-denim",
+    "/category/women",
+    "/brand/judy-blue",
+    "/merchants",
+    "/merchants/dashboard",
+    "/creators",
+    "/creators/dashboard",
+    "/suppliers",
+    "/suppliers/dashboard",
+    "/blog",
+    "/help-center",
+    "/privacy-policy",
+    "/terms",
+  ])("keeps the intended public page %s available", async (pathname) => {
+    const response = await proxy(
+      request(pathname, { host: "primestyleai.com" }),
+    );
+
+    expect(response.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("keeps internal routes available on the test host", async () => {
+    const response = await proxy(
+      request("/demo/products", { host: "test-fe-9a7k.primestyleai.com" }),
+    );
+
+    expect(response.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("keeps the admin tree available on the dedicated admin host", async () => {
+    const response = await proxy(
+      request("/customers", { host: "admin.primestyleai.com" }),
+    );
+
+    expect(response.headers.get("x-middleware-rewrite")).toBe(
+      "http://admin.primestyleai.com/admin/customers",
+    );
+  });
+});
+
 describe("staging protected-route login", () => {
   const stagingHost = "test-fe-9a7k.primestyleai.com";
 
