@@ -715,7 +715,7 @@
   }
 
   .storePreview {
-    grid-template-rows: 42px minmax(0, 1fr) 112px;
+    grid-template-rows: 44px minmax(0, 1fr) 145px;
   }
 
   .storePreviewHeader {
@@ -729,8 +729,8 @@
   }
 
   .storePreviewCopy {
-    width: 56%;
-    padding: 19px 0 0 14px;
+    width: 58%;
+    padding: 23px 0 0 16px;
   }
 
   .storePreviewCopy small {
@@ -747,9 +747,12 @@
   }
 
   .storePreviewCopy em {
-    margin-top: 13px;
-    padding: 6px 8px;
-    font-size: 6px;
+    min-height: 30px;
+    align-items: center;
+    margin-top: 18px;
+    padding: 0 12px;
+    font-size: 9px;
+    letter-spacing: 0.01em;
   }
 
   .storePreviewCollections {
@@ -764,6 +767,19 @@
     padding: 7px 8px;
     font-size: 10px;
     line-height: 1.15;
+  }
+
+  .storePlaceholder > div {
+    max-width: 52%;
+    padding: 8px 10px;
+  }
+
+  .storePlaceholder > div strong {
+    font-size: 15px;
+  }
+
+  .storePlaceholder > div > span {
+    font-size: 8px;
   }
 
   .suppliersPlaceholder {

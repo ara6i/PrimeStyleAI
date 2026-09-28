@@ -98,7 +98,8 @@ const nextConfig: NextConfig = {
     : {}),
   images: {
     unoptimized: isPartnerStaticExport,
-    qualities: [75, 90],
+    qualities: [75, 90, 100],
+    minimumCacheTTL: 2_678_400,
     remotePatterns: [
       {
         protocol: "https",

@@ -1147,9 +1147,12 @@
 }
 .stylistHeroCopy b {
   display: block;
-  margin-left: 42%;
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  margin: 42px 0 0 40%;
+  color: #6c35d6;
+  font-size: clamp(17px, 1.35vw, 22px);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1;
 }
 .stylistHeroCopy p {
   max-width: 36ch;
@@ -2580,6 +2583,11 @@
   .stylistHeroCopy h2 {
     margin-top: 22px;
     font-size: 72px;
+    line-height: 0.78;
+  }
+  .stylistHeroCopy b {
+    margin: 12px 0 0 34%;
+    font-size: 17px;
   }
   .stylistHeroCopy p {
     max-width: 32ch;

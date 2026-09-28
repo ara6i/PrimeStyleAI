@@ -69,6 +69,7 @@
   font: inherit;
   font-size: 12px;
   font-weight: 750;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease;
 }
@@ -1730,7 +1731,7 @@
   .headerActions { grid-column: 2; }
   .menuButton { display: grid; width: 46px; height: 46px; place-items: center; border: 1px solid rgba(16,17,22,.09); border-radius: 50%; background: rgba(255,255,255,.84); color: var(--ink); cursor: pointer; }
   .mobileNav { position: absolute; top: calc(100% + 10px); right: 0; left: 0; display: grid; gap: 0; padding: 14px 20px 20px; overflow: hidden; border: 1px solid rgba(255,255,255,.92); border-radius: 26px; background: rgba(255,255,255,.96); box-shadow: 0 24px 60px rgba(20,34,70,.15); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); }
-  .mobileNav a, .mobileNav button:not(.mobileCta) { padding: 14px 0; border: 0; border-bottom: 1px solid var(--rule); background: transparent; color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; text-align: left; text-decoration: none; }
+  .mobileNav a:not(.mobileCta), .mobileNav button:not(.mobileCta) { padding: 14px 0; border: 0; border-bottom: 1px solid var(--rule); background: transparent; color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; text-align: left; text-decoration: none; }
   .page[dir="rtl"] .mobileNav a,
   .page[dir="rtl"] .mobileNav button:not(.mobileCta) { text-align: right; }
   .mobileCta { margin-top: 16px; }

@@ -120,6 +120,7 @@
   font: inherit;
   font-size: 12px;
   font-weight: 750;
+  text-decoration: none;
   cursor: pointer;
   transition:
     transform 180ms ease,
@@ -4006,7 +4007,7 @@
     -webkit-backdrop-filter: blur(22px);
     backdrop-filter: blur(22px);
   }
-  .mobileNav a,
+  .mobileNav a:not(.mobileCta),
   .mobileNav button:not(.mobileCta) {
     padding: 13px 0;
     border: 0;

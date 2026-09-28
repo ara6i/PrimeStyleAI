@@ -1,6 +1,7 @@
-import { List, X } from "@phosphor-icons/react";
+import { ArrowUpRight, List, X } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
+import { BOOK_A_DEMO_URL } from "../../bookDemo";
 import styles from "./merchantLanding.module.css";
 
 export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPrimaryAction, onSectionSelect }: {
@@ -31,7 +32,9 @@ export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPr
         <button type="button" onClick={() => onSectionSelect("pdp-studio-feature")}>PDP Studio</button>
       </nav>
       <div className={styles.headerActions}>
-        <button type="button" className={styles.headerCta} onClick={onPrimaryAction}>Join the waitlist</button>
+        <a className={styles.headerCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer">
+          Book a Demo <ArrowUpRight size={15} weight="bold" />
+        </a>
         <button type="button" className={styles.menuButton} onClick={onMenuToggle} aria-label={mobileMenuOpen ? "Close menu" : "Open menu"} aria-expanded={mobileMenuOpen}>{mobileMenuOpen ? <X size={24} /> : <List size={24} />}</button>
       </div>
       {mobileMenuOpen ? (
@@ -41,7 +44,10 @@ export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPr
           <button type="button" onClick={() => onSectionSelect("creator-discovery")}>Find creators</button>
           <button type="button" onClick={() => onSectionSelect("merchant-dashboard")}>Merchant dashboard</button>
           <button type="button" onClick={() => onSectionSelect("pdp-studio-feature")}>PDP Studio</button>
-          <button type="button" className={styles.mobileCta} onClick={() => { onMenuClose(); onPrimaryAction(); }}>Join the waitlist</button>
+          <button type="button" onClick={() => { onMenuClose(); onPrimaryAction(); }}>Join the waitlist</button>
+          <a className={styles.mobileCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer" onClick={onMenuClose}>
+            Book a Demo <ArrowUpRight size={15} weight="bold" />
+          </a>
         </nav>
       ) : null}
     </header>

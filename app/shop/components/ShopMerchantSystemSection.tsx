@@ -7,6 +7,7 @@ import {
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
+import { DeferredVideo } from "../../partner-landing/components/DeferredVideo";
 import styles from "./shopMerchantSystem.module.css";
 
 const SIZING_VIDEO_SRC =
@@ -112,23 +113,23 @@ export function ShopMerchantSystemSection() {
               aria-label={slot.ariaLabel}
             >
               {slot.key === "sizing" ? (
-                <video
+                <DeferredVideo
                   className={styles.slotVideo}
-                  autoPlay
                   muted
                   loop
                   playsInline
-                  preload="metadata"
                   poster={SIZING_POSTER_SRC}
                   aria-hidden="true"
                   tabIndex={-1}
-                >
-                  <source
-                    src={SIZING_VIDEO_SRC}
-                    type="video/mp4"
-                    media="(prefers-reduced-motion: no-preference)"
-                  />
-                </video>
+                  rootMargin="240px 0px"
+                  sources={[
+                    {
+                      src: SIZING_VIDEO_SRC,
+                      type: "video/mp4",
+                      media: "(prefers-reduced-motion: no-preference)",
+                    },
+                  ]}
+                />
               ) : null}
               {slot.key === "influencer" ? (
                 <Image

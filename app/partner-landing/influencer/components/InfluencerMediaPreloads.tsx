@@ -12,11 +12,5 @@ export function InfluencerMediaPreloads() {
     });
   }
 
-  preload(INFLUENCER_HERO_REELS[0].webm, {
-    as: "video",
-    type: "video/webm",
-    fetchPriority: "high",
-  });
-
   return null;
 }

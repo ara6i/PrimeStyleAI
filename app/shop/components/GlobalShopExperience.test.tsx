@@ -243,9 +243,7 @@ it("presents the focused merchant network hero and the complete creator hero", (
       name: /Have a store\?/,
     }),
   ).toBeTruthy();
-  expect(
-    merchant.getByText("Connect your catalog."),
-  ).toBeTruthy();
+  expect(merchant.getByText("Connect your catalog.")).toBeTruthy();
   expect(merchant.getByText(/Complete the Look/)).toBeTruthy();
   expect(
     merchant.getByRole("link", { name: "Learn more" }).getAttribute("href"),
@@ -260,10 +258,10 @@ it("presents the focused merchant network hero and the complete creator hero", (
   const sizingVideo = merchant.getByRole("article", {
     name: "AI sizing and try-on video",
   });
-  expect(sizingVideo.querySelector("video")).toBeTruthy();
-  expect(sizingVideo.querySelector("source")?.getAttribute("src")).toBe(
-    "/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-european-omni-box-only-720p-v2.mp4",
+  expect(sizingVideo.querySelector("video")?.getAttribute("preload")).toBe(
+    "none",
   );
+  expect(sizingVideo.querySelector("source")).toBeNull();
   const influencerImage = merchant.getByRole("article", {
     name: "Creator image",
   });
@@ -319,20 +317,20 @@ it("brings the interactive merchant SDK showcase into the Shop landing", () => {
   render(<GlobalShopExperience />);
 
   const sdkShowcase = within(
-    screen.getByRole("region", { name: "Arc Jacket" }),
+    screen.getByRole("region", { name: "Aubergine Tailored Wool Coat" }),
   );
 
-  expect(sdkShowcase.getByText("Men's jacket")).toBeTruthy();
+  expect(sdkShowcase.getByText("Women's tailored coat")).toBeTruthy();
+  expect(sdkShowcase.getByText("$248")).toBeTruthy();
   expect(sdkShowcase.getByText("AI sizing + virtual try-on")).toBeTruthy();
   expect(sdkShowcase.getByText("See a demo!")).toBeTruthy();
   expect(sdkShowcase.getByText("Try it now!")).toBeTruthy();
   expect(sdkShowcase.queryByText(/live sdk/i)).toBeNull();
   expect(
-    sdkShowcase.getByText(
-      /Upload one photo\. See your size and try-on/i,
-    ),
+    sdkShowcase.getByText(/Upload one photo\. See your size and try-on/i),
   ).toBeTruthy();
-  expect(sdkShowcase.getByLabelText("Select Cobalt")).toBeTruthy();
+  expect(sdkShowcase.getByLabelText("Select Rich aubergine")).toBeTruthy();
+  expect(sdkShowcase.queryByLabelText("Select Cobalt")).toBeNull();
   expect(sdkShowcase.getByRole("button", { name: "Size guide" })).toBeTruthy();
   expect(
     sdkShowcase.getByRole("button", { name: "Find my size & try it on" }),

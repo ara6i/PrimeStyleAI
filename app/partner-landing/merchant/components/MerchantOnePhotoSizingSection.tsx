@@ -1,9 +1,10 @@
+import { DeferredVideo } from "../../components/DeferredVideo";
 import styles from "./merchantOnePhotoSizing.module.css";
 
 const VIDEO_SRC =
   "/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-live-actions-4k-v3.mp4";
 const POSTER_SRC =
-  "/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-storyboard-v1.png";
+  "/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-storyboard-v1-lossless.webp";
 
 export function MerchantOnePhotoSizingSection() {
   return (
@@ -43,23 +44,23 @@ export function MerchantOnePhotoSizingSection() {
         </article>
 
         <figure className={styles.visual}>
-          <video
+          <DeferredVideo
             className={styles.video}
-            autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
             poster={POSTER_SRC}
             aria-hidden="true"
             tabIndex={-1}
-          >
-            <source
-              src={VIDEO_SRC}
-              type="video/mp4"
-              media="(prefers-reduced-motion: no-preference)"
-            />
-          </video>
+            rootMargin="240px 0px"
+            sources={[
+              {
+                src: VIDEO_SRC,
+                type: "video/mp4",
+                media: "(prefers-reduced-motion: no-preference)",
+              },
+            ]}
+          />
         </figure>
       </div>
     </section>

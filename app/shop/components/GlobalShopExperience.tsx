@@ -188,9 +188,7 @@ export function GlobalShopExperience() {
           <div className={styles.heroCopy}>
             <span>New season · Curated across the network</span>
             <h2>Fashion, styled around you.</h2>
-            <p>
-              Shop the edit, style the look, and find your size.
-            </p>
+            <p>Shop the edit, style the look, and find your size.</p>
             <div>
               <button type="button" onClick={() => openCategoryPage("Women")}>
                 Shop the edit <ArrowUpRight size={15} />
@@ -227,9 +225,7 @@ export function GlobalShopExperience() {
               <span>01 · Shop the network</span>
               <h2 id="arrival-title">New arrivals, made personal.</h2>
             </div>
-            <p>
-              Fresh pieces, ready for fit, try-on, and complete looks.
-            </p>
+            <p>Fresh pieces, ready for fit, try-on, and complete looks.</p>
           </div>
 
           <div
@@ -263,7 +259,6 @@ export function GlobalShopExperience() {
                   fill
                   sizes="(max-width: 700px) 82vw, (max-width: 1100px) 44vw, 24vw"
                   quality={90}
-                  loading="eager"
                 />
               );
               return (
@@ -372,9 +367,7 @@ export function GlobalShopExperience() {
                 <span>Interactive AI Stylist demo</span>
                 <h2 id="stylist-title">Simply</h2>
                 <b>/FASHION</b>
-                <p>
-                  Five complete looks, styled around your taste and fit.
-                </p>
+                <p>Five complete looks, styled around your taste and fit.</p>
                 <button
                   type="button"
                   className={styles.stylistPrimaryAction}
@@ -391,7 +384,6 @@ export function GlobalShopExperience() {
                   fill
                   unoptimized
                   sizes="(max-width: 760px) 100vw, 52vw"
-                  loading="eager"
                 />
               </div>
               <div className={styles.stylistHeroMetric}>
@@ -432,15 +424,12 @@ export function GlobalShopExperience() {
                   fill
                   sizes="180px"
                   quality={90}
-                  loading="eager"
                 />
               </figure>
               <div className={styles.stylistEditorialCopy}>
                 <span>02 · YOUR AI EDIT</span>
                 <h3>Five looks, styled for you.</h3>
-                <p>
-                  Color, fit, and occasion—pulled into one complete look.
-                </p>
+                <p>Color, fit, and occasion—pulled into one complete look.</p>
                 <button
                   type="button"
                   className={styles.stylistEditorialAction}
@@ -456,7 +445,6 @@ export function GlobalShopExperience() {
                   fill
                   sizes="180px"
                   quality={90}
-                  loading="eager"
                 />
               </figure>
             </div>
@@ -563,7 +551,6 @@ export function GlobalShopExperience() {
                       fill
                       sizes="(max-width: 760px) 100vw, (max-width: 1120px) 50vw, 38vw"
                       quality={90}
-                      loading="eager"
                     />
                   </div>
                   <span>{product.gender} · PrimeStyleAI Atelier</span>

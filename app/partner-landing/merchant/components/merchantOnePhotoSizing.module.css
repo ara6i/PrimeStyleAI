@@ -163,7 +163,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .video {
-    background-image: url("/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-storyboard-v1.png");
+    background-image: url("/media/partner-landing/merchant-network/one-photo-sizing/one-photo-sizing-storyboard-v1-lossless.webp");
     background-position: center;
     background-size: contain;
   }

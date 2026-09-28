@@ -74,14 +74,14 @@ function mapOutfitItem(
   return {
     ...product,
     displayImage: product.image,
-    garmentType: product.slot,
+    garmentType: product.title,
     selected: true,
     alternatives: candidates
       .filter((candidate) => candidate.productId !== product.productId)
       .map((candidate) => ({
         ...candidate,
         displayImage: candidate.image,
-        garmentType: candidate.slot,
+        garmentType: candidate.title,
       })),
   };
 }

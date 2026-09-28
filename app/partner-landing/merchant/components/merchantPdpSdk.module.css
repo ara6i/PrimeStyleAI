@@ -280,6 +280,14 @@
   line-height: 1.72;
 }
 
+.productPrice {
+  margin: 12px 0 0;
+  color: #20201d;
+  font-size: clamp(15px, 1.25vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
 .aiFitCopy {
   display: grid;
   max-width: 40ch;

@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { MerchantLandingViewModel } from "../types";
@@ -22,6 +22,31 @@ export function MerchantHero({
   );
   const heroAlt =
     "PrimeStyleAI headquarters and the global network of suppliers, merchants, creators, and shoppers forming the PrimeStyleAI mark";
+  const commonHeroImageProps = {
+    alt: heroAlt,
+    quality: 100,
+    sizes: "100vw",
+  } as const;
+  const {
+    props: {
+      alt: heroDesktopAlt,
+      srcSet: heroDesktopSrcSet,
+      ...heroDesktopProps
+    },
+  } = getImageProps({
+    ...commonHeroImageProps,
+    src: viewModel.hero.heroImage,
+    width: 3840,
+    height: 2160,
+  });
+  const {
+    props: { srcSet: heroMobileSrcSet },
+  } = getImageProps({
+    ...commonHeroImageProps,
+    src: viewModel.hero.heroMobileImage,
+    width: 2160,
+    height: 3840,
+  });
 
   return (
     <section
@@ -32,16 +57,13 @@ export function MerchantHero({
       <picture className={styles.networkHeroPicture}>
         <source
           media="(max-width: 560px)"
-          srcSet={viewModel.hero.heroMobileImage}
+          srcSet={heroMobileSrcSet}
         />
         <img
-          src={viewModel.hero.heroImage}
-          alt={heroAlt}
-          width={3840}
-          height={2160}
+          {...heroDesktopProps}
+          alt={heroDesktopAlt}
+          srcSet={heroDesktopSrcSet}
           className={styles.networkHeroBackground}
-          fetchPriority="high"
-          loading="eager"
           decoding="async"
         />
       </picture>

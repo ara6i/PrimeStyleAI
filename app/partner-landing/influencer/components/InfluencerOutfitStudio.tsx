@@ -2,6 +2,7 @@
 
 import { ArrowUpRight, Camera, FilmStrip, Sparkle, Stack } from "@phosphor-icons/react";
 import { useState } from "react";
+import { DeferredVideo } from "../../components/DeferredVideo";
 import { useCreatorLanguage } from "../../i18n/CreatorLanguageProvider";
 import { InfluencerTurntable } from "./InfluencerTurntable";
 import styles from "./influencerLanding.module.css";
@@ -71,10 +72,25 @@ export function InfluencerOutfitStudio({ onCtaClick }: { onCtaClick: () => void 
 
         <div className={styles.studioReels} aria-label={t("Creator video examples")}>
           <figure>
-            <video autoPlay loop muted playsInline preload="metadata" poster="/media/partner-landing/optimized/creator-longhair-omni-poster.webp" aria-hidden tabIndex={-1}>
-              <source src="/media/partner-landing/optimized/creator-longhair-omni.webm" type="video/webm" />
-              <source src="/media/partner-landing/optimized/creator-longhair-omni.mp4" type="video/mp4" />
-            </video>
+            <DeferredVideo
+              loop
+              muted
+              playsInline
+              poster="/media/partner-landing/optimized/creator-longhair-omni-poster.webp"
+              aria-hidden="true"
+              tabIndex={-1}
+              rootMargin="160px 0px"
+              sources={[
+                {
+                  src: "/media/partner-landing/optimized/creator-longhair-omni.webm",
+                  type: "video/webm",
+                },
+                {
+                  src: "/media/partner-landing/optimized/creator-longhair-omni.mp4",
+                  type: "video/mp4",
+                },
+              ]}
+            />
             <figcaption className={styles.studioReelHeadline}>
               <small>{t("01 · Frame the look")}</small>
               <strong>{t("Build your outfit.")}</strong>

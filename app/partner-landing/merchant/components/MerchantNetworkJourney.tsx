@@ -20,6 +20,7 @@ import {
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useState } from "react";
+import { DeferredVideo } from "../../components/DeferredVideo";
 import { MerchantDashboardShowcase } from "./MerchantDashboardShowcase";
 import styles from "./merchantLanding.module.css";
 
@@ -78,22 +79,19 @@ type PdpStoryVideoProps = {
 
 function PdpStoryVideo({ ariaLabel, mp4, poster, webm }: PdpStoryVideoProps) {
   return (
-    <video
+    <DeferredVideo
       className={styles.pdpStoryVideo}
-      autoPlay
       muted
       loop
       playsInline
-      preload="metadata"
       poster={poster}
       aria-label={ariaLabel}
-      onLoadedData={(event) => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) event.currentTarget.pause();
-      }}
-    >
-      <source src={webm} type="video/webm" />
-      <source src={mp4} type="video/mp4" />
-    </video>
+      rootMargin="240px 0px"
+      sources={[
+        { src: webm, type: "video/webm" },
+        { src: mp4, type: "video/mp4" },
+      ]}
+    />
   );
 }
 

@@ -1,5 +1,3 @@
-import { brandCatalogData } from "../../brand/data/brandCatalog.data";
-import type { BrandProduct } from "../../brand/types/brandCatalog.types";
 import type {
   ActiveRawCategoryCatalog,
   RawCategoryCatalog,
@@ -627,33 +625,6 @@ function mapShowcaseProduct(product: ShowcaseProduct, position: number) {
   };
 }
 
-function mapBrandProduct(
-  brandName: string,
-  product: BrandProduct,
-  position: number,
-): RawCategoryProduct {
-  return {
-    id: product.id,
-    name: product.name,
-    brand: brandName,
-    priceCents: Math.round(product.price * 100),
-    image: product.image,
-    hoverImage: product.gallery?.[1]?.src,
-    note: product.badge === "SALE" ? "Limited offer" : "Imported collection",
-    position,
-    sizes: product.sizes,
-    description: product.description,
-    displayColor: product.color,
-    facets: [
-      { groupId: "category", value: product.category },
-      { groupId: "price", value: priceFacet(product.price * 100) },
-      ...product.sizes.map((size) => ({ groupId: "size", value: size })),
-      { groupId: "brand", value: brandName },
-      { groupId: "color", value: product.color },
-    ],
-  };
-}
-
 function makeShowcaseCatalog(gender: ShowcaseGender): ActiveRawCategoryCatalog {
   const existingCatalog = legacyCategoryCatalogData.find(
     (catalog) => catalog.id === gender,
@@ -664,34 +635,7 @@ function makeShowcaseCatalog(gender: ShowcaseGender): ActiveRawCategoryCatalog {
 
   const showcaseProducts =
     getShowcaseProductsByGender(gender).map(mapShowcaseProduct);
-  const denimProducts =
-    gender === "women"
-      ? (
-          legacyCategoryCatalogData.find((catalog) => catalog.id === "denim")
-            ?.products ?? []
-        ).map((product, index) => ({
-          ...product,
-          position: showcaseProducts.length + index + 1,
-        }))
-      : [];
-  const brandProducts =
-    gender === "women"
-      ? brandCatalogData
-          .flatMap((brand) =>
-            brand.products.map((product) => ({
-              brandName: brand.name,
-              product,
-            })),
-          )
-          .map(({ brandName, product }, index) =>
-            mapBrandProduct(
-              brandName,
-              product,
-              showcaseProducts.length + denimProducts.length + index + 1,
-            ),
-          )
-      : [];
-  const products = [...showcaseProducts, ...denimProducts, ...brandProducts];
+  const products = showcaseProducts;
 
   return {
     ...existingCatalog,

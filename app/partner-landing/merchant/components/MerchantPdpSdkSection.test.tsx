@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { MerchantPdpSdkSection } from "./MerchantPdpSdkSection";
@@ -29,7 +28,7 @@ afterEach(() => {
   sdk.props = null;
 });
 
-describe("Arc Jacket SDK wiring", () => {
+describe("Aubergine Coat SDK wiring", () => {
   it("introduces the fitting experience above the product layout", async () => {
     render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
@@ -40,19 +39,21 @@ describe("Arc Jacket SDK wiring", () => {
     ).toBeTruthy();
     expect(screen.getByText("See a demo!")).toBeTruthy();
     expect(
-      screen.getByLabelText("See the Arc Jacket AI fitting demo below"),
+      screen.getByLabelText("See the Aubergine Coat AI fitting demo below"),
     ).toBeTruthy();
     expect(
       await screen.findByRole("button", { name: "Find my size & try it on" }),
     ).toBeTruthy();
   });
 
-  it("keeps colour selection in the product controls without the old footer", async () => {
+  it("shows the coat's single prepared colour without the old footer", async () => {
     render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
     await waitFor(() => expect(sdk.props).not.toBeNull());
 
-    expect(screen.getByText("Cobalt")).toBeTruthy();
+    expect(screen.getByText("Rich aubergine")).toBeTruthy();
+    expect(screen.getByLabelText("Select Rich aubergine")).toBeTruthy();
+    expect(screen.queryByLabelText("Select Cobalt")).toBeNull();
     expect(
       screen.queryByRole("button", { name: /previous colour/i }),
     ).toBeNull();
@@ -64,58 +65,53 @@ describe("Arc Jacket SDK wiring", () => {
     expect(sdk.props).not.toHaveProperty("onAddToBag");
   });
 
-  it.each([
-    ["Cobalt", "cobalt"],
-    ["Coral", "coral"],
-    ["Butter", "butter"],
-    ["Mint", "mint"],
-    ["Lilac", "lilac"],
-  ])(
-    "sends only the selected %s garment to the Shop SDK",
-    async (name, slug) => {
-      const user = userEvent.setup();
-      render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
+  it("sends the new product and its model-worn reference to the Shop SDK", async () => {
+    render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
-      await user.click(screen.getByRole("button", { name: `Select ${name}` }));
+    const productImage =
+      "/media/global-shop/atelier-sdk-v2/anchor/aubergine-tailored-wool-coat.webp";
+    const modelImage = "/media/global-shop/atelier-sdk-v2/results/look-01.webp";
 
-      const image = `/media/partner-landing/merchant-network/studio-jacket-${slug}.webp`;
-      await waitFor(() =>
-        expect(sdk.props).toEqual(
-          expect.objectContaining({
-            productId: `merchant-arc-jacket-${slug}`,
-            productImage: image,
-            productImages: [image],
-            garmentReferenceImage: image,
-            garmentDetailImage: image,
-            productTitle: `Arc Jacket — ${name}`,
-            productUrl: "/#ai-fitting",
-          }),
-        ),
-      );
-    },
-  );
+    await waitFor(() =>
+      expect(sdk.props).toEqual(
+        expect.objectContaining({
+          productId: "women-aubergine-tailored-wool-coat",
+          productImage,
+          productImages: expect.arrayContaining([productImage, modelImage]),
+          garmentReferenceImage: modelImage,
+          garmentDetailImage: productImage,
+          productTitle: "Aubergine Tailored Wool Coat",
+          productUrl: "/#ai-fitting",
+        }),
+      ),
+    );
+  });
 
-  it("configures the Arc Jacket as menswear with five replaceable options per category", async () => {
+  it("configures the Aubergine Coat with five selectable prepared looks", async () => {
     render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
 
     await waitFor(() => expect(sdk.props).not.toBeNull());
 
     expect(sdk.props).toEqual(
       expect.objectContaining({
-        productCategory: "Men's jackets",
-        productGender: "male",
+        productCategory: "Women's coats",
+        productGender: "female",
         outfitBuilderSource: "ai-stylist",
         guidedDemoAutoplay: true,
         usePresetProfileOnly: true,
         showHeaderControls: false,
         presetProfile: expect.objectContaining({
-          id: "arc-jacket-demo-model",
-          gender: "male",
-          photoUrl: "/media/global-shop/arc-jacket-demo-v2/model-source.webp",
-          height: 180,
-          weight: 78,
+          id: "atelier-coat-demo-model",
+          gender: "female",
+          photoUrl:
+            "/media/global-shop/sdk-base-models/women-pdp-model-raw-v2.webp",
+          height: 168,
+          weight: 59,
           heightUnit: "cm",
           weightUnit: "kg",
+          braSizeRegion: "US",
+          bandSize: "34",
+          cupSize: "B",
         }),
       }),
     );
@@ -128,36 +124,43 @@ describe("Arc Jacket SDK wiring", () => {
 
     expect(looks).toHaveLength(5);
     expect(looks.map((look) => look.label)).toEqual([
-      "Concrete Layer",
-      "Night Transit",
-      "Ice Signal",
-      "Shadow Hardware",
-      "Studio Track",
+      "Oyster tailoring",
+      "Sage contrast",
+      "Ecru ease",
+      "Charcoal city",
+      "Cocoa polish",
     ]);
     expect(
       looks.every(
         (look) =>
           look.items.map((item) => item.slot).join(",") ===
-          "top,bottom,shoe,accessory",
+          "bottom,shoe,bag,accessory",
       ),
     ).toBe(true);
     expect(looks.flatMap((look) => look.items)).toHaveLength(20);
+    for (const slot of ["bottom", "shoe", "bag", "accessory"]) {
+      const selectedIds = looks.map(
+        (look) => look.items.find((item) => item.slot === slot)?.image,
+      );
+      expect(new Set(selectedIds).size).toBe(5);
+    }
     expect(
-      looks.every((look) =>
-        look.items.some(
-          (item) =>
-            item.slot === "accessory" && item.image.includes("sunglasses"),
-        ),
-      ),
+      looks
+        .flatMap((look) => look.items)
+        .every((item) => item.image.includes("/atelier-sdk-v1/")),
     ).toBe(true);
     expect(
       looks
         .flatMap((look) => look.items)
-        .every((item) =>
-          item.image.startsWith(
-            "/media/global-shop/arc-jacket-demo-v2/outfits/",
-          ),
-        ),
+        .every((item) => item.image.endsWith(".webp")),
+    ).toBe(true);
+
+    const itemsWithAlternatives = looks.flatMap((look) => look.items) as Array<{
+      slot: string;
+      alternatives?: Array<{ image: string }>;
+    }>;
+    expect(
+      itemsWithAlternatives.every((item) => item.alternatives?.length === 4),
     ).toBe(true);
 
     const results = sdk.props?.instantOutfitResults as Array<{
@@ -171,9 +174,7 @@ describe("Arc Jacket SDK wiring", () => {
     );
     expect(
       results.every((result) =>
-        result.image.startsWith(
-          "/media/global-shop/arc-jacket-demo-v2/results/cobalt/",
-        ),
+        result.image.startsWith("/media/global-shop/atelier-sdk-v2/results/"),
       ),
     ).toBe(true);
     expect(results.map((result) => result.lookId)).toEqual(
@@ -181,22 +182,14 @@ describe("Arc Jacket SDK wiring", () => {
     );
   });
 
-  it.each([
-    ["Cobalt", "cobalt"],
-    ["Coral", "coral"],
-    ["Butter", "butter"],
-    ["Mint", "mint"],
-    ["Lilac", "lilac"],
-  ])("uses the raw upload photo with prepared %s outfit results", async (name, slug) => {
-    const user = userEvent.setup();
-    render(<MerchantPdpSdkSection productUrl="/#ai-fitting" />);
-
-    await user.click(screen.getByRole("button", { name: `Select ${name}` }));
+  it("uses the new raw upload model with prepared tailored results", async () => {
+    render(<MerchantPdpSdkSection />);
 
     await waitFor(() =>
       expect(sdk.props?.presetProfile).toEqual(
         expect.objectContaining({
-          photoUrl: "/media/global-shop/arc-jacket-demo-v2/model-source.webp",
+          photoUrl:
+            "/media/global-shop/sdk-base-models/women-pdp-model-raw-v2.webp",
         }),
       ),
     );
@@ -205,9 +198,7 @@ describe("Arc Jacket SDK wiring", () => {
     expect(results).toHaveLength(5);
     expect(
       results.every((result) =>
-        result.image.startsWith(
-          `/media/global-shop/arc-jacket-demo-v2/results/${slug}/`,
-        ),
+        result.image.startsWith("/media/global-shop/atelier-sdk-v2/results/"),
       ),
     ).toBe(true);
   });

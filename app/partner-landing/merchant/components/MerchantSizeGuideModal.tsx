@@ -6,21 +6,21 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 
 import {
-  ARC_JACKET_SIZE_ROWS,
-  formatGuideMeasurement,
-  formatGuideRange,
-  type ArcJacketSize,
-  type ArcJacketSizeUnit,
-} from "./arcJacketSizeGuide";
+  ATELIER_JACKET_SIZE_ROWS,
+  formatJacketMeasurement,
+  formatJacketRange,
+  type AtelierJacketSize,
+  type AtelierJacketSizeUnit,
+} from "./atelierJacketSizeGuide";
 import styles from "./merchantSizeGuideModal.module.css";
 
 const CLOSE_ANIMATION_MS = 320;
 
 type MerchantSizeGuideModalProps = {
   open: boolean;
-  selectedSize: ArcJacketSize;
+  selectedSize: AtelierJacketSize;
   onClose: () => void;
-  onSelectSize: (size: ArcJacketSize) => void;
+  onSelectSize: (size: AtelierJacketSize) => void;
 };
 
 export function MerchantSizeGuideModal({
@@ -31,13 +31,13 @@ export function MerchantSizeGuideModal({
 }: MerchantSizeGuideModalProps) {
   const [mounted, setMounted] = useState(open);
   const [visible, setVisible] = useState(false);
-  const [unit, setUnit] = useState<ArcJacketSizeUnit>("cm");
+  const [unit, setUnit] = useState<AtelierJacketSizeUnit>("cm");
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const onCloseRef = useRef(onClose);
   const activeRow =
-    ARC_JACKET_SIZE_ROWS.find((row) => row.size === selectedSize) ??
-    ARC_JACKET_SIZE_ROWS[2];
+    ATELIER_JACKET_SIZE_ROWS.find((row) => row.size === selectedSize) ??
+    ATELIER_JACKET_SIZE_ROWS[2];
 
   useEffect(() => {
     onCloseRef.current = onClose;
@@ -55,10 +55,7 @@ export function MerchantSizeGuideModal({
       });
     } else {
       frame = window.requestAnimationFrame(() => setVisible(false));
-      timeout = window.setTimeout(
-        () => setMounted(false),
-        CLOSE_ANIMATION_MS,
-      );
+      timeout = window.setTimeout(() => setMounted(false), CLOSE_ANIMATION_MS);
     }
 
     return () => {
@@ -127,17 +124,17 @@ export function MerchantSizeGuideModal({
     >
       <div
         ref={panelRef}
-        id="arc-jacket-size-guide-dialog"
+        id="atelier-jacket-size-guide-dialog"
         className={styles.modal}
         data-visible={visible}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="arc-jacket-size-guide-title"
+        aria-labelledby="atelier-jacket-size-guide-title"
         onKeyDown={keepFocusInside}
       >
         <header className={styles.header}>
           <span aria-hidden="true">01 / Fit guide</span>
-          <p>Arc Jacket / Size Info</p>
+          <p>Aubergine Tailored Coat / Size Info</p>
           <button
             ref={closeButtonRef}
             type="button"
@@ -151,24 +148,28 @@ export function MerchantSizeGuideModal({
         <div className={styles.content}>
           <figure className={styles.diagram}>
             <Image
-              src="/media/partner-landing/merchant-network/arc-jacket-size-guide-v1.png"
-              alt="Cobalt Arc Jacket measurement diagram showing shoulder, bust, waist, sleeve, and jacket length lines"
-              width={1023}
-              height={1537}
+              src="/media/global-shop/atelier-sdk-v2/anchor/aubergine-tailored-wool-coat.webp"
+              alt="Aubergine tailored wool coat shown from the front for the size guide"
+              width={1024}
+              height={1536}
               sizes="(max-width: 820px) 94vw, 45vw"
               quality={90}
               loading="eager"
             />
-            <figcaption>Measure the garment laid flat and fully zipped.</figcaption>
+            <figcaption>
+              Compare body measurements over a light shirt or fine knit.
+            </figcaption>
           </figure>
 
           <div className={styles.guide}>
             <div className={styles.intro}>
-              <p>Men&apos;s cropped outerwear</p>
-              <h2 id="arc-jacket-size-guide-title">Find your Arc Jacket size.</h2>
+              <p>Women&apos;s tailored coat</p>
+              <h2 id="atelier-jacket-size-guide-title">
+                Find your Aubergine Coat size.
+              </h2>
               <span>
-                Use your body chest and waist to choose a size. Shoulder, sleeve,
-                and cropped length confirm how the jacket will sit.
+                Use your chest and waist to choose a size. Shoulder, sleeve, and
+                back length confirm how the tailored fit will sit.
               </span>
             </div>
 
@@ -195,18 +196,20 @@ export function MerchantSizeGuideModal({
                   <tr>
                     <th scope="col">Size</th>
                     <th scope="col">Chest</th>
-                    <th scope="col">Hem</th>
+                    <th scope="col">Waist</th>
                     <th scope="col">Shoulder</th>
                     <th scope="col">Sleeve</th>
-                    <th scope="col">Length</th>
+                    <th scope="col">Back length</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {ARC_JACKET_SIZE_ROWS.map((row) => (
+                  {ATELIER_JACKET_SIZE_ROWS.map((row) => (
                     <tr
                       key={row.size}
                       className={
-                        row.size === selectedSize ? styles.selectedRow : undefined
+                        row.size === selectedSize
+                          ? styles.selectedRow
+                          : undefined
                       }
                     >
                       <th scope="row">
@@ -218,11 +221,11 @@ export function MerchantSizeGuideModal({
                           {row.size}
                         </button>
                       </th>
-                      <td>{formatGuideMeasurement(row.chest, unit)}</td>
-                      <td>{formatGuideMeasurement(row.hem, unit)}</td>
-                      <td>{formatGuideMeasurement(row.shoulder, unit)}</td>
-                      <td>{formatGuideMeasurement(row.sleeve, unit)}</td>
-                      <td>{formatGuideMeasurement(row.length, unit)}</td>
+                      <td>{formatJacketRange(row.chest, unit)}</td>
+                      <td>{formatJacketRange(row.waist, unit)}</td>
+                      <td>{formatJacketMeasurement(row.shoulder, unit)}</td>
+                      <td>{formatJacketMeasurement(row.sleeve, unit)}</td>
+                      <td>{formatJacketMeasurement(row.length, unit)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -234,11 +237,11 @@ export function MerchantSizeGuideModal({
               <div>
                 <p>
                   <strong>Chest</strong>
-                  {formatGuideRange(activeRow.bodyChest, unit)} {unit}
+                  {formatJacketRange(activeRow.chest, unit)} {unit}
                 </p>
                 <p>
                   <strong>Waist</strong>
-                  {formatGuideRange(activeRow.bodyWaist, unit)} {unit}
+                  {formatJacketRange(activeRow.waist, unit)} {unit}
                 </p>
               </div>
             </div>
@@ -248,12 +251,15 @@ export function MerchantSizeGuideModal({
                 <Ruler size={17} weight="regular" aria-hidden="true" />
                 Body measurements used for fitting
               </p>
-              <span>Chest · Waist · Shoulder breadth · Arm length · Height</span>
+              <span>
+                Chest · Waist · Shoulder breadth · Arm length · Height
+              </span>
             </div>
 
             <p className={styles.note}>
-              Chest and hem are full garment circumference. Shoulder, sleeve,
-              and back length are seam-to-seam. Allow ±1 cm production tolerance.
+              Chest and waist are body-fit ranges. Shoulder, sleeve, and back
+              length are finished-garment measurements. Allow ±1 cm production
+              tolerance.
             </p>
 
             <footer className={styles.footer}>

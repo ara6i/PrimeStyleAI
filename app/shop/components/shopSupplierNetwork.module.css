@@ -278,7 +278,7 @@
 
 @media (max-width: 800px) {
   .section {
-    padding: 64px 8px;
+    padding: 72px 8px;
   }
 
   .shell {
@@ -305,7 +305,15 @@
 
   .titleLeft strong,
   .titleRight strong {
-    font-size: clamp(54px, 16vw, 84px);
+    font-family: var(--font-manrope), Arial, sans-serif;
+    font-size: clamp(46px, 13vw, 68px);
+    font-weight: 800;
+    line-height: 0.9;
+  }
+
+  .titleLeft em,
+  .titleRight em {
+    font-weight: 500;
   }
 
   .stage {
@@ -313,10 +321,11 @@
     min-height: 0;
     align-items: stretch;
     flex-direction: column;
-    gap: 28px;
-    padding: 34px 22px 24px;
+    gap: 26px;
+    padding: 0 22px 28px;
     border-radius: 30px;
-    overflow: hidden;
+    margin-top: 118px;
+    overflow: visible;
   }
 
   .stageCopy {
@@ -326,14 +335,23 @@
 
   .stageCopy h3 {
     max-width: 12ch;
+    font-size: clamp(32px, 9.5vw, 42px);
+    font-weight: 720;
+    letter-spacing: -0.045em;
+  }
+
+  .description {
+    margin-top: 16px;
+    font-weight: 520;
   }
 
   .sceneFrame {
     position: relative;
+    order: -1;
     top: auto;
     left: auto;
-    width: 100%;
-    margin: 0;
+    width: min(118%, 430px);
+    margin: -126px auto -24px;
     transform: none;
   }
 

@@ -3,6 +3,7 @@
 import { ArrowRight } from "@phosphor-icons/react";
 import Image from "next/image";
 import { useOptionalCreatorLanguage } from "../../i18n/CreatorLanguageProvider";
+import { DeferredVideo } from "../../components/DeferredVideo";
 import type { InfluencerLandingViewModel } from "../types";
 import { InfluencerHeroJourney } from "./InfluencerHeroJourney";
 import { INFLUENCER_HERO_REELS } from "./influencerHeroMedia";
@@ -41,12 +42,22 @@ export function InfluencerHero({ viewModel, onPrimaryAction, onSecondaryAction }
         </div>
 
         <div className={styles.heroFilm} aria-label={t("Creator try-on reels")}>
-          {INFLUENCER_HERO_REELS.map((reel) => (
+          {INFLUENCER_HERO_REELS.map((reel, index) => (
             <div className={styles.heroReel} key={reel.webm}>
-              <video autoPlay loop muted playsInline preload="auto" poster={reel.poster} aria-label={t(reel.label)}>
-                <source src={reel.webm} type="video/webm" />
-                <source src={reel.mp4} type="video/mp4" />
-              </video>
+              <DeferredVideo
+                loop
+                muted
+                playsInline
+                poster={reel.poster}
+                eagerPoster
+                aria-label={t(reel.label)}
+                loadDelayMs={index * 900}
+                rootMargin="0px"
+                sources={[
+                  { src: reel.webm, type: "video/webm" },
+                  { src: reel.mp4, type: "video/mp4" },
+                ]}
+              />
             </div>
           ))}
           <div className={styles.filmTimeline} aria-hidden="true">

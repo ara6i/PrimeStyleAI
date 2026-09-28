@@ -334,18 +334,18 @@
 
   .runwayLayout {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(540px, 68svh) 268px;
+    grid-template-rows: minmax(480px, 60svh) 320px;
     overflow: visible;
   }
 
   .stage {
-    min-height: 540px;
+    min-height: 480px;
     touch-action: pan-y;
   }
 
   .look {
     overflow: visible;
-    transform: translate3d(-50%, 0, 0) scale(var(--look-scale)) scale(1.38);
+    transform: translate3d(-50%, 0, 0) scale(var(--look-scale)) scale(1.06);
   }
 
   .intro {
@@ -400,15 +400,22 @@
   }
 
   .productRail {
-    min-height: 268px;
+    min-height: 320px;
+    overflow-x: auto;
+    overflow-y: hidden;
     border-top: 1px solid rgba(16, 20, 22, 0.09);
     border-left: 0;
     cursor: grab;
-    touch-action: pan-y;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
   }
 
   .productStack {
     display: grid;
+    right: auto;
+    width: max(100%, 465px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -417,10 +424,11 @@
     height: 100%;
     border-right: 1px solid rgba(16, 20, 22, 0.1);
     border-bottom: 0;
+    scroll-snap-align: start;
   }
 
   .productVisual {
-    inset: 12px 8px 82px;
+    inset: 10px 3px 78px;
   }
 
   .productCopy {
@@ -461,19 +469,19 @@
 
 @media (max-width: 390px) {
   .runwayLayout {
-    grid-template-rows: minmax(520px, 66svh) 252px;
+    grid-template-rows: minmax(460px, 58svh) 308px;
   }
 
   .stage {
-    min-height: 520px;
+    min-height: 460px;
   }
 
   .productRail {
-    min-height: 252px;
+    min-height: 308px;
   }
 
   .productVisual {
-    inset: 12px 8px 78px;
+    inset: 10px 3px 76px;
   }
 }
 

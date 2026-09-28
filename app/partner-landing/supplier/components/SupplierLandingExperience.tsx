@@ -31,6 +31,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type CSSProperties } from "react";
+import { BOOK_A_DEMO_URL } from "../../bookDemo";
 import { useLandingNavigation } from "../../hooks/useLandingNavigation";
 import { usePartnerInterest } from "../../hooks/usePartnerInterest";
 import { SupplierInterestDialog } from "./SupplierInterestDialog";
@@ -153,9 +154,9 @@ function SupplierHeader({
       </nav>
 
       <div className={styles.headerActions}>
-        <button type="button" className={styles.headerCta} onClick={onPrimaryAction}>
-          Join waitlist
-        </button>
+        <a className={styles.headerCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer">
+          Book a Demo <ArrowUpRight size={15} weight="bold" />
+        </a>
         <button
           type="button"
           className={styles.menuButton}
@@ -186,7 +187,6 @@ function SupplierHeader({
           </button>
           <button
             type="button"
-            className={styles.mobileCta}
             onClick={() => {
               onMenuClose();
               onPrimaryAction();
@@ -194,6 +194,9 @@ function SupplierHeader({
           >
             Join waitlist
           </button>
+          <a className={styles.mobileCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer" onClick={onMenuClose}>
+            Book a Demo <ArrowUpRight size={15} weight="bold" />
+          </a>
         </nav>
       ) : null}
     </header>

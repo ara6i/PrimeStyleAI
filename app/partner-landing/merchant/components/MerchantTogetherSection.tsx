@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "@phosphor-icons/react";
-import { useEffect, useRef } from "react";
+import { DeferredVideo } from "../../components/DeferredVideo";
 import styles from "./merchantTogether.module.css";
 
 type MerchantTogetherSectionProps = {
@@ -28,47 +28,6 @@ const roles = [
 export function MerchantTogetherSection({
   onPrimaryAction,
 }: MerchantTogetherSectionProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
-
-    if (!video || reducedMotion.matches) return;
-
-    // Safari can ignore the declarative autoplay attributes during the first
-    // paint. Retrying from media/page lifecycle events keeps the hero moving
-    // without requiring a click while respecting reduced-motion preferences.
-    video.muted = true;
-    video.defaultMuted = true;
-
-    const playVideo = () => {
-      if (document.visibilityState !== "visible") return;
-      void video.play().catch(() => {
-        // `canplay` or the next visible `pageshow` event retries playback.
-      });
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") playVideo();
-    };
-
-    video.addEventListener("loadeddata", playVideo);
-    video.addEventListener("canplay", playVideo);
-    window.addEventListener("pageshow", playVideo);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    playVideo();
-
-    return () => {
-      video.removeEventListener("loadeddata", playVideo);
-      video.removeEventListener("canplay", playVideo);
-      window.removeEventListener("pageshow", playVideo);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
-
   return (
     <section
       id="commerce-together"
@@ -97,27 +56,27 @@ export function MerchantTogetherSection({
           />
         </picture>
 
-        <video
-          ref={videoRef}
+        <DeferredVideo
           className={styles.video}
-          autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          loadDelayMs={1500}
+          rootMargin="0px"
           aria-hidden="true"
           tabIndex={-1}
-        >
-          <source
-            media="(max-width: 680px)"
-            src="/media/partner-landing/merchant-network/commerce-together-editorial-seamless-mobile-portrait-1080x1350.mp4"
-            type="video/mp4"
-          />
-          <source
-            src="/media/partner-landing/merchant-network/commerce-together-editorial-seedance2-4k-seamless-loop.mp4"
-            type="video/mp4"
-          />
-        </video>
+          sources={[
+            {
+              media: "(max-width: 680px)",
+              src: "/media/partner-landing/merchant-network/commerce-together-editorial-seamless-mobile-portrait-1080x1350.mp4",
+              type: "video/mp4",
+            },
+            {
+              src: "/media/partner-landing/merchant-network/commerce-together-editorial-seedance2-4k-seamless-loop.mp4",
+              type: "video/mp4",
+            },
+          ]}
+        />
 
         <div className={styles.centerCopy}>
           <p className={styles.eyebrow}>Every side of commerce</p>

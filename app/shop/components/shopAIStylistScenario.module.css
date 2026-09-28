@@ -688,17 +688,17 @@
     display: flex;
     min-height: 0;
     flex-direction: column;
-    gap: 14px;
-    padding: 24px 14px 42px;
+    gap: 24px;
+    padding: 38px 14px 58px;
   }
 
   .intro {
     order: 2;
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 10px;
     width: 100%;
     margin: 0;
-    padding: 0 4px;
+    padding: 0 8px 4px;
   }
 
   .intro > p {
@@ -726,8 +726,8 @@
     order: 3;
     min-height: 0;
     height: auto;
-    padding: 14px 16px 16px;
-    border-radius: 20px;
+    padding: 24px 18px 22px;
+    border-radius: 24px;
   }
 
   .resultStage {
@@ -746,6 +746,10 @@
     flex: none;
   }
 
+  .startView {
+    padding: 4px 0 2px;
+  }
+
   .realTurntable {
     min-height: 0;
     height: 100%;
@@ -754,17 +758,18 @@
   }
 
   .startGreeting {
-    font-size: 24px;
+    font-size: 28px;
   }
 
   .weatherPill {
-    margin-top: 10px;
+    width: 100%;
+    margin-top: 18px;
   }
 
   .weatherPill > div,
   .weatherStatus {
-    min-height: 42px;
-    padding: 8px 12px;
+    min-height: 48px;
+    padding: 10px 15px;
   }
 
   .weatherPill span {
@@ -777,22 +782,22 @@
   }
 
   .startCopy {
-    gap: 6px;
-    margin: 12px 0;
+    gap: 9px;
+    margin: 22px 0 20px;
   }
 
   .startCopy p {
     font-size: 12px;
-    line-height: 1.35;
+    line-height: 1.5;
   }
 
   .generateButton.startButton {
-    min-height: 44px;
+    min-height: 50px;
     font-size: 12px;
   }
 
   .controlsHeader {
-    margin-bottom: 8px;
+    margin-bottom: 14px;
   }
 
   .progress {
@@ -881,13 +886,13 @@
 
 @media (max-width: 430px) {
   .section {
-    gap: 12px;
+    gap: 20px;
     min-height: 0;
-    padding: 18px 14px 34px;
+    padding: 30px 14px 50px;
   }
 
   .intro {
-    gap: 5px;
+    gap: 8px;
   }
 
   .intro h2 {
@@ -903,7 +908,7 @@
     align-items: center;
     flex-direction: row;
     gap: 8px;
-    margin-bottom: 6px;
+    margin-bottom: 12px;
   }
 
   .controlsHeader > span,
@@ -912,7 +917,7 @@
   }
 
   .controls {
-    padding: 10px 14px 12px;
+    padding: 20px 16px 18px;
   }
 
   .resultStage {
@@ -925,26 +930,27 @@
   }
 
   .weatherPill {
-    margin-top: 6px;
+    margin-top: 14px;
   }
 
   .weatherPill > div,
   .weatherStatus {
-    min-height: 38px;
-    padding: 6px 10px;
+    min-height: 46px;
+    padding: 9px 12px;
   }
 
   .startCopy {
-    margin: 8px 0;
+    gap: 8px;
+    margin: 18px 0;
   }
 
   .startCopy p {
     font-size: 11px;
-    line-height: 1.25;
+    line-height: 1.45;
   }
 
   .generateButton.startButton {
-    min-height: 42px;
+    min-height: 48px;
   }
 
   .resultsView h3 {

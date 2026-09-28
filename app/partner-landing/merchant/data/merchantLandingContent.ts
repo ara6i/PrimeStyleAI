@@ -13,9 +13,9 @@ export const MERCHANT_LANDING_CONTENT: MerchantLandingViewModel = {
     annotation: "Size it. Try it. Create it. Source it. Sell it.",
     image: "/media/partner-landing/merchant-network/running-shoe.webp",
     heroImage:
-      "/media/partner-landing/merchant-network/merchant-network-people-logo-hero-v6-retail-right-4k.png",
+      "/media/partner-landing/merchant-network/merchant-network-people-logo-hero-v6-retail-right-4k-lossless.webp",
     heroMobileImage:
-      "/media/partner-landing/merchant-network/merchant-network-people-logo-hero-v6-retail-right-mobile-4k.png",
+      "/media/partner-landing/merchant-network/merchant-network-people-logo-hero-v6-retail-right-mobile-4k-lossless.webp",
     pillars: [
       {
         title: "AI fit + try-on",
