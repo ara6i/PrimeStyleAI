@@ -30,7 +30,8 @@ jobs:
             REPO_URL="git@github.com:${{ github.repository }}.git"
             BRANCH="${{ github.ref_name }}"
             RELEASE_DIR=".next-release-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
-            BUILD_CACHE_DIR=".next-build-cache"
+            BUILD_DIR=".next-production-build"
+            LEGACY_BUILD_CACHE_DIR=".next-build-cache"
             DEPENDENCY_HASH_FILE=".deploy-package-lock.sha256"
             TSCONFIG_BACKUP="/tmp/prime-products-tsconfig-${{ github.run_id }}-${{ github.run_attempt }}.json"
             PREVIOUS_DIST=""
@@ -89,36 +90,27 @@ jobs:
               fi
             done
 
-            if [ ! -d "$BUILD_CACHE_DIR" ] && [ -n "$PREVIOUS_DIST" ] && [ -d "$PREVIOUS_DIST/cache" ]; then
-              echo "Seeding the persistent Next.js build cache from $PREVIOUS_DIST..."
-              cp -al "$PREVIOUS_DIST/cache" "$BUILD_CACHE_DIR"
+            if [ ! -d "$BUILD_DIR/cache" ]; then
+              mkdir -p "$BUILD_DIR"
+              if [ -d "$LEGACY_BUILD_CACHE_DIR" ]; then
+                echo "Seeding the stable Next.js build directory from the legacy cache..."
+                cp -al "$LEGACY_BUILD_CACHE_DIR" "$BUILD_DIR/cache"
+              elif [ -n "$PREVIOUS_DIST" ] && [ -d "$PREVIOUS_DIST/cache" ]; then
+                echo "Seeding the stable Next.js build directory from $PREVIOUS_DIST..."
+                cp -al "$PREVIOUS_DIST/cache" "$BUILD_DIR/cache"
+              fi
             fi
 
-            mkdir -p "$RELEASE_DIR"
-            if [ -d "$BUILD_CACHE_DIR" ]; then
-              echo "Restoring the persistent Next.js build cache..."
-              cp -al "$BUILD_CACHE_DIR" "$RELEASE_DIR/cache"
-            fi
-
-            echo "Building isolated release $RELEASE_DIR..."
+            echo "Building in the stable cache-aware directory $BUILD_DIR..."
             NODE_OPTIONS=--max-old-space-size=4096 \
-              PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" \
+              PRIME_PRODUCTS_DIST_DIR="$BUILD_DIR" \
               PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
               npm run build
 
-            if [ -d "$RELEASE_DIR/cache" ]; then
-              next_cache_dir="${BUILD_CACHE_DIR}.next-${{ github.run_id }}-${{ github.run_attempt }}"
-              previous_cache_dir="${BUILD_CACHE_DIR}.previous-${{ github.run_id }}-${{ github.run_attempt }}"
-              mv "$RELEASE_DIR/cache" "$next_cache_dir"
-              if [ -d "$BUILD_CACHE_DIR" ]; then
-                mv "$BUILD_CACHE_DIR" "$previous_cache_dir"
-              fi
-              mv "$next_cache_dir" "$BUILD_CACHE_DIR"
-              if [ -d "$previous_cache_dir" ]; then
-                rm -rf -- "$previous_cache_dir"
-              fi
-              mkdir -p "$RELEASE_DIR/cache/images"
-            fi
+            echo "Snapshotting the runnable release without duplicating the build cache..."
+            mkdir -p "$RELEASE_DIR"
+            rsync -a --delete --exclude='/cache/' "$BUILD_DIR/" "$RELEASE_DIR/"
+            mkdir -p "$RELEASE_DIR/cache/images"
 
             echo "Publishing merchant static site..."
             PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
@@ -163,6 +155,11 @@ jobs:
               echo "Removing stale build release $release_candidate..."
               rm -rf -- "$release_candidate"
             done
+
+            if [ -d "$LEGACY_BUILD_CACHE_DIR" ]; then
+              echo "Removing the superseded legacy build cache..."
+              rm -rf -- "$LEGACY_BUILD_CACHE_DIR"
+            fi
 
             restore_services
             trap - EXIT
