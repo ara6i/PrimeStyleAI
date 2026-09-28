@@ -45,6 +45,9 @@ export function InfluencerHeader(props: InfluencerHeaderProps) {
           onLanguageChange={setLanguage}
           variant="creator"
         />
+        <button type="button" className={styles.headerWaitlistCta} onClick={props.onPrimaryAction}>
+          {t("Join waitlist")}
+        </button>
         <a className={styles.headerCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer">
           {t("Book a Demo")} <ArrowUpRight size={15} weight="bold" />
         </a>

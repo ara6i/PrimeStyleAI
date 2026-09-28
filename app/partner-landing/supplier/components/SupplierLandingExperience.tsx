@@ -154,6 +154,9 @@ function SupplierHeader({
       </nav>
 
       <div className={styles.headerActions}>
+        <button type="button" className={styles.headerWaitlistCta} onClick={onPrimaryAction}>
+          Join waitlist
+        </button>
         <a className={styles.headerCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer">
           Book a Demo <ArrowUpRight size={15} weight="bold" />
         </a>

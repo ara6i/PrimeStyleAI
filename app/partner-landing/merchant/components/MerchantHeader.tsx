@@ -32,6 +32,9 @@ export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPr
         <button type="button" onClick={() => onSectionSelect("pdp-studio-feature")}>PDP Studio</button>
       </nav>
       <div className={styles.headerActions}>
+        <button type="button" className={styles.headerWaitlistCta} onClick={onPrimaryAction}>
+          Join the waitlist
+        </button>
         <a className={styles.headerCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer">
           Book a Demo <ArrowUpRight size={15} weight="bold" />
         </a>
