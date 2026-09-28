@@ -48,7 +48,10 @@ jobs:
 
             restore_services() {
               if [ -f "$TSCONFIG_BACKUP" ]; then
-                cp "$TSCONFIG_BACKUP" "$APP_DIR/tsconfig.json"
+                if ! cmp -s "$TSCONFIG_BACKUP" "$APP_DIR/tsconfig.json"; then
+                  cp "$TSCONFIG_BACKUP" "$APP_DIR/tsconfig.json"
+                fi
+                rm -f -- "$TSCONFIG_BACKUP"
               fi
 
               for service in "${PAUSED_SERVICES[@]}"; do
