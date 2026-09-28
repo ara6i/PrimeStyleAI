@@ -83,7 +83,7 @@ jobs:
               while IFS= read -r changed_path; do
                 [ -z "$changed_path" ] && continue
                 case "$changed_path" in
-                  .github/workflows/deploy.yml|app/page.tsx|app/shop/*|app/\(shop-routes\)/*|public/media/global-shop/*)
+                  .github/workflows/*.yml|app/page.tsx|app/shop/*|app/\(shop-routes\)/*|public/media/global-shop/*)
                     ;;
                   *)
                     return 0
