@@ -42,7 +42,9 @@
     ".next-4000/types/**/*.ts",
     ".next-4000/dev/types/**/*.ts",
     ".next-merchant/types/**/*.ts",
-    ".next-merchant/dev/types/**/*.ts"
+    ".next-merchant/dev/types/**/*.ts",
+    ".next-production-build/types/**/*.ts",
+    ".next-production-build/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
