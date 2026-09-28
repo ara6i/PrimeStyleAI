@@ -142,7 +142,6 @@ jobs:
             echo "Building in the stable cache-aware directory $BUILD_DIR..."
             NODE_OPTIONS=--max-old-space-size=4096 \
               PRIME_PRODUCTS_DIST_DIR="$BUILD_DIR" \
-              PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
               npm run build
 
             echo "Snapshotting the runnable release without duplicating the build cache..."
