@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Keep the production root aligned with the shop experience.
+// Keep the production root in sync with the shop experience.
 export default function PrimeStyleAIHomePage() {
   return (
     <div className={shopSerif.variable}>
