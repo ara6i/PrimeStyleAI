@@ -29,10 +29,13 @@ jobs:
             APP_DIR="/var/www/prime-products"
             REPO_URL="git@github.com:${{ github.repository }}.git"
             BRANCH="${{ github.ref_name }}"
+            CURRENT_SHA="${{ github.sha }}"
             RELEASE_DIR=".next-release-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
             BUILD_DIR=".next-production-build"
             LEGACY_BUILD_CACHE_DIR=".next-build-cache"
             DEPENDENCY_HASH_FILE=".deploy-package-lock.sha256"
+            MERCHANT_DEPLOY_MARKER="/var/www/merchants.primestyleai.com/.deployed-source-sha"
+            CREATOR_DEPLOY_MARKER="/var/www/creators.primestyleai.com/.deployed-source-sha"
             TSCONFIG_BACKUP="/tmp/prime-products-tsconfig-${{ github.run_id }}-${{ github.run_attempt }}.json"
             PREVIOUS_DIST=""
             PAUSABLE_SERVICES=(
@@ -51,6 +54,41 @@ jobs:
               for service in "${PAUSED_SERVICES[@]}"; do
                 pm2 start "$service" >/dev/null 2>&1 || true
               done
+            }
+
+            partner_build_required() {
+              local marker_file="$1"
+              local current_link="$2"
+              local base_sha=""
+              local release_name=""
+              local inferred_sha=""
+
+              if [ -s "$marker_file" ]; then
+                base_sha="$(cat "$marker_file")"
+              elif [ -L "$current_link" ]; then
+                release_name="$(basename "$(readlink -f "$current_link")")"
+                inferred_sha="${release_name##*-}"
+                if [[ "$inferred_sha" =~ ^[0-9a-f]{40}$ ]]; then
+                  base_sha="$inferred_sha"
+                fi
+              fi
+
+              if [ -z "$base_sha" ] || ! git cat-file -e "${base_sha}^{commit}" 2>/dev/null; then
+                return 0
+              fi
+
+              while IFS= read -r changed_path; do
+                [ -z "$changed_path" ] && continue
+                case "$changed_path" in
+                  .github/workflows/deploy.yml|app/page.tsx|app/shop/*|app/\(shop-routes\)/*|public/media/global-shop/*)
+                    ;;
+                  *)
+                    return 0
+                    ;;
+                esac
+              done < <(git diff --name-only "$base_sha" "$CURRENT_SHA")
+
+              return 1
             }
 
             trap restore_services EXIT
@@ -112,17 +150,7 @@ jobs:
             rsync -a --delete --exclude='/cache/' "$BUILD_DIR/" "$RELEASE_DIR/"
             mkdir -p "$RELEASE_DIR/cache/images"
 
-            echo "Publishing merchant static site..."
-            PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
-              MERCHANT_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
-              bash scripts/deploy-merchant-static.sh
-
-            echo "Publishing creator static site..."
-            PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
-              CREATOR_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
-              bash scripts/deploy-creator-static.sh
-
-            echo "Restarting PM2..."
+            echo "Restarting the main production site..."
             if pm2 describe prime-products > /dev/null 2>&1; then
               PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" pm2 restart prime-products --update-env
             else
@@ -142,6 +170,26 @@ jobs:
               echo "Live health check did not recover after the PM2 restart." >&2
               exit 1
             fi
+
+            if partner_build_required "$MERCHANT_DEPLOY_MARKER" "/var/www/merchants.primestyleai.com/current"; then
+              echo "Publishing changed merchant static site..."
+              PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
+                MERCHANT_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
+                bash scripts/deploy-merchant-static.sh
+            else
+              echo "Merchant inputs are unchanged; keeping the current static release."
+            fi
+            printf '%s\n' "$CURRENT_SHA" > "$MERCHANT_DEPLOY_MARKER"
+
+            if partner_build_required "$CREATOR_DEPLOY_MARKER" "/var/www/creators.primestyleai.com/current"; then
+              echo "Publishing changed creator static site..."
+              PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
+                CREATOR_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
+                bash scripts/deploy-creator-static.sh
+            else
+              echo "Creator inputs are unchanged; keeping the current static release."
+            fi
+            printf '%s\n' "$CURRENT_SHA" > "$CREATOR_DEPLOY_MARKER"
 
             if [ -n "$PREVIOUS_DIST" ] && [ "$PREVIOUS_DIST" != "$RELEASE_DIR" ] && [[ "$PREVIOUS_DIST" == .next-release-* ]] && [ -d "$PREVIOUS_DIST/cache/webpack" ]; then
               echo "Removing the previous release's disposable webpack cache..."
