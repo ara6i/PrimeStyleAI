@@ -113,7 +113,9 @@ jobs:
                 git status --short --untracked-files=no >&2
                 exit 1
               fi
-              git checkout "$BRANCH"
+              if [ "$(git branch --show-current)" != "$BRANCH" ]; then
+                git checkout "$BRANCH"
+              fi
               git merge --ff-only "origin/$BRANCH"
             fi
 
