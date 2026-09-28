@@ -93,7 +93,19 @@ jobs:
               PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" PORT=3001 pm2 start npm --name "prime-products" -- start
             fi
 
-            curl --fail --silent --show-error --max-time 20 http://127.0.0.1:3001/ >/dev/null
+            live_healthy=false
+            for attempt in {1..15}; do
+              if curl --fail --silent --max-time 5 http://127.0.0.1:3001/ >/dev/null; then
+                live_healthy=true
+                break
+              fi
+              sleep 2
+            done
+
+            if [ "$live_healthy" != "true" ]; then
+              echo "Live health check did not recover after the PM2 restart." >&2
+              exit 1
+            fi
 
             restore_services
             trap - EXIT
