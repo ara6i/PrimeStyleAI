@@ -104,11 +104,17 @@ jobs:
               cd prime-products
               git checkout "$BRANCH"
             else
-              echo "Resetting to origin/$BRANCH..."
+              echo "Fast-forwarding to origin/$BRANCH without touching unchanged files..."
               cd "$APP_DIR"
               PREVIOUS_DIST="$(pm2 jlist | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const p=JSON.parse(s).find(x=>x.name==="prime-products");process.stdout.write(p?.pm2_env?.PRIME_PRODUCTS_DIST_DIR||p?.pm2_env?.env?.PRIME_PRODUCTS_DIST_DIR||"")})' 2>/dev/null || true)"
-              git fetch origin
-              git reset --hard "origin/$BRANCH"
+              git fetch origin "$BRANCH"
+              if ! git diff --quiet || ! git diff --cached --quiet; then
+                echo "Tracked server files differ from the deployed commit; refusing to overwrite them." >&2
+                git status --short --untracked-files=no >&2
+                exit 1
+              fi
+              git checkout "$BRANCH"
+              git merge --ff-only "origin/$BRANCH"
             fi
 
             package_lock_hash="$(sha256sum package-lock.json | awk '{print $1}')"
