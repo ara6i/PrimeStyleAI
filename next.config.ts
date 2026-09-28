@@ -38,6 +38,8 @@ const isCreatorStaticExport =
 const isMerchantStaticExport =
   process.env.PRIME_MERCHANT_STATIC_EXPORT === "true";
 const isPartnerStaticExport = isCreatorStaticExport || isMerchantStaticExport;
+const isFastProductionDeploy =
+  process.env.PRIME_PRODUCTS_FAST_DEPLOY === "true";
 const localWorkspaceRoot = path.resolve(process.cwd(), "..");
 const localSdkRoot = process.env.PRIME_PRODUCTS_LOCAL_SDK_ROOT
   ? path.resolve(process.env.PRIME_PRODUCTS_LOCAL_SDK_ROOT)
@@ -61,7 +63,9 @@ const nextConfig: NextConfig = {
   // Unrelated application routes can be type-checked separately without
   // blocking this isolated artifact.
   typescript: {
-    ignoreBuildErrors: isPartnerStaticExport,
+    // Production deploys are type-checked by the parallel Type Check workflow.
+    // Keeping that work off the release path lets the public site update fast.
+    ignoreBuildErrors: isPartnerStaticExport || isFastProductionDeploy,
   },
   allowedDevOrigins: ["127.0.0.1", "localhost", "192.168.6.123"],
   serverExternalPackages: ["onnxruntime-node"],

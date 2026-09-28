@@ -1,0 +1,44 @@
+name: Type Check
+
+concurrency:
+  group: primestyleai-typecheck-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Restore TypeScript build information
+        uses: actions/cache@v4
+        with:
+          path: .cache/typescript.tsbuildinfo
+          key: typescript-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            typescript-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Generate Next.js route types
+        run: ./node_modules/.bin/next typegen
+
+      - name: Check TypeScript
+        run: |
+          mkdir -p .cache
+          ./node_modules/.bin/tsc --noEmit --incremental --tsBuildInfoFile .cache/typescript.tsbuildinfo
