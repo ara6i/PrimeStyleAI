@@ -102,7 +102,7 @@ install -m 0644 "$creator_build_root/server/app/privacy-policy.html" "$creator_t
 install -m 0644 "$creator_build_root/server/app/privacy-policy.rsc" "$creator_temporary_release/privacy-policy.rsc"
 install -m 0644 "$creator_build_root/server/app/terms.html" "$creator_temporary_release/terms/index.html"
 install -m 0644 "$creator_build_root/server/app/terms.rsc" "$creator_temporary_release/terms.rsc"
-install -m 0644 app/icon.svg "$creator_temporary_release/icon.svg"
+install -m 0644 app/icon.png "$creator_temporary_release/icon.png"
 install -m 0644 app/influencers/icon.png "$creator_temporary_release/influencers/icon.png"
 
 node - "$creator_temporary_release" <<'NODE'
