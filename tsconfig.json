@@ -44,7 +44,9 @@
     ".next-merchant/types/**/*.ts",
     ".next-merchant/dev/types/**/*.ts",
     ".next-production-build/types/**/*.ts",
-    ".next-production-build/dev/types/**/*.ts"
+    ".next-production-build/dev/types/**/*.ts",
+    ".next-production-turbo-build/types/**/*.ts",
+    ".next-production-turbo-build/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

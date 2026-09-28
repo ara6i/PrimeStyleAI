@@ -31,7 +31,7 @@ jobs:
             BRANCH="${{ github.ref_name }}"
             CURRENT_SHA="${{ github.sha }}"
             RELEASE_DIR=".next-release-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
-            BUILD_DIR=".next-production-build"
+            BUILD_DIR=".next-production-turbo-build"
             LEGACY_BUILD_CACHE_DIR=".next-build-cache"
             DEPENDENCY_HASH_FILE=".deploy-package-lock.sha256"
             MERCHANT_DEPLOY_MARKER="/var/www/merchants.primestyleai.com/.deployed-source-sha"
@@ -153,7 +153,7 @@ jobs:
             echo "Building in the stable cache-aware directory $BUILD_DIR..."
             NODE_OPTIONS=--max-old-space-size=4096 \
               PRIME_PRODUCTS_DIST_DIR="$BUILD_DIR" \
-              npm run build
+              ./node_modules/.bin/next build --turbopack
 
             echo "Snapshotting the runnable release without duplicating the build cache..."
             mkdir -p "$RELEASE_DIR"
