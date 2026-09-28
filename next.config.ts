@@ -76,17 +76,9 @@ const nextConfig: NextConfig = {
         },
       }
     : {}),
-  ...(useLocalSdkSource || isPartnerStaticExport
+  ...(useLocalSdkSource
     ? {
         webpack(config) {
-          if (
-            isPartnerStaticExport ||
-            process.env.PRIME_PRODUCTS_LOW_MEMORY_BUILD === "true"
-          ) {
-            config.cache = false;
-          }
-          if (!useLocalSdkSource) return config;
-
           config.resolve = config.resolve ?? {};
           config.resolve.alias = {
             ...(config.resolve.alias ?? {}),
