@@ -81,6 +81,13 @@ jobs:
               PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
               npm run build
 
+            echo "Publishing merchant static site..."
+            PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
+              MERCHANT_SKIP_BUILD=true \
+              PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" \
+              MERCHANT_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
+              bash scripts/deploy-merchant-static.sh
+
             echo "Publishing creator static site..."
             PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
               CREATOR_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \

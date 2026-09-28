@@ -98,7 +98,7 @@ install -m 0644 "$merchant_build_root/server/app/privacy-policy.html" "$merchant
 install -m 0644 "$merchant_build_root/server/app/privacy-policy.rsc" "$merchant_temporary_release/privacy-policy.rsc"
 install -m 0644 "$merchant_build_root/server/app/terms.html" "$merchant_temporary_release/terms/index.html"
 install -m 0644 "$merchant_build_root/server/app/terms.rsc" "$merchant_temporary_release/terms.rsc"
-install -m 0644 app/icon.svg "$merchant_temporary_release/icon.svg"
+install -m 0644 app/icon.png "$merchant_temporary_release/icon.png"
 install -m 0644 app/merchants/icon.png "$merchant_temporary_release/merchants/icon.png"
 
 node - "$merchant_temporary_release" <<'NODE'
