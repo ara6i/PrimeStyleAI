@@ -1,5 +1,9 @@
 name: Deploy to DigitalOcean
 
+concurrency:
+  group: primestyleai-production
+  cancel-in-progress: false
+
 on:
   push:
     branches:
@@ -26,7 +30,10 @@ jobs:
             REPO_URL="git@github.com:${{ github.repository }}.git"
             BRANCH="${{ github.ref_name }}"
             RELEASE_DIR=".next-release-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
+            BUILD_CACHE_DIR=".next-build-cache"
+            DEPENDENCY_HASH_FILE=".deploy-package-lock.sha256"
             TSCONFIG_BACKUP="/tmp/prime-products-tsconfig-${{ github.run_id }}-${{ github.run_attempt }}.json"
+            PREVIOUS_DIST=""
             PAUSABLE_SERVICES=(
               prime-products-test
               primestyle-backend-test
@@ -57,12 +64,19 @@ jobs:
             else
               echo "Resetting to origin/$BRANCH..."
               cd "$APP_DIR"
+              PREVIOUS_DIST="$(pm2 jlist | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const p=JSON.parse(s).find(x=>x.name==="prime-products");process.stdout.write(p?.pm2_env?.PRIME_PRODUCTS_DIST_DIR||p?.pm2_env?.env?.PRIME_PRODUCTS_DIST_DIR||"")})' 2>/dev/null || true)"
               git fetch origin
               git reset --hard "origin/$BRANCH"
             fi
 
-            echo "Installing dependencies..."
-            npm install
+            package_lock_hash="$(sha256sum package-lock.json | awk '{print $1}')"
+            if [ ! -d node_modules ] || [ ! -f "$DEPENDENCY_HASH_FILE" ] || [ "$(cat "$DEPENDENCY_HASH_FILE")" != "$package_lock_hash" ]; then
+              echo "Installing changed dependencies..."
+              npm ci
+              printf '%s\n' "$package_lock_hash" > "$DEPENDENCY_HASH_FILE"
+            else
+              echo "Dependencies unchanged; reusing node_modules."
+            fi
 
             cp tsconfig.json "$TSCONFIG_BACKUP"
 
@@ -75,16 +89,39 @@ jobs:
               fi
             done
 
+            if [ ! -d "$BUILD_CACHE_DIR" ] && [ -n "$PREVIOUS_DIST" ] && [ -d "$PREVIOUS_DIST/cache" ]; then
+              echo "Seeding the persistent Next.js build cache from $PREVIOUS_DIST..."
+              cp -al "$PREVIOUS_DIST/cache" "$BUILD_CACHE_DIR"
+            fi
+
+            mkdir -p "$RELEASE_DIR"
+            if [ -d "$BUILD_CACHE_DIR" ]; then
+              echo "Restoring the persistent Next.js build cache..."
+              cp -al "$BUILD_CACHE_DIR" "$RELEASE_DIR/cache"
+            fi
+
             echo "Building isolated release $RELEASE_DIR..."
             NODE_OPTIONS=--max-old-space-size=4096 \
               PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" \
               PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
               npm run build
 
+            if [ -d "$RELEASE_DIR/cache" ]; then
+              next_cache_dir="${BUILD_CACHE_DIR}.next-${{ github.run_id }}-${{ github.run_attempt }}"
+              previous_cache_dir="${BUILD_CACHE_DIR}.previous-${{ github.run_id }}-${{ github.run_attempt }}"
+              mv "$RELEASE_DIR/cache" "$next_cache_dir"
+              if [ -d "$BUILD_CACHE_DIR" ]; then
+                mv "$BUILD_CACHE_DIR" "$previous_cache_dir"
+              fi
+              mv "$next_cache_dir" "$BUILD_CACHE_DIR"
+              if [ -d "$previous_cache_dir" ]; then
+                rm -rf -- "$previous_cache_dir"
+              fi
+              mkdir -p "$RELEASE_DIR/cache/images"
+            fi
+
             echo "Publishing merchant static site..."
             PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
-              MERCHANT_SKIP_BUILD=true \
-              PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" \
               MERCHANT_RELEASE_LABEL="$(date -u +%Y%m%d-%H%M%S)-${{ github.sha }}" \
               bash scripts/deploy-merchant-static.sh
 
@@ -113,6 +150,19 @@ jobs:
               echo "Live health check did not recover after the PM2 restart." >&2
               exit 1
             fi
+
+            if [ -n "$PREVIOUS_DIST" ] && [ "$PREVIOUS_DIST" != "$RELEASE_DIR" ] && [[ "$PREVIOUS_DIST" == .next-release-* ]] && [ -d "$PREVIOUS_DIST/cache/webpack" ]; then
+              echo "Removing the previous release's disposable webpack cache..."
+              rm -rf -- "$PREVIOUS_DIST/cache/webpack"
+            fi
+
+            for release_candidate in .next-release-*; do
+              if [ ! -d "$release_candidate" ] || [ "$release_candidate" = "$RELEASE_DIR" ] || [ "$release_candidate" = "$PREVIOUS_DIST" ]; then
+                continue
+              fi
+              echo "Removing stale build release $release_candidate..."
+              rm -rf -- "$release_candidate"
+            done
 
             restore_services
             trap - EXIT

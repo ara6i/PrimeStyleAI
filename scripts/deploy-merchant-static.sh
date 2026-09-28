@@ -37,7 +37,8 @@ else
   PRIME_PRODUCTS_DIST_DIR="$merchant_dist_dir" \
   PRIME_PRODUCTS_USE_PACKAGED_SDK="true" \
   PRIME_MERCHANT_STATIC_EXPORT="true" \
-  npm run build
+  npm run build -- \
+    --debug-build-paths='app/merchants/page.tsx,app/privacy-policy/page.tsx,app/terms/page.tsx'
 fi
 
 merchant_build_root="$merchant_app_dir/$merchant_dist_dir"
@@ -64,6 +65,14 @@ done
 
 mkdir -p "$merchant_releases_root"
 
+merchant_previous_release=""
+if [[ -L "$merchant_static_root/current" ]]; then
+  merchant_previous_release="$(readlink -f "$merchant_static_root/current" || true)"
+  if [[ "$merchant_previous_release" != "$merchant_releases_root"/* ]]; then
+    merchant_previous_release=""
+  fi
+fi
+
 if [[ -e "$merchant_release_dir" || -e "$merchant_temporary_release" ]]; then
   echo "Merchant release already exists: $merchant_release_label" >&2
   exit 1
@@ -80,17 +89,40 @@ cleanup_merchant_temporary_files() {
 trap cleanup_merchant_temporary_files EXIT
 
 mkdir -p \
-  "$merchant_temporary_release/_next" \
   "$merchant_temporary_release/merchants" \
   "$merchant_temporary_release/privacy-policy" \
   "$merchant_temporary_release/terms"
 
-cp -a "$merchant_build_root/static" "$merchant_temporary_release/_next/static"
+sync_merchant_tree() {
+  local source_dir="$1"
+  local destination_dir="$2"
+  local previous_dir="${3:-}"
+  local rsync_args=(-a --delete)
 
-mkdir -p "$merchant_temporary_release/media" "$merchant_temporary_release/images"
-cp -a public/media/partner-landing "$merchant_temporary_release/media/partner-landing"
-cp -a public/media/merchant-dashboard "$merchant_temporary_release/media/merchant-dashboard"
-cp -a public/images/landing "$merchant_temporary_release/images/landing"
+  mkdir -p "$destination_dir"
+  if [[ -n "$previous_dir" && -d "$previous_dir" ]]; then
+    rsync_args+=(--link-dest="$previous_dir")
+  fi
+  rsync "${rsync_args[@]}" "$source_dir/" "$destination_dir/"
+}
+
+sync_merchant_tree \
+  "$merchant_build_root/static" \
+  "$merchant_temporary_release/_next/static" \
+  "${merchant_previous_release:+$merchant_previous_release/_next/static}"
+
+sync_merchant_tree \
+  public/media/partner-landing \
+  "$merchant_temporary_release/media/partner-landing" \
+  "${merchant_previous_release:+$merchant_previous_release/media/partner-landing}"
+sync_merchant_tree \
+  public/media/merchant-dashboard \
+  "$merchant_temporary_release/media/merchant-dashboard" \
+  "${merchant_previous_release:+$merchant_previous_release/media/merchant-dashboard}"
+sync_merchant_tree \
+  public/images/landing \
+  "$merchant_temporary_release/images/landing" \
+  "${merchant_previous_release:+$merchant_previous_release/images/landing}"
 
 install -m 0644 "$merchant_build_root/server/app/merchants.html" "$merchant_temporary_release/index.html"
 install -m 0644 "$merchant_build_root/server/app/merchants.rsc" "$merchant_temporary_release/index.rsc"

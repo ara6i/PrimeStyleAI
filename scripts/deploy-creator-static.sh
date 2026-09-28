@@ -34,7 +34,8 @@ else
   echo "Building the creator-specific static pages..."
   PRIME_PRODUCTS_DIST_DIR="$creator_dist_dir" \
   PRIME_CREATOR_STATIC_EXPORT="true" \
-  npm run build
+  npm run build -- \
+    --debug-build-paths='app/influencers/page.tsx,app/privacy-policy/page.tsx,app/terms/page.tsx'
 fi
 
 creator_build_root="$creator_app_dir/$creator_dist_dir"
@@ -61,6 +62,14 @@ done
 
 mkdir -p "$creator_releases_root"
 
+creator_previous_release=""
+if [[ -L "$creator_static_root/current" ]]; then
+  creator_previous_release="$(readlink -f "$creator_static_root/current" || true)"
+  if [[ "$creator_previous_release" != "$creator_releases_root"/* ]]; then
+    creator_previous_release=""
+  fi
+fi
+
 if [[ -e "$creator_release_dir" || -e "$creator_temporary_release" ]]; then
   echo "Creator release already exists: $creator_release_label" >&2
   exit 1
@@ -77,16 +86,36 @@ cleanup_creator_temporary_files() {
 trap cleanup_creator_temporary_files EXIT
 
 mkdir -p \
-  "$creator_temporary_release/_next" \
   "$creator_temporary_release/influencers" \
   "$creator_temporary_release/privacy-policy" \
   "$creator_temporary_release/terms"
 
-cp -a "$creator_build_root/static" "$creator_temporary_release/_next/static"
+sync_creator_tree() {
+  local source_dir="$1"
+  local destination_dir="$2"
+  local previous_dir="${3:-}"
+  local rsync_args=(-a --delete)
 
-mkdir -p "$creator_temporary_release/media"
-cp -a public/media/partner-landing "$creator_temporary_release/media/partner-landing"
-cp -a public/media/influencer-dashboard "$creator_temporary_release/media/influencer-dashboard"
+  mkdir -p "$destination_dir"
+  if [[ -n "$previous_dir" && -d "$previous_dir" ]]; then
+    rsync_args+=(--link-dest="$previous_dir")
+  fi
+  rsync "${rsync_args[@]}" "$source_dir/" "$destination_dir/"
+}
+
+sync_creator_tree \
+  "$creator_build_root/static" \
+  "$creator_temporary_release/_next/static" \
+  "${creator_previous_release:+$creator_previous_release/_next/static}"
+
+sync_creator_tree \
+  public/media/partner-landing \
+  "$creator_temporary_release/media/partner-landing" \
+  "${creator_previous_release:+$creator_previous_release/media/partner-landing}"
+sync_creator_tree \
+  public/media/influencer-dashboard \
+  "$creator_temporary_release/media/influencer-dashboard" \
+  "${creator_previous_release:+$creator_previous_release/media/influencer-dashboard}"
 
 mkdir -p "$creator_temporary_release/images/landing/ps"
 install -m 0644 \
