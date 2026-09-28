@@ -25,6 +25,27 @@ jobs:
             APP_DIR="/var/www/prime-products"
             REPO_URL="git@github.com:${{ github.repository }}.git"
             BRANCH="${{ github.ref_name }}"
+            RELEASE_DIR=".next-release-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
+            TSCONFIG_BACKUP="/tmp/prime-products-tsconfig-${{ github.run_id }}-${{ github.run_attempt }}.json"
+            PAUSABLE_SERVICES=(
+              prime-products-test
+              primestyle-backend-test
+              primestyle-pdp-studio-worker
+              prime-preview
+            )
+            PAUSED_SERVICES=()
+
+            restore_services() {
+              if [ -f "$TSCONFIG_BACKUP" ]; then
+                cp "$TSCONFIG_BACKUP" "$APP_DIR/tsconfig.json"
+              fi
+
+              for service in "${PAUSED_SERVICES[@]}"; do
+                pm2 start "$service" >/dev/null 2>&1 || true
+              done
+            }
+
+            trap restore_services EXIT
 
             if [ ! -d "$APP_DIR" ]; then
               echo "Cloning fresh..."
@@ -43,8 +64,22 @@ jobs:
             echo "Installing dependencies..."
             npm install
 
-            echo "Building project..."
-            PRIME_PRODUCTS_LOW_MEMORY_BUILD=true npm run build
+            cp tsconfig.json "$TSCONFIG_BACKUP"
+
+            echo "Temporarily pausing test and preview processes for build memory..."
+            for service in "${PAUSABLE_SERVICES[@]}"; do
+              if pm2 describe "$service" >/dev/null 2>&1 && \
+                [ "$(pm2 jlist | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const p=JSON.parse(s).find(x=>x.name===process.argv[1]);process.stdout.write(p?.pm2_env?.status||"")})' "$service")" = "online" ]; then
+                pm2 stop "$service" >/dev/null
+                PAUSED_SERVICES+=("$service")
+              fi
+            done
+
+            echo "Building isolated release $RELEASE_DIR..."
+            NODE_OPTIONS=--max-old-space-size=4096 \
+              PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" \
+              PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
+              npm run build
 
             echo "Publishing creator static site..."
             PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
@@ -53,10 +88,15 @@ jobs:
 
             echo "Restarting PM2..."
             if pm2 describe prime-products > /dev/null 2>&1; then
-              PRIME_PRODUCTS_DIST_DIR=.next pm2 restart prime-products --update-env
+              PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" pm2 restart prime-products --update-env
             else
-              PRIME_PRODUCTS_DIST_DIR=.next PORT=3001 pm2 start npm --name "prime-products" -- start
+              PRIME_PRODUCTS_DIST_DIR="$RELEASE_DIR" PORT=3001 pm2 start npm --name "prime-products" -- start
             fi
+
+            curl --fail --silent --show-error --max-time 20 http://127.0.0.1:3001/ >/dev/null
+
+            restore_services
+            trap - EXIT
             pm2 save
 
             echo "Deployment complete!"
