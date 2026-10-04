@@ -164,9 +164,14 @@ if (merchantHome.includes('id="ai-fitting"')) {
   throw new Error("The hidden interactive SDK section is present in the merchant release.");
 }
 
-const merchantHomeLinks = merchantHome.match(/href="\/merchants"/g) || [];
-if (merchantHomeLinks.length < 2) {
-  throw new Error("Merchant header and footer logos must both point to /merchants.");
+const homeLogoLinks = [...merchantHome.matchAll(/<a\b[^>]*>/g)]
+  .map(([tag]) => tag)
+  .filter((tag) => tag.includes('aria-label="PrimeStyleAI home"') && tag.includes('href="/"'));
+if (homeLogoLinks.length < 2) {
+  throw new Error("Merchant header and footer logos must both point to the site home.");
+}
+if (!merchantHome.includes('href="/merchants"')) {
+  throw new Error("Merchant navigation must retain a link to /merchants.");
 }
 NODE
 
