@@ -23,6 +23,11 @@ export const metadata: Metadata = {
     title: "PrimeStyleAI · Global Fashion Shopping Network",
     description: "Global Fashion Shopping Network",
   },
+  icons: {
+    icon: "/merchants/icon.png",
+    shortcut: "/merchants/icon.png",
+    apple: "/merchants/icon.png",
+  },
 };
 
 // Keep the production root in sync with the shop experience.
