@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "For Influencers · Make Every Look Shoppable | PrimeStyleAI",
   description:
     "Connect with fashion merchants, create a public shoppable profile, and earn validated commission through the PrimeStyleAI creator program.",
-  icons: { icon: "/influencers/icon.png?v=20261004-network-mark" },
+  icons: { icon: "/influencers/icon.png?v=20261004-round-network" },
   alternates: {
     canonical: "/",
   },
