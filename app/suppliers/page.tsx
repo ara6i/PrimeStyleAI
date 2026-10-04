@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "PrimeStyleAI | Grow Through One Connected Shopping Network",
   description:
     "PrimeStyleAI connects fashion suppliers with merchants, influencers, and customers through one global shopping network and supplier dashboard.",
-  icons: { icon: "/suppliers/icon.png?v=20261004-circle" },
+  icons: { icon: "/suppliers/icon.png?v=20261004-network-mark" },
 };
 
 export default function SupplierLandingPage() {

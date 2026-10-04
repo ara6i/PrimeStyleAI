@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     description: "Global Fashion Shopping Network",
   },
   icons: {
-    icon: "/merchants/icon.png",
-    shortcut: "/merchants/icon.png",
-    apple: "/merchants/icon.png",
+    icon: "/merchants/icon.png?v=20261004-network-mark",
+    shortcut: "/merchants/icon.png?v=20261004-network-mark",
+    apple: "/merchants/icon.png?v=20261004-network-mark",
   },
 };
 
