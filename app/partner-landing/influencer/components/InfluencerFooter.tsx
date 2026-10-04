@@ -78,10 +78,10 @@ export function InfluencerFooter({
 
             <nav className={styles.footerQuickLinks} aria-label={t("Footer navigation")}>
               <h3>{t("Quick links")}</h3>
-              <Link href="/">{t("Shop")}</Link>
-              <Link href="/merchants">{t("Merchants")}</Link>
+              <a href="https://primestyleai.com/">{t("Shop")}</a>
+              <a href="https://merchants.primestyleai.com/">{t("Merchants")}</a>
               <Link href="/creators">{t("Creators")}</Link>
-              <Link href="/suppliers">{t("Suppliers")}</Link>
+              <a href="https://primestyleai.com/suppliers">{t("Suppliers")}</a>
             </nav>
           </div>
 

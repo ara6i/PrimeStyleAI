@@ -36,7 +36,7 @@ export function InfluencerHeader(props: InfluencerHeaderProps) {
         <a href={`${navigationBaseHref}#outfit-studio`}>{t("Outfit Studio")}</a>
         <a href={`${navigationBaseHref}#creator-journey`}>{t("How you earn")}</a>
         <a href={`${navigationBaseHref}#creator-commission`}>{t("Commission")}</a>
-        <Link href="/merchants">{t("For merchants")}</Link>
+        <a href="https://merchants.primestyleai.com/">{t("For merchants")}</a>
       </nav>
       <div className={styles.headerActions}>
         <LandingLanguageSwitcher
@@ -61,7 +61,7 @@ export function InfluencerHeader(props: InfluencerHeaderProps) {
           <a href={`${navigationBaseHref}#outfit-studio`} onClick={props.onMenuClose}>{t("Outfit Studio")}</a>
           <a href={`${navigationBaseHref}#creator-journey`} onClick={props.onMenuClose}>{t("How you earn")}</a>
           <a href={`${navigationBaseHref}#creator-commission`} onClick={props.onMenuClose}>{t("Commission")}</a>
-          <Link href="/merchants" onClick={props.onMenuClose}>{t("For merchants")}</Link>
+          <a href="https://merchants.primestyleai.com/" onClick={props.onMenuClose}>{t("For merchants")}</a>
           <button type="button" onClick={() => { props.onMenuClose(); props.onPrimaryAction(); }}>{t("Join waitlist")}</button>
           <a className={styles.mobileCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer" onClick={props.onMenuClose}>
             {t("Book a Demo")} <ArrowUpRight size={15} weight="bold" />
