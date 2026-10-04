@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+// @vitest-environment-options {"url":"https://test-fe-9a7k.primestyleai.com/"}
 
 import {
   cleanup,
@@ -79,11 +80,14 @@ vi.mock("../bag/useShopBag", () => ({
 beforeEach(() => vi.clearAllMocks());
 afterEach(() => cleanup());
 
-it("hides the menu on production while keeping it on test and local hosts", () => {
+it("shows the menu only on the test frontend host", () => {
   expect(shouldShowShopMenu("primestyleai.com")).toBe(false);
   expect(shouldShowShopMenu("www.primestyleai.com")).toBe(false);
   expect(shouldShowShopMenu("test-fe-9a7k.primestyleai.com")).toBe(true);
-  expect(shouldShowShopMenu("127.0.0.1")).toBe(true);
+  expect(shouldShowShopMenu("127.0.0.1")).toBe(false);
+  expect(shouldShowShopMenu("merchants.primestyleai.com")).toBe(false);
+  expect(shouldShowShopMenu("creators.primestyleai.com")).toBe(false);
+  expect(shouldShowShopMenu("suppliers.primestyleai.com")).toBe(false);
 });
 
 it("places AI Stylist second and the SDK third without reordering later sections", () => {

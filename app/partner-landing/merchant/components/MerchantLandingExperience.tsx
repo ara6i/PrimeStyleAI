@@ -56,7 +56,6 @@ export function MerchantLandingExperience() {
         onMenuToggle={navigation.toggleMobileMenu}
         onMenuClose={navigation.closeMobileMenu}
         onPrimaryAction={interest.open}
-        onSectionSelect={navigation.scrollToSection}
       />
       <main>
         <MerchantTogetherSection onPrimaryAction={interest.open} />

@@ -9,7 +9,7 @@ describe("shop-only SDK release isolation", () => {
   it("pins shop preview separately from the existing base SDK", () => {
     const { dependencies } = JSON.parse(read("package.json"));
     expect(dependencies["@primestyleai/tryon-shop"]).toBe(
-      "file:vendor/primestyleai-tryon-5.10.245-preview.9-arc-jacket-v24.tgz",
+      "file:vendor/primestyleai-tryon-5.10.245-preview.9-demo-player-v9.tgz",
     );
     expect(dependencies["@primestyleai/tryon"]).toBe("5.10.243");
     const installed = JSON.parse(
@@ -34,8 +34,11 @@ describe("shop-only SDK release isolation", () => {
     expect(bundle).toContain("bra-cup");
     expect(bundle).toContain("data-guided-demo-locked");
     expect(bundle).toContain('closest(".ps-bp-next-btn")');
-    expect(bundle).toContain('return e && i === "photo" && r;');
-    expect(bundle).toContain("const SA = Mr(), JA = g,");
+    expect(bundle).toContain("Play the demo");
+    expect(bundle).toContain("data-demo-guided-step");
+    expect(bundle).toContain("ps-bp-demo-next");
+    expect(bundle).toContain("ps-bp-outfit-piece-mark");
+    expect(bundle).not.toContain("ps-demo-finish-veil");
   });
 
   it("ships the staged outfit orbit and body-landmark try-on transitions", () => {
@@ -47,9 +50,6 @@ describe("shop-only SDK release isolation", () => {
     expect(bundle).toContain("Building your complete look");
     expect(bundle).toContain("ps-msc-pose-overlay");
     expect(bundle).toContain("Detecting body pose");
-    expect(bundle).toContain(
-      "nr(Xo(a.photoBase64), { maxLongEdge: 1600 })",
-    );
     expect(bundle).not.toContain("Qo(pw)");
     expect(bundle).not.toContain("leftShoulder: { x: 0.39, y: 0.245 }");
   });

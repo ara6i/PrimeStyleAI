@@ -44,7 +44,7 @@ function InfluencerLandingContent() {
       lang={language}
     >
       <InfluencerMediaPreloads />
-      <InfluencerHeader mobileMenuOpen={navigation.mobileMenuOpen} onMenuToggle={navigation.toggleMobileMenu} onMenuClose={navigation.closeMobileMenu} onPrimaryAction={interest.open} onSectionSelect={navigation.scrollToSection} />
+      <InfluencerHeader mobileMenuOpen={navigation.mobileMenuOpen} onMenuToggle={navigation.toggleMobileMenu} onMenuClose={navigation.closeMobileMenu} onPrimaryAction={interest.open} />
       <main>
         <InfluencerHero viewModel={localizedViewModel} onPrimaryAction={interest.open} onSecondaryAction={interest.open} />
         <InfluencerOutfitStudio onCtaClick={interest.open} />

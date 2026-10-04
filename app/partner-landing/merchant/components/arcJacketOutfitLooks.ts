@@ -236,9 +236,9 @@ function resultsForColour(
     lookId: look.id,
     image: `/media/global-shop/arc-jacket-demo-v2/results/${colour}/look-0${index + 1}.webp`,
     recommendedSize: "M",
-    confidence: "high",
+    confidence: "illustrative",
     reasoning:
-      "Size M preserves the Arc Jacket's intended cropped streetwear line with comfortable chest and shoulder ease.",
+      "Size M is a sample selection for this prepared demo, not a measured fit recommendation.",
   }));
 }
 

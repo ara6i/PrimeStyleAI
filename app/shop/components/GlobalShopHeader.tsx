@@ -15,10 +15,10 @@ import { ShopMenuNavigation } from "./ShopMenuNavigation";
 import styles from "./globalShop.module.css";
 
 const GOOGLE_BOOKING_URL = "https://calendar.app.google/4LeitboKs5KzemWL7";
-const PRODUCTION_HOSTS = new Set(["primestyleai.com", "www.primestyleai.com"]);
+const TEST_FRONTEND_HOST = /^test-fe-[a-z0-9-]+\.primestyleai\.com$/;
 
 export function shouldShowShopMenu(hostname: string) {
-  return !PRODUCTION_HOSTS.has(hostname.trim().toLowerCase());
+  return TEST_FRONTEND_HOST.test(hostname.trim().toLowerCase());
 }
 
 function subscribeToHostname() {

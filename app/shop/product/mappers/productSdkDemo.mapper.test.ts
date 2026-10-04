@@ -89,6 +89,24 @@ describe("prepared Shop PDP SDK demos", () => {
     }
   });
 
+  it("labels prepared sizes honestly and carries each companion’s own chart", async () => {
+    const detail = await getProduct("women-camel-pinstripe-tailored-blazer");
+    const demo = getProductSdkDemo(detail);
+    expect(demo.instantOutfitResults.every(result => result.confidence === "illustrative")).toBe(true);
+    expect(demo.instantOutfitResults.every(result => result.reasoning?.includes("not a measured fit"))).toBe(true);
+    const companions = demo.instantOutfitLooks.flatMap(look => look.items);
+    const trousers = companions.find(item => item.productId === "women-chocolate-tailored-trouser");
+    expect(trousers?.availableSizes).toEqual(["24", "26", "28", "30", "32"]);
+    expect(trousers?.sizeGuide?.headers).toContain("Inseam/Length (cm)");
+    expect(trousers?.sizeGuide?.headers).not.toContain("Shoulder width (cm)");
+  });
+
+  it("does not invent a size when a product has no available size data", async () => {
+    const detail = await getProduct("women-camel-pinstripe-tailored-blazer");
+    const demo = getProductSdkDemo({ ...detail, sizes: [], sizeGuide: undefined });
+    expect(demo.instantOutfitResults.every(result => result.recommendedSize === "")).toBe(true);
+  });
+
   it("starts every showcase demo from a neutral photo of the same PDP model identity", async () => {
     const womenProduct = await getProduct(
       "women-camel-pinstripe-tailored-blazer",

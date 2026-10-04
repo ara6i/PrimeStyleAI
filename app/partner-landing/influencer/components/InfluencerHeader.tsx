@@ -11,15 +11,16 @@ interface InfluencerHeaderProps {
   onMenuToggle: () => void;
   onMenuClose: () => void;
   onPrimaryAction: () => void;
-  onSectionSelect: (id: string) => void;
+  navigationBaseHref?: string;
 }
 
 export function InfluencerHeader(props: InfluencerHeaderProps) {
   const { language, setLanguage, t } = useCreatorLanguage();
+  const navigationBaseHref = props.navigationBaseHref ?? "";
 
   return (
     <header className={styles.header}>
-      <Link href="/creators" className={styles.logoLink} aria-label={t("Prime Style AI home")}>
+      <Link href="/" className={styles.logoLink} aria-label={t("Prime Style AI home")}>
         <Image
           src="/media/partner-landing/optimized/primestyleai-mark-256.webp"
           alt="Prime Style AI"
@@ -31,11 +32,11 @@ export function InfluencerHeader(props: InfluencerHeaderProps) {
         <span>Prime Style AI</span>
       </Link>
       <nav className={styles.desktopNav} aria-label={t("Influencer navigation")}>
-        <Link href="/" aria-current="page">{t("Influencers")}</Link>
-        <button type="button" onClick={() => props.onSectionSelect("outfit-studio")}>{t("Outfit Studio")}</button>
-        <button type="button" onClick={() => props.onSectionSelect("creator-journey")}>{t("How you earn")}</button>
-        <button type="button" onClick={() => props.onSectionSelect("creator-commission")}>{t("Commission")}</button>
-        <a href="https://primestyleai.com/merchants">{t("For merchants")}</a>
+        <Link href="/creators" aria-current="page">{t("Influencers")}</Link>
+        <a href={`${navigationBaseHref}#outfit-studio`}>{t("Outfit Studio")}</a>
+        <a href={`${navigationBaseHref}#creator-journey`}>{t("How you earn")}</a>
+        <a href={`${navigationBaseHref}#creator-commission`}>{t("Commission")}</a>
+        <Link href="/merchants">{t("For merchants")}</Link>
       </nav>
       <div className={styles.headerActions}>
         <LandingLanguageSwitcher
@@ -57,10 +58,10 @@ export function InfluencerHeader(props: InfluencerHeaderProps) {
       </div>
       {props.mobileMenuOpen ? (
         <nav className={styles.mobileNav} aria-label={t("Mobile influencer navigation")}>
-          <button type="button" onClick={() => props.onSectionSelect("outfit-studio")}>{t("Outfit Studio")}</button>
-          <button type="button" onClick={() => props.onSectionSelect("creator-journey")}>{t("How you earn")}</button>
-          <button type="button" onClick={() => props.onSectionSelect("creator-commission")}>{t("Commission")}</button>
-          <a href="https://primestyleai.com/merchants" onClick={props.onMenuClose}>{t("For merchants")}</a>
+          <a href={`${navigationBaseHref}#outfit-studio`} onClick={props.onMenuClose}>{t("Outfit Studio")}</a>
+          <a href={`${navigationBaseHref}#creator-journey`} onClick={props.onMenuClose}>{t("How you earn")}</a>
+          <a href={`${navigationBaseHref}#creator-commission`} onClick={props.onMenuClose}>{t("Commission")}</a>
+          <Link href="/merchants" onClick={props.onMenuClose}>{t("For merchants")}</Link>
           <button type="button" onClick={() => { props.onMenuClose(); props.onPrimaryAction(); }}>{t("Join waitlist")}</button>
           <a className={styles.mobileCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer" onClick={props.onMenuClose}>
             {t("Book a Demo")} <ArrowUpRight size={15} weight="bold" />

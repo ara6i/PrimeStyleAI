@@ -4,16 +4,15 @@ import Link from "next/link";
 import { BOOK_A_DEMO_URL } from "../../bookDemo";
 import styles from "./merchantLanding.module.css";
 
-export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPrimaryAction, onSectionSelect }: {
+export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPrimaryAction }: {
   mobileMenuOpen: boolean;
   onMenuToggle: () => void;
   onMenuClose: () => void;
   onPrimaryAction: () => void;
-  onSectionSelect: (id: string) => void;
 }) {
   return (
     <header className={styles.header}>
-      <Link href="/merchants" className={styles.logoLink} aria-label="PrimeStyleAI merchants home">
+      <Link href="/" className={styles.logoLink} aria-label="PrimeStyleAI home">
         <Image
           src="/media/partner-landing/optimized/primestyleai-mark-256.webp"
           alt="PrimeStyleAI"
@@ -26,10 +25,10 @@ export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPr
       </Link>
       <nav className={styles.desktopNav} aria-label="Merchant navigation">
         <Link href="/merchants" aria-current="page">Merchants</Link>
-        <button type="button" onClick={() => onSectionSelect("shopping-network")}>Your store</button>
-        <button type="button" onClick={() => onSectionSelect("influencer-network")}>Creators</button>
-        <button type="button" onClick={() => onSectionSelect("merchant-dashboard")}>Dashboard</button>
-        <button type="button" onClick={() => onSectionSelect("pdp-studio-feature")}>PDP Studio</button>
+        <a href="#shopping-network">Your store</a>
+        <a href="#influencer-network">Creators</a>
+        <a href="#merchant-dashboard">Dashboard</a>
+        <a href="#pdp-studio-feature">PDP Studio</a>
       </nav>
       <div className={styles.headerActions}>
         <button type="button" className={styles.headerWaitlistCta} onClick={onPrimaryAction}>
@@ -42,11 +41,11 @@ export function MerchantHeader({ mobileMenuOpen, onMenuToggle, onMenuClose, onPr
       </div>
       {mobileMenuOpen ? (
         <nav className={styles.mobileNav} aria-label="Mobile merchant navigation">
-          <button type="button" onClick={() => onSectionSelect("shopping-network")}>Your storefront</button>
-          <button type="button" onClick={() => onSectionSelect("influencer-network")}>Creator showcase</button>
-          <button type="button" onClick={() => onSectionSelect("creator-discovery")}>Find creators</button>
-          <button type="button" onClick={() => onSectionSelect("merchant-dashboard")}>Merchant dashboard</button>
-          <button type="button" onClick={() => onSectionSelect("pdp-studio-feature")}>PDP Studio</button>
+          <a href="#shopping-network" onClick={onMenuClose}>Your storefront</a>
+          <a href="#influencer-network" onClick={onMenuClose}>Creator showcase</a>
+          <a href="#creator-discovery" onClick={onMenuClose}>Find creators</a>
+          <a href="#merchant-dashboard" onClick={onMenuClose}>Merchant dashboard</a>
+          <a href="#pdp-studio-feature" onClick={onMenuClose}>PDP Studio</a>
           <button type="button" onClick={() => { onMenuClose(); onPrimaryAction(); }}>Join the waitlist</button>
           <a className={styles.mobileCta} href={BOOK_A_DEMO_URL} target="_blank" rel="noopener noreferrer" onClick={onMenuClose}>
             Book a Demo <ArrowUpRight size={15} weight="bold" />

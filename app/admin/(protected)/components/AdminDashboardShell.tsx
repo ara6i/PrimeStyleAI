@@ -33,6 +33,13 @@ function createAdminNavItems(activeHref: string): AdminDashboardNavItem[] {
       disabled: false,
     },
     {
+      label: "Occasion Calendar",
+      href: "/admin/calendar",
+      icon: "calendar",
+      active: activeHref.startsWith("/admin/calendar"),
+      disabled: false,
+    },
+    {
       label: "Profile Users",
       href: "/admin/users",
       icon: "customers",

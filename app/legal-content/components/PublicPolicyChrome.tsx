@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
 import { InfluencerFooter } from "@/app/partner-landing/influencer/components/InfluencerFooter";
 import { InfluencerHeader } from "@/app/partner-landing/influencer/components/InfluencerHeader";
 import { InfluencerInterestDialog } from "@/app/partner-landing/influencer/components/InfluencerInterestDialog";
@@ -33,7 +32,6 @@ export function PublicPolicyChrome({ children }: PublicPolicyChromeProps) {
 }
 
 function LocalizedPublicPolicyChrome({ children }: PublicPolicyChromeProps) {
-  const router = useRouter();
   const { direction, language, t } = useCreatorLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { interest, viewModel } = useInfluencerLandingPage();
@@ -41,10 +39,6 @@ function LocalizedPublicPolicyChrome({ children }: PublicPolicyChromeProps) {
     () => localizeInfluencerLandingViewModel(viewModel, t),
     [t, viewModel],
   );
-  const openInfluencerSection = (id: string) => {
-    setMobileMenuOpen(false);
-    router.push(`/creators#${id}`);
-  };
 
   return (
     <div className={styles.page} data-audience="influencer" dir={direction} lang={language}>
@@ -53,7 +47,7 @@ function LocalizedPublicPolicyChrome({ children }: PublicPolicyChromeProps) {
         onMenuToggle={() => setMobileMenuOpen((isOpen) => !isOpen)}
         onMenuClose={() => setMobileMenuOpen(false)}
         onPrimaryAction={interest.open}
-        onSectionSelect={openInfluencerSection}
+        navigationBaseHref="/creators"
       />
       {children}
       <InfluencerFooter onCtaClick={interest.open} variant="legal" />

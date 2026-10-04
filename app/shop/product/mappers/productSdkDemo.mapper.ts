@@ -8,6 +8,7 @@ import {
   SHOWCASE_PRODUCTS,
   SHOWCASE_SLOTS,
   getShowcaseProduct,
+  getShowcaseProductSpecification,
   showcaseAsset,
   type ShowcaseProduct,
 } from "../../data/showcaseCatalog.data";
@@ -59,7 +60,7 @@ const GENERIC_MASKS = ["0000", "0101", "1010", "0011", "1100"] as const;
 function recommendedSize(product: ProductDetailViewModel) {
   if (product.sizes.includes("One size")) return "One size";
   if (product.sizes.includes("M")) return "M";
-  return product.sizes[Math.floor(product.sizes.length / 2)] ?? "M";
+  return product.sizes[Math.floor(product.sizes.length / 2)] ?? "";
 }
 
 function presetProfile(
@@ -97,8 +98,8 @@ function instantResults(
       product.gallery[0]?.src ??
       product.featureImage,
     recommendedSize: size,
-    confidence: "high",
-    reasoning: `${size} keeps the intended fit of ${product.name} while the rest of the ${look.label?.toLowerCase() ?? "curated"} look stays balanced.`,
+    confidence: "illustrative",
+    reasoning: `${size} is a sample selection for this prepared demo of ${product.name}, not a measured fit recommendation.`,
   }));
 }
 
@@ -120,7 +121,7 @@ function inferSlot(
 function recommendedShowcaseSize(product: ShowcaseProduct) {
   if (product.sizes.includes("One size")) return "One size";
   if (product.sizes.includes("M")) return "M";
-  return product.sizes[Math.floor(product.sizes.length / 2)] ?? "M";
+  return product.sizes[Math.floor(product.sizes.length / 2)] ?? "";
 }
 
 function companionItem(
@@ -223,6 +224,18 @@ export function getProductSdkDemo(
   const looks = showcaseProduct
     ? getProductInstantOutfitLooks(product.id)
     : genericLooks(product, gender);
+  // Carry each companion's own chart and sizes into the SDK result details.
+  const enrichItem = (item: PrimeStyleOutfitItem): PrimeStyleOutfitItem => {
+    const companion = getShowcaseProduct(item.productId);
+    const guide = getShowcaseProductSpecification(item.productId)?.sizeGuide;
+    return {
+      ...item,
+      ...(companion ? { availableSizes: companion.sizes } : {}),
+      ...(guide ? { sizeGuide: guide } : {}),
+      ...(item.alternatives ? { alternatives: item.alternatives.map(enrichItem) } : {}),
+    };
+  };
+  const preparedLooks = looks.map(look => ({ ...look, items: look.items.map(enrichItem) }));
   const profile = presetProfile(product, gender);
   const isDailyEdit = product.id.startsWith("daily-edit-");
   const wornProductPhoto =
@@ -232,10 +245,10 @@ export function getProductSdkDemo(
 
   return {
     presetProfile: profile,
-    instantOutfitLooks: looks,
+    instantOutfitLooks: preparedLooks,
     instantOutfitResults: instantResults(
       product,
-      looks,
+      preparedLooks,
       showcaseProduct
         ? (index) => showcasePreparedResultAsset(showcaseProduct, index)
         : isDailyEdit

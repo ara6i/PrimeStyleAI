@@ -165,16 +165,16 @@ export function MerchantSizeGuideModal({
             <div className={styles.intro}>
               <p>Women&apos;s tailored coat</p>
               <h2 id="atelier-jacket-size-guide-title">
-                Find your Aubergine Coat size.
+                Explore the sample coat chart.
               </h2>
               <span>
-                Use your chest and waist to choose a size. Shoulder, sleeve, and
-                back length confirm how the tailored fit will sit.
+                Illustrative demo data. Check the brand’s verified chart before
+                buying; body ranges and finished-garment dimensions differ.
               </span>
             </div>
 
             <div className={styles.guideToolbar}>
-              <p>Garment measurements</p>
+              <p>Sample body ranges & garment lengths</p>
               <div className={styles.unitToggle} aria-label="Measurement unit">
                 {(["cm", "in"] as const).map((value) => (
                   <button
@@ -195,8 +195,8 @@ export function MerchantSizeGuideModal({
                 <thead>
                   <tr>
                     <th scope="col">Size</th>
-                    <th scope="col">Chest</th>
-                    <th scope="col">Waist</th>
+                    <th scope="col">Body bust</th>
+                    <th scope="col">Body waist</th>
                     <th scope="col">Shoulder</th>
                     <th scope="col">Sleeve</th>
                     <th scope="col">Back length</th>
@@ -233,7 +233,7 @@ export function MerchantSizeGuideModal({
             </div>
 
             <div className={styles.fitProfile} aria-live="polite">
-              <span>Recommended body range for {selectedSize}</span>
+              <span>Sample body range for {selectedSize}</span>
               <div>
                 <p>
                   <strong>Chest</strong>
@@ -258,8 +258,9 @@ export function MerchantSizeGuideModal({
 
             <p className={styles.note}>
               Chest and waist are body-fit ranges. Shoulder, sleeve, and back
-              length are finished-garment measurements. Allow ±1 cm production
-              tolerance.
+              length are sample finished-garment measurements. Coats need room
+              for movement and layers; that allowance depends on the brand’s
+              pattern and cannot be inferred from these body ranges.
             </p>
 
             <footer className={styles.footer}>

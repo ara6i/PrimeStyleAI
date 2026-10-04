@@ -1,0 +1,477 @@
+--- a/src/react/components/GuidedDemoPlayer.tsx
++++ b/src/react/components/GuidedDemoPlayer.tsx
+@@ -11,11 +11,20 @@
+   const [phase, setPhase] = useState("Watch the demo, then explore the garments and size charts.");
+   const [hasPlayed, setHasPlayed] = useState(false);
+   const [cursor, setCursor] = useState<{ x: number; y: number; pressed: boolean } | null>(null);
++  const [clickPulse, setClickPulse] = useState(0);
+   const readyRef = useRef(resultReady);
+   readyRef.current = resultReady;
+ 
++  const start = () => {
++    setHasPlayed(true);
++    setClickPulse(0);
++    onStart();
++  };
++
+   useEffect(() => {
+     if (!playing) { setCursor(null); return; }
++    const origin = rootRef.current?.closest(".ps-tryon-modal")?.querySelector<HTMLElement>(".ps-demo-play")?.getBoundingClientRect();
++    if (origin) setCursor({ x: origin.left + origin.width / 2, y: origin.top + origin.height / 2, pressed: false });
+     const controller = new AbortController();
+     const signal = controller.signal;
+     const timers = new Set<ReturnType<typeof setTimeout>>();
+@@ -33,20 +42,21 @@
+         if (element && element.getClientRects().length && (!predicate || predicate())) return element;
+         await wait(100);
+       }
+-      throw new Error("step unavailable");
++      throw new Error(`step unavailable: ${selector}`);
+     };
+     const click = async (element: HTMLElement) => {
+-      element.scrollIntoView({ block: "nearest", behavior: "instant" });
+-      await wait(120);
++      element.scrollIntoView({ block: "nearest", behavior: "smooth" });
++      await wait(480);
+       const rect = element.getBoundingClientRect();
+       setCursor({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, pressed: false });
+-      await wait(380);
++      await wait(900);
+       if (!element.isConnected || signal.aborted) throw new Error("step unavailable");
+       setCursor(current => current && { ...current, pressed: true });
+-      await wait(140);
++      setClickPulse(current => current + 1);
++      await wait(260);
+       element.click();
+       setCursor(current => current && { ...current, pressed: false });
+-      await wait(250);
++      await wait(280);
+     };
+     setHasPlayed(true);
+     setPhase("1 of 4 · Set up the sample profile");
+@@ -57,28 +67,28 @@
+         await click(await find(".ps-pm-primary-btn:not(:disabled)"));
+         await click(await find('[data-demo-step="scan-details"] .ps-bpm-next-btn:not(:disabled)'));
+       }
+-      await find(".ps-bp-style-submit:not(:disabled)");
+-      setPhase("2 of 4 · Build the outfit");
+-      await wait(450);
+-      const category = rootRef.current?.querySelectorAll<HTMLElement>(".ps-bp-outfit-piece-open")[1];
+-      if (category) await click(category);
+-      const nextOptions = rootRef.current?.querySelector<HTMLElement>(".ps-bp-outfit-option-nav.ps-next");
+-      if (nextOptions) await click(nextOptions);
+-      const nextLook = rootRef.current?.querySelector<HTMLElement>(".ps-bp-outfit-carousel-controls .ps-next:not(:disabled)");
+-      if (nextLook) await click(nextLook);
++      const builder = await find(".ps-bp-outfit-editor");
++      const total = Number(builder.dataset.demoGuidedTotal || 0);
++      setPhase("2 of 4 · Choose each new garment");
++      await wait(600);
++      if (Number.isInteger(total) && total > 0) {
++        for (let index = 0; index < total; index++) {
++          await find(`.ps-bp-outfit-editor[data-demo-guided-step="${index}"]`);
++          await click(await find('.ps-bp-outfit-option[data-demo-target="true"]'));
++          if (index < total - 1) await click(await find(".ps-bp-demo-next:not(:disabled)"));
++        }
++      }
+       await click(await find(".ps-bp-style-submit:not(:disabled)"));
+       setPhase("3 of 4 · Reveal the prepared look");
+       setCursor(null);
+-      const garment = await find(".ps-rag-result-garment-card", () => readyRef.current);
+-      setPhase("4 of 4 · Explore the size chart");
+-      await wait(700);
++      await find(".ps-rag-result-garment-card", () => readyRef.current && (rootRef.current?.querySelectorAll(".ps-rag-result-garment-card").length || 0) > 1);
++      setPhase("4 of 4 · Inspect a new garment's sizing");
++      await wait(750);
++      const garment = rootRef.current?.querySelectorAll<HTMLElement>(".ps-rag-result-garment-card")[1];
++      if (!garment) throw new Error("new garment unavailable");
+       await click(garment);
+       await find(".ps-msd-root, .ps-tryon-sec-detail, .ps-outfit-size-detail, .ps-outfit-size-note");
+-      await wait(900);
+-      // Show the chart, then hand back the garment selector. Every control is live.
+-      const back = rootRef.current?.querySelector<HTMLElement>(".ps-msd-back, .ps-msd-action-back, .ps-outfit-size-footer .ps-bp-back-btn, .ps-tryon-sec-detail-footer .ps-bp-back-btn");
+-      if (back) await click(back);
+-      setPhase("Your turn · Select a garment to view its sizes and details.");
++      setPhase("Your turn · Explore this size detail or go back to the other garments.");
+       onPlayingChange(false);
+     })().catch(() => {
+       if (!signal.aborted) {
+@@ -90,21 +100,33 @@
+   }, [playing, rootRef, onPlayingChange]);
+ 
+   return <>
+-    <div className="ps-demo-player" data-demo-playing={playing}>
+-      <button type="button" className="ps-demo-play" aria-label={playing ? "Pause demo" : hasPlayed ? "Replay demo" : "Play demo"}
++    {!hasPlayed && !playing && <div className="ps-demo-intro">
++      <div className="ps-demo-intro-card">
++        <span className="ps-demo-intro-eyebrow">A guided look inside</span>
++        <h2>See your outfit come together</h2>
++        <p>Watch the pieces get selected, then explore the result and size details yourself.</p>
++        <button type="button" className="ps-demo-intro-play" onClick={start} aria-label="Play the demo">
++          <span className="ps-demo-intro-icon"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 3 11 7-11 7z" /></svg></span>
++          Play the demo
++        </button>
++        <small>Prepared example · No personal fit assessment</small>
++      </div>
++    </div>}
++    {hasPlayed && <div className="ps-demo-player" data-demo-playing={playing}>
++      <button type="button" className="ps-demo-play" aria-label={playing ? "Pause demo" : "Replay demo"}
+         onClick={() => {
+           if (playing) { setPhase("Demo paused · You can use every control below."); onPlayingChange(false); }
+-          else onStart();
++          else start();
+         }}>
+         {playing ? <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 4h4v12H5zm6 0h4v12h-4z" /></svg>
+           : <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 3 11 7-11 7z" /></svg>}
+-        {playing ? "Pause" : hasPlayed ? "Replay demo" : "Play demo"}
++        {playing ? "Pause" : "Replay demo"}
+       </button>
+       <div className="ps-demo-copy"><span role="status" aria-live="polite">{phase}</span><small>Prepared demo · Sample sizing, not a personal fit assessment</small></div>
+-    </div>
+-    {playing && cursor && <div className={`ps-demo-cursor${cursor.pressed ? " ps-pressed" : ""}`} aria-hidden="true" style={{ left: cursor.x, top: cursor.y }}>
++    </div>}
++    {playing && cursor && <div className={`ps-demo-cursor${cursor.pressed ? " ps-pressed" : ""}`} aria-hidden="true" style={{ transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0)` }}>
+       <svg viewBox="0 0 24 30"><path d="M2 2v23l6-6 5 9 4-2-5-9h9z" fill="#111827" stroke="white" strokeWidth="2" /></svg>
+-      <span />
++      {clickPulse > 0 && <span key={clickPulse} />}
+     </div>}
+   </>;
+ }
+--- a/src/react/styles.ts
++++ b/src/react/styles.ts
+@@ -1,16 +1,34 @@
+ export const STYLES = `
++  .ps-tryon-modal:has(.ps-demo-intro) { position:relative; }
++  .ps-demo-intro { position:absolute; inset:54px 0 0; z-index:100; display:grid; place-items:center; padding:22px; background:rgba(17,24,39,.30); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
++  .ps-demo-intro-card { display:flex; flex-direction:column; align-items:center; width:min(100%,420px); padding:34px 30px 28px; border-radius:24px; background:#fff; box-shadow:0 28px 70px #1118273d; color:#20221f; text-align:center; }
++  .ps-demo-intro-eyebrow { font:700 11px/1.4 system-ui; letter-spacing:.16em; text-transform:uppercase; color:#657366; }
++  .ps-demo-intro-card h2 { margin:12px 0 8px; font:700 clamp(24px,3vw,32px)/1.13 system-ui; letter-spacing:-.04em; }
++  .ps-demo-intro-card p { max-width:310px; margin:0 0 23px; font:400 14px/1.55 system-ui; color:#5d665e; }
++  .ps-demo-intro-play { display:flex; align-items:center; gap:11px; padding:8px 24px 8px 8px; border:0; border-radius:999px; background:#20261f; color:#fff; font:700 15px/1.2 system-ui; cursor:pointer; box-shadow:0 8px 22px #20261f38; }
++  .ps-demo-intro-icon { display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:#fff; color:#20261f; }
++  .ps-demo-intro-icon svg { width:18px; height:18px; margin-left:3px; fill:currentColor; }
++  .ps-demo-intro-card > small { margin-top:19px; font:400 11px/1.3 system-ui; color:#737a74; }
++  .ps-demo-intro-play:focus-visible { outline:3px solid #8cb69c; outline-offset:3px; }
+   .ps-demo-player { display:flex; align-items:center; gap:12px; padding:10px 20px; border-block:1px solid var(--ps-border-color); background:var(--ps-bg-secondary); flex-shrink:0; }
+   .ps-demo-play { display:flex; align-items:center; justify-content:center; gap:7px; border:0; border-radius:999px; padding:10px 15px; background:var(--ps-text-primary); color:var(--ps-bg-primary); font:600 12px/1.2 system-ui; cursor:pointer; white-space:nowrap; min-height:40px; }
+   .ps-demo-play svg { width:15px; height:15px; fill:currentColor; }
+   .ps-demo-play:focus-visible { outline:2px solid var(--ps-accent); outline-offset:3px; }
+   .ps-demo-copy { display:flex; flex-direction:column; gap:3px; font:500 12px/1.4 system-ui; color:var(--ps-text-primary); }
+   .ps-demo-copy small { font-size:10px; font-weight:400; color:var(--ps-text-secondary); }
+-  .ps-demo-cursor { position:fixed; z-index:2147483646; pointer-events:none; transition:left 300ms ease,top 300ms ease; width:24px; height:30px; }
+-  .ps-demo-cursor svg { width:24px; height:30px; filter:drop-shadow(0 2px 3px #0005); }
+-  .ps-demo-cursor span { position:absolute; left:-12px; top:-12px; width:26px; height:26px; border-radius:50%; border:3px solid var(--ps-accent); opacity:0; }
+-  .ps-demo-cursor.ps-pressed span { opacity:1; transform:scale(1.3); }
++  .ps-demo-cursor { position:fixed; left:0; top:0; z-index:2147483646; pointer-events:none; transition:transform 850ms cubic-bezier(.22,.62,.24,1); will-change:transform; width:24px; height:30px; }
++  .ps-demo-cursor svg { width:24px; height:30px; filter:drop-shadow(0 2px 3px #0005); transform-origin:3px 3px; transition:transform 120ms ease; }
++  .ps-demo-cursor.ps-pressed svg { transform:scale(.78) rotate(-7deg); }
++  .ps-demo-cursor span { position:absolute; left:-12px; top:-12px; width:28px; height:28px; border-radius:50%; border:2px solid var(--ps-accent); opacity:0; animation:ps-demo-click-pulse 520ms ease-out both; }
++  @keyframes ps-demo-click-pulse { 0% { opacity:.85; transform:scale(.4); } 100% { opacity:0; transform:scale(1.8); } }
++  .ps-bp-outfit-piece .ps-bp-outfit-piece-mark { position:absolute; top:9px; right:9px; z-index:3; display:grid; place-items:center; width:23px; height:23px; border-radius:50%; background:#1f7250; color:#fff; box-shadow:0 2px 8px #1a4d323d; animation:ps-bp-selected-pop 240ms cubic-bezier(.2,1.4,.4,1) both; }
++  .ps-bp-outfit-piece-mark svg { width:13px; height:13px; }
++  @keyframes ps-bp-selected-pop { from { opacity:0; transform:scale(.5); } to { opacity:1; transform:scale(1); } }
++  .ps-bp-demo-next { display:flex; align-items:center; justify-content:center; gap:9px; min-height:39px; margin:12px 18px 0 auto; padding:8px 16px; border:0; border-radius:999px; background:#242b27; color:#fff; font:700 12px/1.2 system-ui; cursor:pointer; }
++  .ps-bp-demo-next svg { width:14px; height:14px; transform:rotate(180deg); }
++  .ps-bp-demo-next:disabled { opacity:.42; cursor:not-allowed; }
+   @media(max-width:767px) { .ps-demo-player { padding:8px 12px; gap:8px; } .ps-demo-copy { font-size:11px; } .ps-demo-copy small { font-size:9px; } }
+-  @media(prefers-reduced-motion:reduce) { .ps-demo-cursor { transition:none; } }
++  @media(prefers-reduced-motion:reduce) { .ps-demo-cursor,.ps-bp-outfit-piece-mark { transition:none; animation:none; } }
+ 
+   /* Variable defaults must live on BOTH the root (for the trigger button)
+      and the overlay (which is React-portaled to <body> and therefore not
+@@ -10083,6 +10101,24 @@
+   }
+   .ps-bp-mini-select[data-open="true"] {
+     z-index: 450;
++  }
++  .ps-bp-inline-fields:has(.ps-bp-mini-select[data-open="true"]),
++  .ps-bp-inline-bra-fields:has(.ps-bp-mini-select[data-open="true"]) {
++    position:relative;
++    overflow:visible;
++    z-index:500;
++  }
++  .ps-bp-inline-row:has(.ps-bp-mini-select[data-open="true"]),
++  .ps-bp-inline-input-group:has(.ps-bp-mini-select[data-open="true"]) {
++    position:relative;
++    overflow:visible;
++    z-index:501;
++  }
++  .ps-bp-photo-details-col:has(.ps-bp-mini-select[data-open="true"]),
++  .ps-bp-scan-details-center:has(.ps-bp-mini-select[data-open="true"]) {
++    position:relative;
++    overflow:visible;
++    z-index:502;
+   }
+   .ps-bp-mini-select-trigger {
+     display: flex;
+@@ -17181,7 +17217,7 @@
+       pointer-events: none;
+       filter: drop-shadow(0 4px 5px rgba(20, 24, 33, 0.28));
+       transition:
+-        transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
++        transform 720ms cubic-bezier(0.22, 0.62, 0.24, 1),
+         opacity 180ms ease;
+       will-change: transform, opacity;
+     }
+@@ -17217,9 +17253,7 @@
+       border-radius: 999px;
+       opacity: 0;
+       transform: scale(0.45);
+-    }
+-    .ps-bp-guided-cursor.ps-clicking .ps-bp-guided-cursor-ripple {
+-      animation: ps-bp-guided-click 480ms ease-out both;
++      animation: ps-bp-guided-click 520ms ease-out both;
+     }
+     .ps-bp-photo-screen .ps-bp-next-btn.ps-bp-guided-cta {
+       isolation: isolate;
+@@ -20611,6 +20645,7 @@
+     min-width:30px !important; height:30px !important; min-height:30px !important;
+     margin:0 !important; transform:none !important;
+   }
++  .ps-tryon-modal:has(.ps-demo-player) .ps-tryon-close { color:#202420 !important; background:#f0f1ee !important; border-radius:50% !important; }
+   .ps-tryon-modal-outfit-result:has(.ps-demo-player) > .ps-tryon-body,
+   .ps-tryon-modal-body-profile:has(.ps-demo-player):has(.ps-bp-fitting-room) > .ps-tryon-body {
+     padding-left:16px !important; padding-top:16px !important;
+--- a/src/react/views/BodyProfileView.tsx
++++ b/src/react/views/BodyProfileView.tsx
+@@ -732,6 +732,9 @@
+   const [stylePreviewRows, setStylePreviewRows] = useState<StylePreviewRow[]>([]);
+   const [stylePreviewOutfits, setStylePreviewOutfits] = useState<StylePreviewOutfit[]>([]);
+   const [stylePreviewOutfitIndex, setStylePreviewOutfitIndex] = useState(0);
++  const [guidedOutfitStep, setGuidedOutfitStep] = useState<number | null>(null);
++  const guidedOutfitModeRef = useRef(false);
++  if (guidedDemoAutoplay) guidedOutfitModeRef.current = true;
+   const [stylePreviewLoading, setStylePreviewLoading] = useState(false);
+   const [stylePreviewEntrancePending, setStylePreviewEntrancePending] = useState(false);
+   const [stylePreviewSubmitting, setStylePreviewSubmitting] = useState(false);
+@@ -884,6 +887,7 @@
+     shouldAnimateGuidedDemo ? "idle" : "done",
+   );
+   const [guidedCursor, setGuidedCursor] = useState({ x: 0, y: 0, visible: false, clicking: false });
++  const [guidedClickPulse, setGuidedClickPulse] = useState(0);
+ 
+   const clearGuidedDemoTimers = useCallback(() => {
+     for (const timer of guidedDemoTimersRef.current) window.clearTimeout(timer);
+@@ -974,7 +978,7 @@
+     const schedule = (delay: number, action: () => void) => {
+       const timer = window.setTimeout(() => {
+         if (!guidedDemoCancelledRef.current) action();
+-      }, delay * 0.45);
++      }, delay);
+       guidedDemoTimersRef.current.push(timer);
+     };
+     const moveCursorTo = (target: HTMLElement | null) => {
+@@ -990,12 +994,9 @@
+         clicking: false,
+       });
+     };
+-    const selectDemoOption = (target: HTMLElement | null, value: string) => {
+-      const option = Array.from(target?.querySelectorAll<HTMLButtonElement>('[role="option"]') || []).find(button => button.textContent?.trim() === value);
+-      if (option) { moveCursorTo(option); option.click(); }
+-    };
+     const setCursorPressed = (clicking: boolean) => {
+       setGuidedCursor((current) => ({ ...current, clicking }));
++      if (clicking) setGuidedClickPulse((current) => current + 1);
+     };
+     const typeFrames = (frames: string[], setter: (value: string) => void, startAt: number) => {
+       frames.forEach((frame, index) => schedule(startAt + index * 170, () => setter(frame)));
+@@ -1034,7 +1035,7 @@
+       setCursorPressed(true);
+       guidedHeightInputRef.current?.focus({ preventScroll: true });
+     });
+-    at += 150;
++    at += 260;
+     schedule(at, () => setCursorPressed(false));
+     at += 120;
+     if (hUnit === "in") {
+@@ -1058,7 +1059,7 @@
+       guidedWeightInputRef.current?.click();
+       guidedWeightInputRef.current?.focus({ preventScroll: true });
+     });
+-    at += 150;
++    at += 260;
+     schedule(at, () => setCursorPressed(false));
+     at += 120;
+     at = typeFrames(guidedTypingFrames(targets.weight), setWeight, at);
+@@ -1069,12 +1070,12 @@
+         setGuidedDemoStage("bra-region");
+         moveCursorTo(guidedBraRegionTargetRef.current);
+       });
+-      at += 620;
+-      schedule(at, () => { setCursorPressed(true); guidedBraRegionTargetRef.current?.querySelector<HTMLButtonElement>("button")?.click(); });
+-      at += 650;
++      at += 720;
++      schedule(at, () => setCursorPressed(true));
++      at += 260;
+       schedule(at, () => {
++        setBraSizeRegion(braTargets.region);
+         setCursorPressed(false);
+-        selectDemoOption(guidedBraRegionTargetRef.current, braTargets.region);
+       });
+ 
+       at += 380;
+@@ -1082,24 +1083,22 @@
+         setGuidedDemoStage("bra-band");
+         moveCursorTo(guidedBraBandTargetRef.current);
+       });
+-      at += 620;
++      at += 720;
+       schedule(at, () => setCursorPressed(true));
+-      at += 150;
+-      schedule(at, () => setCursorPressed(false));
+-      at += 100;
+-      at = typeFrames(guidedTypingFrames(braTargets.band), (value) => setBandSize(value || null), at);
++      at += 260;
++      schedule(at, () => { setBandSize(braTargets.band); setCursorPressed(false); });
+ 
+       at += 380;
+       schedule(at, () => {
+         setGuidedDemoStage("bra-cup");
+         moveCursorTo(guidedBraCupTargetRef.current);
+       });
+-      at += 620;
+-      schedule(at, () => { setCursorPressed(true); guidedBraCupTargetRef.current?.querySelector<HTMLButtonElement>("button")?.click(); });
+-      at += 650;
++      at += 720;
++      schedule(at, () => setCursorPressed(true));
++      at += 260;
+       schedule(at, () => {
++        setCupSize(braTargets.cup);
+         setCursorPressed(false);
+-        selectDemoOption(guidedBraCupTargetRef.current, braTargets.cup);
+       });
+     }
+ 
+@@ -1110,7 +1109,7 @@
+     });
+     at += 760;
+     schedule(at, () => setCursorPressed(true));
+-    at += 170;
++    at += 260;
+     schedule(at, () => { setCursorPressed(false); guidedCtaRef.current?.click(); });
+     at += 620;
+     schedule(at, () => setGuidedCursor((current) => ({ ...current, visible: false })));
+@@ -1635,6 +1634,7 @@
+     setStylePreviewOutfits([]);
+     setStylePreviewOutfitIndex(0);
+     setStylePreviewHangerRowId(null);
++    setGuidedOutfitStep(null);
+     setStylePreviewMessage(null);
+     if (looks === undefined) {
+       setStylePreviewLoading(true);
+@@ -1647,8 +1647,22 @@
+       return;
+     }
+     setStylePreviewOutfits(outfits);
+-    setStylePreviewRows(outfits[0].rows);
++    // The prepared result belongs to look 1. Start the walkthrough with
++    // different companion pieces, then let the visible option controls build
++    // that exact look one garment at a time.
++    const demoRows = guidedOutfitModeRef.current && outfits.length > 1
++      ? outfits[0].rows.map((target) => {
++          const alternative = outfits.slice(1)
++            .flatMap((outfit) => outfit.rows)
++            .find((row) => row.slot === target.slot && row.productId !== target.productId);
++          return alternative ? { ...alternative, id: target.id } : target;
++        })
++      : outfits[0].rows;
++    setStylePreviewRows(demoRows);
+     setStylePreviewHangerRowId(outfits[0].rows[0]?.id ?? null);
++    if (guidedOutfitModeRef.current && demoRows.some((row, index) => row.productId !== outfits[0].rows[index]?.productId)) {
++      setGuidedOutfitStep(0);
++    }
+     setStylePreviewLoading(false);
+   }, [currentRecommendedSize, instantOutfitMessage, t]);
+ 
+@@ -2153,6 +2167,10 @@
+     const activeStyleRow = stylePreviewRows.find((row) => row.id === stylePreviewHangerRowId)
+       || stylePreviewRows[0];
+     const activeStyleOptions = getCuratedPresetOptions(stylePreviewOutfits, activeStyleRow?.slot);
++    const guidedTargetRows = stylePreviewOutfits[0]?.rows || [];
++    const guidedActiveTarget = guidedOutfitStep !== null ? guidedTargetRows[guidedOutfitStep] : undefined;
++    const guidedActiveSelected = guidedOutfitStep !== null && Boolean(guidedActiveTarget && stylePreviewRows[guidedOutfitStep]?.productId === guidedActiveTarget.productId);
++    const guidedOutfitComplete = guidedOutfitStep !== null && guidedTargetRows.every((row, index) => stylePreviewRows[index]?.productId === row.productId);
+ 
+     return (
+       <div className="ps-bp-wrapper ps-bp-style-wrapper ps-bp-fitting-room">
+@@ -2234,27 +2252,33 @@
+               </section>
+             ) : (
+               <>
+-                <section className="ps-bp-outfit-builder ps-bp-outfit-editor" aria-label={t("Choose outfit pieces")}>
++                <section className="ps-bp-outfit-builder ps-bp-outfit-editor" aria-label={t("Choose outfit pieces")}
++                  data-demo-guided-step={guidedOutfitStep ?? undefined} data-demo-guided-total={guidedOutfitStep !== null ? guidedTargetRows.length : undefined}>
+                   <header className="ps-bp-outfit-editor-head">
+                     <span>{t("Build your outfit")}</span>
+-                    <small>{t("Choose a category, then replace it with a matched option.")}</small>
++                    <small>{guidedActiveTarget ? `Step ${guidedOutfitStep! + 1} of ${guidedTargetRows.length} · Choose the ${stylePreviewCategoryLabel(guidedActiveTarget).toLowerCase()}, then continue.` : t("Choose a category, then replace it with a matched option.")}</small>
+                   </header>
+ 
+                   <div className="ps-bp-outfit-wardrobe">
+-                    {stylePreviewRows.map((row) => {
++                    {stylePreviewRows.map((row, index) => {
+                       const isActive = row.id === activeStyleRow?.id;
++                      const isConfirmed = guidedOutfitStep === null
++                        ? row.selected
++                        : guidedTargetRows[index]?.productId === row.productId;
+                       return (
+                         <article
+-                          className={`ps-bp-outfit-piece ps-selected${isActive ? " ps-active" : ""}`}
++                          className={`ps-bp-outfit-piece${row.selected ? " ps-selected" : ""}${isActive ? " ps-active" : ""}${isConfirmed ? " ps-confirmed" : ""}`}
+                           key={row.id}
++                          data-demo-confirmed={isConfirmed ? "true" : "false"}
+                         >
+                           <button
+                             type="button"
+                             className="ps-bp-outfit-piece-open"
+                             onClick={() => setStylePreviewHangerRowId(row.id)}
+-                            aria-label={`${t("Replace")} ${t(stylePreviewCategoryLabel(row))}`}
++                            aria-label={`${t("Replace")} ${t(stylePreviewCategoryLabel(row))}${isConfirmed ? " · Selected" : ""}`}
+                             aria-pressed={isActive}
+                           >
++                            {isConfirmed && <span className="ps-bp-outfit-piece-mark" aria-hidden="true"><CheckIcon /></span>}
+                             <span className="ps-bp-outfit-piece-category">
+                               {t(stylePreviewCategoryLabel(row))}
+                             </span>
+@@ -2297,6 +2321,7 @@
+                                 key={`${option.outfitId}-${option.row.productId}`}
+                                 type="button"
+                                 className={`ps-bp-outfit-option${selected ? " ps-selected" : ""}`}
++                                data-demo-target={guidedActiveTarget?.productId === option.row.productId ? "true" : undefined}
+                                 onClick={() => selectStylePreviewGarment(option.row)}
+                                 aria-label={`${t("Choose")} ${option.row.title}`}
+                                 aria-pressed={selected}
+@@ -2322,6 +2347,16 @@
+                           <ArrowLeftIcon />
+                         </button>
+                       </div>
++                      {guidedActiveTarget && guidedOutfitStep! < guidedTargetRows.length - 1 && (
++                        <button type="button" className="ps-bp-demo-next" disabled={!guidedActiveSelected}
++                          onClick={() => {
++                            const nextStep = guidedOutfitStep! + 1;
++                            setGuidedOutfitStep(nextStep);
++                            setStylePreviewHangerRowId(guidedTargetRows[nextStep].id);
++                          }}>
++                          Next garment <ArrowLeftIcon />
++                        </button>
++                      )}
+                     </section>
+                   )}
+                 </section>
+@@ -2403,7 +2438,7 @@
+                       type="button"
+                       className="ps-bpm-next-btn ps-bp-style-submit ps-bp-fitting-cta"
+                       onClick={handleNext}
+-                      disabled={selectedStyleRows.length === 0 || stylePreviewSubmitting}
++                      disabled={selectedStyleRows.length === 0 || stylePreviewSubmitting || (guidedOutfitStep !== null && !guidedOutfitComplete)}
+                       aria-busy={stylePreviewSubmitting}
+                     >
+                       {stylePreviewSubmitting ? t("Starting try-on…") : t("Complete My Look")}
+@@ -3381,7 +3416,7 @@
+                 <img src={guidedDemoSeedSource} alt="" />
+               </span>
+             )}
+-            <span className="ps-bp-guided-cursor-ripple" />
++            {guidedClickPulse > 0 && <span key={guidedClickPulse} className="ps-bp-guided-cursor-ripple" />}
+             <svg className="ps-bp-guided-cursor-shape" viewBox="0 0 30 36" focusable="false">
+               <path d="M3 2.5v25.2l6.4-6.2 4.8 11.2 4.6-2-4.7-10.8h9.2L3 2.5Z" />
+             </svg>

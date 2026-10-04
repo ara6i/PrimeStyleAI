@@ -27,8 +27,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PrimeStyle AI",
-  description: "Virtual Try-On powered by AI",
+  title: "PrimeStyleAI · Global Fashion Shopping Network",
+  description: "Global Fashion Shopping Network",
 };
 
 export default function RootLayout({

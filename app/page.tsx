@@ -11,13 +11,17 @@ const shopSerif = Bodoni_Moda({
 });
 
 export const metadata: Metadata = {
-  title: "PrimeStyleAI · Fashion, styled and fitted for you",
-  description:
-    "Discover fashion from connected brands, build complete outfits with an AI stylist, virtually try them on, and shop your best size through PrimeStyleAI.",
-  icons: {
-    icon: "/merchants/icon.png",
-    shortcut: "/merchants/icon.png",
-    apple: "/merchants/icon.png",
+  title: "PrimeStyleAI · Global Fashion Shopping Network",
+  description: "Global Fashion Shopping Network",
+  openGraph: {
+    title: "PrimeStyleAI · Global Fashion Shopping Network",
+    description: "Global Fashion Shopping Network",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PrimeStyleAI · Global Fashion Shopping Network",
+    description: "Global Fashion Shopping Network",
   },
 };
 

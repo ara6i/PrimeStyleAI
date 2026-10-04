@@ -106,20 +106,18 @@ function SupplierHeader({
   onMenuClose,
   onMenuToggle,
   onPrimaryAction,
-  onSectionSelect,
 }: {
   mobileMenuOpen: boolean;
   onMenuClose: () => void;
   onMenuToggle: () => void;
   onPrimaryAction: () => void;
-  onSectionSelect: SectionSelect;
 }) {
   return (
     <header className={styles.header}>
       <Link
-        href="/suppliers"
+        href="/"
         className={styles.logoLink}
-        aria-label="PrimeStyleAI suppliers home"
+        aria-label="PrimeStyleAI home"
       >
         <Image
           src="/media/partner-landing/optimized/primestyleai-mark-256.webp"
@@ -136,21 +134,18 @@ function SupplierHeader({
         <Link href="/suppliers" aria-current="page">
           Suppliers
         </Link>
-        <button type="button" onClick={() => onSectionSelect("global-network")}>
+        <a href="#global-network">
           Global network
-        </button>
-        <button type="button" onClick={() => onSectionSelect("merchants")}>
+        </a>
+        <a href="#merchants">
           Merchants
-        </button>
-        <button type="button" onClick={() => onSectionSelect("influencers")}>
+        </a>
+        <a href="#influencers">
           Creators
-        </button>
-        <button
-          type="button"
-          onClick={() => onSectionSelect("supplier-dashboard")}
-        >
+        </a>
+        <a href="#supplier-dashboard">
           Performance preview
-        </button>
+        </a>
       </nav>
 
       <div className={styles.headerActions}>
@@ -173,21 +168,18 @@ function SupplierHeader({
 
       {mobileMenuOpen ? (
         <nav className={styles.mobileNav} aria-label="Mobile supplier navigation">
-          <button type="button" onClick={() => onSectionSelect("global-network")}>
+          <a href="#global-network" onClick={onMenuClose}>
             Global network
-          </button>
-          <button type="button" onClick={() => onSectionSelect("merchants")}>
+          </a>
+          <a href="#merchants" onClick={onMenuClose}>
             Merchant connections
-          </button>
-          <button type="button" onClick={() => onSectionSelect("influencers")}>
+          </a>
+          <a href="#influencers" onClick={onMenuClose}>
             Creator partnerships
-          </button>
-          <button
-            type="button"
-            onClick={() => onSectionSelect("supplier-dashboard")}
-          >
+          </a>
+          <a href="#supplier-dashboard" onClick={onMenuClose}>
             Performance preview
-          </button>
+          </a>
           <button
             type="button"
             onClick={() => {
@@ -872,7 +864,6 @@ export function SupplierLandingExperience() {
           onMenuClose={navigation.closeMobileMenu}
           onMenuToggle={navigation.toggleMobileMenu}
           onPrimaryAction={interest.open}
-          onSectionSelect={navigation.scrollToSection}
         />
       </div>
       <main>

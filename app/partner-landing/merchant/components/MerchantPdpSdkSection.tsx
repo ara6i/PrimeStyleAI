@@ -7,7 +7,7 @@ import type {
 } from "@primestyleai/tryon-shop/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import {
   ATELIER_OUTFIT_LOOKS,
   ATELIER_OUTFIT_RESULTS,
@@ -65,16 +65,16 @@ const PRODUCT_COLOUR = {
 } as const;
 
 const SIZE_GUIDE = {
-  title: "Aubergine Tailored Wool Coat size guide",
+  title: "Sample coat chart · body ranges and garment lengths",
   unit: "cm",
   headers: [
     "Size",
-    "Chest",
-    "Waist",
-    "Hip",
-    "Shoulder",
-    "Back length",
-    "Sleeve",
+    "Bust body range (cm)",
+    "Waist body range (cm)",
+    "Hip body range (cm)",
+    "Garment shoulder (cm)",
+    "Garment back length (cm)",
+    "Garment sleeve (cm)",
   ],
   rows: ATELIER_JACKET_SIZE_ROWS.map((row) => [
     row.size,
@@ -96,6 +96,7 @@ export function MerchantPdpSdkSection({
 }: MerchantPdpSdkSectionProps = {}) {
   const [selectedSize, setSelectedSize] = useState<AtelierJacketSize>("M");
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  const demoRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
@@ -110,9 +111,15 @@ export function MerchantPdpSdkSection({
             Try it. Size it. Style the whole look.
           </h2>
         </div>
-        <div
+        <a
           className={styles.sectionDemoCue}
+          href="#ai-fitting-demo"
           aria-label="See the Aubergine Coat AI fitting demo below"
+          onClick={() => {
+            const trigger = demoRef.current?.querySelector<HTMLButtonElement>("button");
+            trigger?.focus({ preventScroll: true });
+            trigger?.click();
+          }}
         >
           <span>See a demo!</span>
           <svg viewBox="0 0 220 130" aria-hidden="true">
@@ -123,7 +130,7 @@ export function MerchantPdpSdkSection({
               d="M12 28c58-17 150 5 178 74"
             />
           </svg>
-        </div>
+        </a>
       </header>
 
       <div
@@ -215,14 +222,14 @@ export function MerchantPdpSdkSection({
               <strong>AI sizing + virtual try-on</strong>
               <span>Upload one photo. See your size and try-on.</span>
               <small>
-                This interactive demo uses a prepared model photo. AI sizing and
+                This interactive demo uses a prepared model photo and sample sizes. Sizing and
                 virtual try-on are estimates and illustrations, not guarantees
                 of actual fit or appearance. Live photo processing requires
                 separate consent.
               </small>
             </div>
 
-            <div className={styles.sdkCtaWrap}>
+            <div id="ai-fitting-demo" ref={demoRef} className={styles.sdkCtaWrap}>
               <div className={styles.sdkPrompt}>
                 <span>Try it now!</span>
                 <svg viewBox="0 0 78 38" aria-hidden="true">

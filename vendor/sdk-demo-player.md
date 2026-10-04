@@ -1,0 +1,11 @@
+# Local SDK demo player
+
+The Shop/landing SDK alias is pinned to `primestyleai-tryon-5.10.245-preview.9-demo-player-v9.tgz`. This is a local package; it has not been published or deployed.
+
+The implementation was built in `/Users/arashsn/Projects/PrimeStyleAI/primestyleai-tryon-sdk-demo-player-20261004`. The React source was recovered from the installed v24 bundle's source map before editing, preserving the currently shipped behavior rather than including unrelated unshipped SDK changes. Apply `sdk-demo-player-source.patch`, then `sdk-demo-player-followup.patch` to review the source change from v24 to v9.
+
+The player appears when `guidedDemoAutoplay`, `usePresetProfileOnly`, a preset profile, prepared outfit choices, and matching prepared results are supplied. A centered Play prompt starts the walkthrough. It starts the builder with companion pieces different from the prepared result, selects each result piece through the real options and Next control, then opens one newly added (non-pinned) garment's sizing detail and leaves it visible. Confirmed outfit cards get a check mark. The final blur and sketch note were removed. Pause, Replay, and Close cancel pending playback. Both cursors move with slower, eased motion and an animated press ripple. The guided bra values appear directly on click without opening dropdown menus. Prepared result transitions take 1.8 seconds. Live AI processing is not accelerated or automatically submitted.
+
+Prepared results carry no fabricated chest, waist, shoulder, or fit comparisons. Each companion carries its own chart and available size labels when supplied; missing chart measurements are unavailable. The landing demo's Oyster Wide-Leg Trouser has no supplied chart, so its detail correctly says measurements are unavailable. Body-fit ranges and finished-garment dimensions are distinguished. Sample charts remain illustrative and are not brand-verified measurements.
+
+SDK build/checks: `npm run build` and `node --test tests/*.test.mjs` in the isolated source directory. All 46 SDK tests passed. The app TypeScript check and all 30 targeted Vitest tests passed. Browser checks cover desktop and mobile playback, the centered prompt, garment steps, final detail and Back action, and dropdown stacking. Verification screenshots are in `design-qa/sdk-demo-player-20261004`.

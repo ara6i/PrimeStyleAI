@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import {
   CameraIcon,
+  CalendarIcon,
   DashboardIcon,
   FileDownloadIcon,
   HeadsetIcon,
@@ -50,6 +51,7 @@ function PrimeStyleLogoIcon({ size = 24, className }: IconProps) {
 
 const iconMap = {
   dashboard: DashboardIcon,
+  calendar: CalendarIcon,
   revenue: MonetizationOnIcon,
   support: HeadsetIcon,
   customers: UserIcon,

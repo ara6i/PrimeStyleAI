@@ -247,7 +247,7 @@ export const ATELIER_OUTFIT_RESULTS: PrimeStyleInstantOutfitResult[] =
     lookId: look.id,
     image: `${ATELIER_RESULT_ASSET_ROOT}/look-0${index + 1}.webp`,
     recommendedSize: "M",
-    confidence: "high",
+    confidence: "illustrative",
     reasoning:
-      "Size M preserves the coat's natural shoulder, clean lapel line, and comfortable tailored shape with this selected look.",
+      "Size M is a sample selection for this prepared demo, not a measured fit recommendation.",
   }));
