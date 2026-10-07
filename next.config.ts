@@ -40,6 +40,8 @@ const isMerchantStaticExport =
 const isPartnerStaticExport = isCreatorStaticExport || isMerchantStaticExport;
 const isFastProductionDeploy =
   process.env.PRIME_PRODUCTS_FAST_DEPLOY === "true";
+const isLowMemoryBuild =
+  process.env.PRIME_PRODUCTS_LOW_MEMORY_BUILD === "true";
 const localWorkspaceRoot = path.resolve(process.cwd(), "..");
 const localSdkRoot = process.env.PRIME_PRODUCTS_LOCAL_SDK_ROOT
   ? path.resolve(process.env.PRIME_PRODUCTS_LOCAL_SDK_ROOT)
@@ -56,8 +58,16 @@ const useLocalSdkSource =
 const nextConfig: NextConfig = {
   distDir: buildDistDir,
   // Opt in on memory-constrained build hosts without changing local defaults.
-  ...(process.env.PRIME_PRODUCTS_LOW_MEMORY_BUILD === "true"
-    ? { experimental: { webpackMemoryOptimizations: true } }
+  ...(isLowMemoryBuild
+    ? {
+        experimental: {
+          cpus: 1,
+          memoryBasedWorkersCount: false,
+          turbopackPluginRuntimeStrategy: "workerThreads" as const,
+          webpackMemoryOptimizations: true,
+          workerThreads: true,
+        },
+      }
     : {}),
   // Partner releases export only their statically rendered landing page.
   // Unrelated application routes can be type-checked separately without

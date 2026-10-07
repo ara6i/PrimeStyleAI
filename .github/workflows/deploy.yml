@@ -37,6 +37,8 @@ jobs:
             MERCHANT_DEPLOY_MARKER="/var/www/merchants.primestyleai.com/.deployed-source-sha"
             CREATOR_DEPLOY_MARKER="/var/www/creators.primestyleai.com/.deployed-source-sha"
             TSCONFIG_BACKUP="/tmp/prime-products-tsconfig-${{ github.run_id }}-${{ github.run_attempt }}.json"
+            BUILD_SWAP_FILE="/var/tmp/prime-products-build-${{ github.run_id }}-${{ github.run_attempt }}.swap"
+            BUILD_SWAP_ACTIVE=false
             PREVIOUS_DIST=""
             PAUSABLE_SERVICES=(
               prime-products-test
@@ -47,6 +49,12 @@ jobs:
             PAUSED_SERVICES=()
 
             restore_services() {
+              if [ "$BUILD_SWAP_ACTIVE" = "true" ]; then
+                swapoff "$BUILD_SWAP_FILE" || true
+                rm -f -- "$BUILD_SWAP_FILE"
+                BUILD_SWAP_ACTIVE=false
+              fi
+
               if [ -f "$TSCONFIG_BACKUP" ]; then
                 if ! cmp -s "$TSCONFIG_BACKUP" "$APP_DIR/tsconfig.json"; then
                   cp "$TSCONFIG_BACKUP" "$APP_DIR/tsconfig.json"
@@ -139,6 +147,18 @@ jobs:
 
             cp tsconfig.json "$TSCONFIG_BACKUP"
 
+            available_memory_mb="$(free -m | awk '/^Mem:/ {print $7}')"
+            available_swap_mb="$(free -m | awk '/^Swap:/ {print $4}')"
+            echo "Build memory before swap: ${available_memory_mb}MB available RAM, ${available_swap_mb}MB free swap."
+            if [ "$available_swap_mb" -lt 3072 ]; then
+              echo "Adding a temporary 4GB build swap file..."
+              fallocate -l 4G "$BUILD_SWAP_FILE"
+              chmod 600 "$BUILD_SWAP_FILE"
+              mkswap "$BUILD_SWAP_FILE" >/dev/null
+              swapon "$BUILD_SWAP_FILE"
+              BUILD_SWAP_ACTIVE=true
+            fi
+
             if [ ! -d "$BUILD_DIR/cache" ]; then
               mkdir -p "$BUILD_DIR"
               if [ -d "$LEGACY_BUILD_CACHE_DIR" ]; then
@@ -151,7 +171,8 @@ jobs:
             fi
 
             echo "Building in the stable cache-aware directory $BUILD_DIR..."
-            NODE_OPTIONS=--max-old-space-size=4096 \
+            NODE_OPTIONS=--max-old-space-size=3072 \
+              PRIME_PRODUCTS_LOW_MEMORY_BUILD=true \
               PRIME_PRODUCTS_USE_PACKAGED_SDK=true \
               PRIME_PRODUCTS_DIST_DIR="$BUILD_DIR" \
               PRIME_PRODUCTS_FAST_DEPLOY=true \
