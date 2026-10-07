@@ -17,8 +17,6 @@ import { MerchantSupplierSections } from "./MerchantSupplierSections";
 import { MerchantTogetherSection } from "./MerchantTogetherSection";
 import styles from "./merchantLanding.module.css";
 
-const SHOW_INTERACTIVE_SDK_SECTION = false;
-
 export function MerchantLandingExperience() {
   const { viewModel, navigation, interest } = useMerchantLandingPage();
 
@@ -62,7 +60,7 @@ export function MerchantLandingExperience() {
         <MerchantHero viewModel={viewModel} />
         <MerchantOnePhotoSizingSection />
         <MerchantOutfitBuilderSection />
-        {SHOW_INTERACTIVE_SDK_SECTION ? <MerchantPdpSdkSection /> : null}
+        <MerchantPdpSdkSection />
         <MerchantStorefrontSection onPrimaryAction={interest.open} />
         <MerchantStoreExampleSection />
         <MerchantNetworkJourney onPrimaryAction={interest.open} />
