@@ -119,6 +119,15 @@ jobs:
               git merge --ff-only "origin/$BRANCH"
             fi
 
+            echo "Temporarily pausing test and preview processes for install and build memory..."
+            for service in "${PAUSABLE_SERVICES[@]}"; do
+              if pm2 describe "$service" >/dev/null 2>&1 && \
+                [ "$(pm2 jlist | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const p=JSON.parse(s).find(x=>x.name===process.argv[1]);process.stdout.write(p?.pm2_env?.status||"")})' "$service")" = "online" ]; then
+                pm2 stop "$service" >/dev/null
+                PAUSED_SERVICES+=("$service")
+              fi
+            done
+
             package_lock_hash="$(sha256sum package-lock.json | awk '{print $1}')"
             if [ ! -d node_modules ] || [ ! -f "$DEPENDENCY_HASH_FILE" ] || [ "$(cat "$DEPENDENCY_HASH_FILE")" != "$package_lock_hash" ]; then
               echo "Installing changed dependencies..."
@@ -129,15 +138,6 @@ jobs:
             fi
 
             cp tsconfig.json "$TSCONFIG_BACKUP"
-
-            echo "Temporarily pausing test and preview processes for build memory..."
-            for service in "${PAUSABLE_SERVICES[@]}"; do
-              if pm2 describe "$service" >/dev/null 2>&1 && \
-                [ "$(pm2 jlist | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const p=JSON.parse(s).find(x=>x.name===process.argv[1]);process.stdout.write(p?.pm2_env?.status||"")})' "$service")" = "online" ]; then
-                pm2 stop "$service" >/dev/null
-                PAUSED_SERVICES+=("$service")
-              fi
-            done
 
             if [ ! -d "$BUILD_DIR/cache" ]; then
               mkdir -p "$BUILD_DIR"

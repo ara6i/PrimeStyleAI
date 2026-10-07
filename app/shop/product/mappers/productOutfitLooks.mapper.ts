@@ -10,12 +10,15 @@ import {
   type ShowcaseProduct,
 } from "../../data/showcaseCatalog.data";
 import {
+  ESPRESSO_BLAZER_EXTRA_WATCHES,
   MEN_SDK_COMPANIONS,
   WOMEN_SDK_EXTRA_COMPANIONS,
   type ProductOutfitCompanion,
 } from "../data/productOutfitCompanions.data";
 
 const COMPANION_MASKS = ["0000", "0101", "1010", "0011", "1100"] as const;
+export const ESPRESSO_BLAZER_LOOK_ORDER = [2, 0, 1, 3, 4] as const;
+const ESPRESSO_BLAZER_WATCH_INDEX = [1, 2, 0, 0, 1] as const;
 const LOOK_LABELS = [
   "Quiet tailoring",
   "Soft contrast",
@@ -53,6 +56,14 @@ function companionsFor(
 
   if (pinnedProduct.gender === "men") {
     if (pinnedProduct.id === "men-espresso-double-breasted-blazer") {
+      if (slot === "accessory") {
+        const wornWatch = showcaseCompanions.find((candidate) =>
+          candidate.productId === "men-burgundy-leather-strap-watch",
+        );
+        return wornWatch
+          ? [wornWatch, ...ESPRESSO_BLAZER_EXTRA_WATCHES]
+          : ESPRESSO_BLAZER_EXTRA_WATCHES;
+      }
       return showcaseCompanions;
     }
     const preparedCompanions = MEN_SDK_COMPANIONS[slot] ?? [];
@@ -97,7 +108,7 @@ export function getProductInstantOutfitLooks(
       slot !== pinnedProduct.slot &&
       !(pinnedProduct.gender === "men" && slot === "bag"),
   );
-  return COMPANION_MASKS.map((mask, lookIndex) => {
+  const looks = COMPANION_MASKS.map((mask, lookIndex) => {
     const selectedBySlot = new Map<
       ShowcaseProduct["slot"],
       { selected: ProductOutfitCompanion; candidates: ProductOutfitCompanion[] }
@@ -105,7 +116,9 @@ export function getProductInstantOutfitLooks(
     missingSlots.forEach((slot, slotIndex) => {
       const candidates = companionsFor(pinnedProduct, slot);
       const choice =
-        candidates.length >= COMPANION_MASKS.length
+        pinnedProduct.id === "men-espresso-double-breasted-blazer" && slot === "accessory"
+          ? ESPRESSO_BLAZER_WATCH_INDEX[lookIndex]
+          : candidates.length >= COMPANION_MASKS.length
           ? lookIndex
           : Number(mask[slotIndex] ?? "0");
       selectedBySlot.set(slot, {
@@ -125,4 +138,7 @@ export function getProductInstantOutfitLooks(
       }),
     };
   });
+  return pinnedProduct.id === "men-espresso-double-breasted-blazer"
+    ? ESPRESSO_BLAZER_LOOK_ORDER.map((index) => looks[index])
+    : looks;
 }

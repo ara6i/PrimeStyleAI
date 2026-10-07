@@ -68,7 +68,11 @@ describe("prepared Shop PDP SDK demos", () => {
       expect(
         demo?.instantOutfitResults.every((result, index) =>
           result.image.endsWith(
-            `/prepared-results/${product.gender}/${product.id}/look-${String(index + 1).padStart(2, "0")}.webp`,
+            `/prepared-results/${product.gender}/${product.id}/look-${String(
+              product.id === "men-espresso-double-breasted-blazer"
+                ? [3, 1, 2, 4, 5][index]
+                : index + 1,
+            ).padStart(2, "0")}.webp`,
           ),
         ),
       ).toBe(true);
@@ -161,8 +165,9 @@ describe("prepared Shop PDP SDK demos", () => {
       "men-sand-straight-tailored-trouser",
       "men-chocolate-suede-court-sneaker",
       "men-oxblood-penny-loafer",
-      "men-tortoiseshell-acetate-sunglasses",
       "men-burgundy-leather-strap-watch",
+      "men-black-leather-gold-watch",
+      "men-navy-dial-brown-leather-watch",
     ]);
 
     expect(demo.instantOutfitLooks).toHaveLength(5);
@@ -174,6 +179,17 @@ describe("prepared Shop PDP SDK demos", () => {
       ).size,
     ).toBe(5);
 
+    expect(demo.instantOutfitLooks[0].items.find((item) => item.slot === "accessory")?.productId).toBe(
+      "men-burgundy-leather-strap-watch",
+    );
+    expect(new Set(demo.instantOutfitLooks.map((look) =>
+      look.items.find((item) => item.slot === "accessory")?.productId,
+    ))).toEqual(new Set([
+      "men-burgundy-leather-strap-watch",
+      "men-black-leather-gold-watch",
+      "men-navy-dial-brown-leather-watch",
+    ]));
+
     for (const look of demo.instantOutfitLooks) {
       expect(look.items.map((item) => item.slot)).toEqual([
         "bottom",
@@ -183,16 +199,17 @@ describe("prepared Shop PDP SDK demos", () => {
       for (const item of look.items) {
         for (const option of [item, ...(item.alternatives ?? [])]) {
           expect(expectedCompanions.has(option.productId)).toBe(true);
-          expect(option.image).toContain("/showcase-v4/men/");
-          expect(option.image).toMatch(/\/01-product-front\.webp$/);
+          expect(option.image).toMatch(/\.webp$/);
+          expect(existsSync(path.join(root, "public", option.image.replace(/^\//, "")))).toBe(true);
           expect(option.image).not.toContain("/arc-jacket-demo-v2/");
         }
       }
     }
 
     for (const [index, result] of demo.instantOutfitResults.entries()) {
+      const preparedLookNumber = [3, 1, 2, 4, 5][index];
       expect(result.image).toBe(
-        `/prepared-results/men/${product.id}/look-${String(index + 1).padStart(2, "0")}.webp`,
+        `/prepared-results/men/${product.id}/look-${String(preparedLookNumber).padStart(2, "0")}.webp`,
       );
       const response = await getPreparedResult(new Request("http://localhost"), {
         params: Promise.resolve({

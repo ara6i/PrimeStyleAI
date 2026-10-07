@@ -13,6 +13,28 @@ export type ProductOutfitCompanion = {
 const WOMEN_SDK_ASSET_ROOT =
   "/media/global-shop/sdk-companions-v1/women";
 
+const MEN_WATCH_ASSET_ROOT =
+  "/media/global-shop/sdk-companions-v1/men/accessory";
+
+export const ESPRESSO_BLAZER_EXTRA_WATCHES: ProductOutfitCompanion[] = [
+  {
+    slot: "accessory",
+    productId: "men-black-leather-gold-watch",
+    title: "Black Leather & Gold Watch",
+    image: `${MEN_WATCH_ASSET_ROOT}/black-leather-gold-watch.webp`,
+    color: "Black and gold",
+    recommendedSize: "One size",
+  },
+  {
+    slot: "accessory",
+    productId: "men-navy-dial-brown-leather-watch",
+    title: "Navy-Dial Brown Leather Watch",
+    image: `${MEN_WATCH_ASSET_ROOT}/navy-dial-brown-leather-watch.webp`,
+    color: "Navy and dark brown",
+    recommendedSize: "One size",
+  },
+];
+
 /**
  * PDP companion pieces for prepared women demos. The two showcase products
  * for each slot are added by the mapper before these three, producing five

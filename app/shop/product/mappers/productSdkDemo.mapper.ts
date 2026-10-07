@@ -23,7 +23,10 @@ import {
   showcasePreparedResultAsset,
 } from "../data/productSdkDemo.data";
 import type { ProductDetailViewModel } from "../types/productDetail.types";
-import { getProductInstantOutfitLooks } from "./productOutfitLooks.mapper";
+import {
+  ESPRESSO_BLAZER_LOOK_ORDER,
+  getProductInstantOutfitLooks,
+} from "./productOutfitLooks.mapper";
 
 export type ProductSdkDemo = {
   presetProfile: PreparedDemoProfile;
@@ -250,7 +253,12 @@ export function getProductSdkDemo(
       product,
       preparedLooks,
       showcaseProduct
-        ? (index) => showcasePreparedResultAsset(showcaseProduct, index)
+        ? (index) => showcasePreparedResultAsset(
+            showcaseProduct,
+            showcaseProduct.id === "men-espresso-double-breasted-blazer"
+              ? ESPRESSO_BLAZER_LOOK_ORDER[index]
+              : index,
+          )
         : isDailyEdit
           ? (index) => dailyEditPreparedResultAsset(product.id, index)
         : undefined,
