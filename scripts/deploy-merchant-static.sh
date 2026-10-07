@@ -119,6 +119,12 @@ sync_merchant_tree \
   public/media/merchant-dashboard \
   "$merchant_temporary_release/media/merchant-dashboard" \
   "${merchant_previous_release:+$merchant_previous_release/media/merchant-dashboard}"
+for demo_asset_dir in atelier-sdk-v1 atelier-sdk-v2 sdk-base-models; do
+  sync_merchant_tree \
+    "public/media/global-shop/$demo_asset_dir" \
+    "$merchant_temporary_release/media/global-shop/$demo_asset_dir" \
+    "${merchant_previous_release:+$merchant_previous_release/media/global-shop/$demo_asset_dir}"
+done
 sync_merchant_tree \
   public/images/landing \
   "$merchant_temporary_release/images/landing" \
@@ -160,8 +166,8 @@ for (const htmlFile of htmlFiles) {
 }
 
 const merchantHome = fs.readFileSync(path.join(releaseRoot, "index.html"), "utf8");
-if (merchantHome.includes('id="ai-fitting"')) {
-  throw new Error("The hidden interactive SDK section is present in the merchant release.");
+if (!merchantHome.includes('id="ai-fitting"')) {
+  throw new Error("The interactive SDK section is missing from the merchant release.");
 }
 
 const homeLogoLinks = [...merchantHome.matchAll(/<a\b[^>]*>/g)]
