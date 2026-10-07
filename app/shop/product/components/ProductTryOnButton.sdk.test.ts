@@ -9,7 +9,7 @@ describe("shop-only SDK release isolation", () => {
   it("pins shop preview separately from the existing base SDK", () => {
     const { dependencies } = JSON.parse(read("package.json"));
     expect(dependencies["@primestyleai/tryon-shop"]).toBe(
-      "file:vendor/primestyleai-tryon-5.10.245-preview.9-demo-player-v9.tgz",
+      "file:vendor/primestyleai-tryon-5.10.245-preview.9-demo-player-v14.tgz",
     );
     expect(dependencies["@primestyleai/tryon"]).toBe("5.10.243");
     const installed = JSON.parse(
