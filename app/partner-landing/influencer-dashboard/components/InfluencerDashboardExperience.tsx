@@ -602,7 +602,7 @@ export function InfluencerDashboardExperience() {
     <main className={styles.stage}>
       <section className={styles.dashboard} aria-label="PrimeStyleAI influencer dashboard UI preview">
         <aside className={styles.sidebar}>
-          <Link href="/creators" className={styles.brand} aria-label="Back to PrimeStyleAI influencers"><Image src="/icon.svg" alt="PrimeStyleAI" width={42} height={42} priority /></Link>
+          <Link href="/creators" className={styles.brand} aria-label="Back to PrimeStyleAI influencers"><Image src="/media/partner-landing/primestyleai-legacy-dashboard-icon.svg" alt="PrimeStyleAI" width={42} height={42} priority /></Link>
           <nav className={styles.primaryNav} aria-label="Creator dashboard">
             {navigation.map((item) => {
               const Icon = item.icon;

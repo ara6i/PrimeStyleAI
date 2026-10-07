@@ -8,7 +8,7 @@ import { useTryOnSubmission } from "./useTryOnSubmission";
 import { useCustomPrompt } from "./useCustomPrompt";
 import { useTryOnHistory } from "./useTryOnHistory";
 import { useModelSelection } from "./useModelSelection";
-import { TRY_ON_TEST_CONFIG } from "../lib/config";
+import { TRY_ON_TEST_CONFIG, TRY_ON_TEST_MIRROR_CONFIG } from "../lib/config";
 import { canSubmitTryOn } from "../lib/canSubmit";
 import { buildTryOnRunInput } from "../lib/mappers";
 import type { TryOnSizingRunData } from "../lib/types";
@@ -26,7 +26,9 @@ export function useTryOnTest() {
   const prompt = useCustomPrompt();
   const history = useTryOnHistory();
   const modelSelection = useModelSelection();
-  const submission = useTryOnSubmission(TRY_ON_TEST_CONFIG);
+  const submission = useTryOnSubmission(
+    modelSelection.entry.family === "openai" ? TRY_ON_TEST_MIRROR_CONFIG : TRY_ON_TEST_CONFIG,
+  );
 
   // Vertex try-on doesn't accept a prompt, so the empty-prompt check is moot
   // when the selected model ignores the textarea.

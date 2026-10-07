@@ -62,7 +62,7 @@ const COUNTRY_NAME_ALIASES: Record<string, string> = {
   taiwan: "TW",
 };
 
-function countryFlag(location: string): string | null {
+export function countryFlag(location: string): string | null {
   const normalizedLocation = normalizeCountryName(location);
   const code =
     COUNTRY_CODE_BY_NAME.get(normalizedLocation) ??

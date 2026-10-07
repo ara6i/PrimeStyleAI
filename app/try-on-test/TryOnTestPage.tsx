@@ -125,7 +125,12 @@ export function TryOnTestPage() {
           phase={submission.phase}
         />
         <div className="flex flex-col gap-4">
-          <LiveTimer elapsedMs={stopwatch.elapsedMs} phase={submission.phase} timings={submission.timings} />
+          <LiveTimer
+            elapsedMs={stopwatch.elapsedMs}
+            phase={submission.phase}
+            timings={submission.timings}
+            modelFamily={modelSelection.entry.family}
+          />
           <Button type="button" onClick={runWithSizing} disabled={!canSubmit || sizingBusy} size="2xl" className="w-full text-sm">
             <Play className="size-4" />
             {sizingBusy ? "Building sizing..." : describeRunPhase(submission.phase)}

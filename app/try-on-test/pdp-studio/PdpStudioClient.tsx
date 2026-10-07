@@ -310,7 +310,12 @@ export function PdpStudioClient() {
           phase={submission.phase}
         />
         <div className="flex flex-col gap-4">
-          <LiveTimer elapsedMs={stopwatch.elapsedMs} phase={submission.phase} timings={submission.timings} />
+          <LiveTimer
+            elapsedMs={stopwatch.elapsedMs}
+            phase={submission.phase}
+            timings={submission.timings}
+            modelFamily={selectedModel.family}
+          />
           <button
             type="button"
             onClick={generateTryOn}

@@ -5,6 +5,7 @@ import {
   createTryOnApiClient,
   subscribeToJob,
   TryOnApiError,
+  type TryOnApiClientConfig,
   type SubmitTryOnPayload,
   type VtoStreamUpdate,
 } from "../lib/tryOnApi";
@@ -16,7 +17,7 @@ import type { TryOnPhase, TryOnRunInput, TryOnRunResult, TryOnRunTimings } from 
  * timings, and the final result/error. Resolves the returned promise from
  * `run()` so callers can `await` and chain history bookkeeping.
  */
-export function useTryOnSubmission(config: { baseUrl: string }): {
+export function useTryOnSubmission(config: TryOnApiClientConfig): {
   phase: TryOnPhase;
   timings: TryOnRunTimings;
   result: TryOnRunResult | null;
@@ -138,7 +139,7 @@ export function useTryOnSubmission(config: { baseUrl: string }): {
         const handleStreamError = () => {
           if (settled) return;
           finishFailure(
-            "SSE stream lost connection before the result arrived. The job may still complete on the backend — check /api/v1/tryon/status/<jobId>.",
+            `SSE stream lost connection before the result arrived. The job may still complete on the backend — check ${(config.apiPrefix ?? "/api/v1").replace(/\/+$/, "")}/tryon/status/<jobId>.`,
           );
         };
 

@@ -4,11 +4,13 @@ import { Clock } from "lucide-react";
 import { cn } from "@/app/shared/lib/utils";
 import { formatElapsed } from "../hooks/useStopwatch";
 import type { TryOnPhase, TryOnRunTimings } from "../lib/types";
+import type { ModelFamily } from "../lib/models";
 
 export interface LiveTimerProps {
   elapsedMs: number;
   phase: TryOnPhase;
   timings: TryOnRunTimings;
+  modelFamily: ModelFamily;
 }
 
 const PHASE_LABEL: Record<TryOnPhase, string> = {
@@ -29,7 +31,7 @@ const PHASE_TONE: Record<TryOnPhase, string> = {
   error: "bg-red-100 text-red-700",
 };
 
-export function LiveTimer({ elapsedMs, phase, timings }: LiveTimerProps) {
+export function LiveTimer({ elapsedMs, phase, timings, modelFamily }: LiveTimerProps) {
   const isLive = phase === "submitting" || phase === "queued" || phase === "generating";
   const display = phase === "idle" ? "00:00.00" : formatElapsed(elapsedMs);
 
@@ -63,13 +65,19 @@ export function LiveTimer({ elapsedMs, phase, timings }: LiveTimerProps) {
       <BreakdownRow
         label="Backend ack"
         valueMs={timings.ackMs}
-        hint="POST /api/v1/tryon → 202"
+        hint={modelFamily === "openai" ? "POST /api/test-lab/sdk-mirror/tryon → 202" : "POST /api/v1/tryon → 202"}
         active={phase === "submitting"}
       />
       <BreakdownRow
         label="Generation"
         valueMs={timings.generationMs}
-        hint="Gemini call (pass 1)"
+        hint={
+          modelFamily === "openai"
+            ? "OpenAI image edit"
+            : modelFamily === "vertex"
+              ? "Vertex prediction"
+              : "Gemini call (pass 1)"
+        }
         active={phase === "queued" || phase === "generating"}
       />
       <BreakdownRow

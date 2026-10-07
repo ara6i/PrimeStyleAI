@@ -16,7 +16,9 @@ function createAdminNavItems(activeHref: string): AdminDashboardNavItem[] {
     activeHref.startsWith("/admin/customers") ||
     activeHref.startsWith("/admin/reports/feedbacks");
   const usersActive = activeHref.startsWith("/admin/users");
-  const influencersActive = activeHref.startsWith("/admin/influencers");
+  const applicationsActive =
+    activeHref.startsWith("/admin/applications") ||
+    activeHref.startsWith("/admin/influencers");
   const verificationActive = activeHref.startsWith("/admin/verification");
   const monitoringActive = activeHref.startsWith("/admin/monitoring");
   const supportActive =
@@ -47,10 +49,10 @@ function createAdminNavItems(activeHref: string): AdminDashboardNavItem[] {
       disabled: false,
     },
     {
-      label: "Influencers",
-      href: "/admin/influencers",
-      icon: "merchants",
-      active: influencersActive,
+      label: "Applications",
+      href: "/admin/applications",
+      icon: "reports",
+      active: applicationsActive,
       disabled: false,
     },
     {
@@ -170,39 +172,37 @@ export function AdminDashboardShell({
   const body = children ?? defaultDashboardBody();
 
   return (
-    <>
-      <div className="hidden min-h-screen text-text-primary lg:flex">
+    <div className="min-h-screen text-text-primary lg:flex">
+      <div className="hidden lg:block">
         <AdminDashboardSidebar navItems={adminNavItems} />
+      </div>
 
-        <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1">
+        <div className="hidden lg:block">
           <AdminDashboardHeader logoutAction={logoutAction} />
-
-          <main className="px-[var(--spacing-customer-content-x)] py-[var(--spacing-customer-content-y)]">
-            {body}
-          </main>
         </div>
+        <div className="lg:hidden">
+          <AdminDashboardHeader
+            logoutAction={logoutAction}
+            compact
+            leftSlot={
+              <Image
+                src="/images/landing/optimized/logo-navbar-small.webp"
+                alt="PrimeStyleAI"
+                width={52}
+                height={50}
+                priority
+                className="h-9 w-auto shrink-0 object-contain max-[380px]:hidden"
+              />
+            }
+          />
+
+          <AdminDashboardMobileNav navItems={adminNavItems} />
+        </div>
+        <main className="px-3 pb-6 pt-4 sm:px-5 sm:pb-8 lg:px-[var(--spacing-customer-content-x)] lg:py-[var(--spacing-customer-content-y)]">
+          {body}
+        </main>
       </div>
-
-      <div className="min-h-screen text-text-primary lg:hidden">
-        <AdminDashboardHeader
-          logoutAction={logoutAction}
-          compact
-          leftSlot={
-            <Image
-              src="/images/landing/optimized/logo-navbar-small.webp"
-              alt="PrimeStyleAI"
-              width={52}
-              height={50}
-              priority
-              className="h-9 w-auto shrink-0 object-contain max-[380px]:hidden"
-            />
-          }
-        />
-
-        <AdminDashboardMobileNav navItems={adminNavItems} />
-
-        <main className="px-3 pb-6 pt-4 sm:px-5 sm:pb-8">{body}</main>
-      </div>
-    </>
+    </div>
   );
 }

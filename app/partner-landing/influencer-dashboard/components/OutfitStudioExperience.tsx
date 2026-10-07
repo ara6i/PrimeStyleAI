@@ -223,7 +223,13 @@ export function OutfitStudioExperience() {
     <main className={styles.stage}>
       <aside className={styles.sidebar}>
         <Link href="/creators" className={styles.brand} aria-label="Back to PrimeStyleAI influencers">
-          <Image src="/icon.svg" alt="PrimeStyleAI" width={42} height={42} priority />
+          <Image
+            src="/media/partner-landing/primestyleai-legacy-dashboard-icon.svg"
+            alt="PrimeStyleAI"
+            width={42}
+            height={42}
+            priority
+          />
         </Link>
         <nav className={styles.primaryNav} aria-label="Creator dashboard">
           {dashboardNavItems.map((item) => {

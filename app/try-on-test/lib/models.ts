@@ -4,15 +4,20 @@
  *
  * Three families:
  *  - Gemini (`@google/genai` generateContent) → take a prompt + 2 images.
- *  - OpenAI (`images.edit`) → test-lab PDP Studio only; takes a prompt + 2 images.
+ *  - OpenAI (`images.edit`) → isolated Try-On Lab/PDP Studio route; takes a prompt + 2 images.
  *  - Vertex (`virtual-try-on-*`) → purpose-built try-on, no prompt needed.
  */
 export type TryOnModelId =
   | "gemini-3-pro-image-preview"
   | "gemini-3.1-flash-image-preview"
   | "gemini-2.5-flash-image"
+  | "gpt-image-2.5-sunburst"
+  | "gpt-image-2.5-flare"
+  | "gpt-image-2"
+  | "gpt-image-1.5"
   | "gpt-image-1"
   | "gpt-image-1-mini"
+  | "chatgpt-image-latest"
   | "virtual-try-on-001"
   | "virtual-try-on-preview-08-04";
 
@@ -22,7 +27,7 @@ export interface TryOnModelEntry {
   id: TryOnModelId;
   family: ModelFamily;
   label: string;
-  status: "GA" | "Preview";
+  status: "GA" | "Preview" | "Deprecated";
   description: string;
   /** Whether the prompt textarea is sent to this model. Vertex try-on ignores it. */
   acceptsPrompt: boolean;
@@ -54,19 +59,59 @@ export const TRY_ON_MODELS: readonly TryOnModelEntry[] = [
     acceptsPrompt: true,
   },
   {
+    id: "gpt-image-2.5-sunburst",
+    family: "openai",
+    label: "GPT Image 2.5 Sunburst",
+    status: "GA",
+    description: "OpenAI's most capable image generation and editing model; best for precise try-on edits.",
+    acceptsPrompt: true,
+  },
+  {
+    id: "gpt-image-2.5-flare",
+    family: "openai",
+    label: "GPT Image 2.5 Flare",
+    status: "GA",
+    description: "Fast, high-quality OpenAI image generation and editing for everyday try-on experiments.",
+    acceptsPrompt: true,
+  },
+  {
+    id: "gpt-image-2",
+    family: "openai",
+    label: "GPT Image 2",
+    status: "GA",
+    description: "Earlier OpenAI image generation and editing model with high-fidelity image inputs.",
+    acceptsPrompt: true,
+  },
+  {
+    id: "gpt-image-1.5",
+    family: "openai",
+    label: "GPT Image 1.5",
+    status: "Deprecated",
+    description: "Previous OpenAI image model; scheduled to shut down on December 1, 2026.",
+    acceptsPrompt: true,
+  },
+  {
     id: "gpt-image-1",
     family: "openai",
-    label: "OpenAI GPT Image 1",
+    label: "GPT Image 1",
     status: "GA",
-    description: "OpenAI image edit model for prompt + model photo + product image tests in PDP Studio.",
+    description: "OpenAI image edit model for prompt + model photo + product image tests.",
     acceptsPrompt: true,
   },
   {
     id: "gpt-image-1-mini",
     family: "openai",
-    label: "OpenAI GPT Image 1 Mini",
-    status: "GA",
-    description: "Lower-cost OpenAI image edit model for fast PDP Studio experiments.",
+    label: "GPT Image 1 Mini",
+    status: "Deprecated",
+    description: "Lower-cost legacy image model; scheduled to shut down on December 1, 2026.",
+    acceptsPrompt: true,
+  },
+  {
+    id: "chatgpt-image-latest",
+    family: "openai",
+    label: "ChatGPT Image Latest",
+    status: "Deprecated",
+    description: "Legacy ChatGPT image alias; scheduled to shut down on December 1, 2026.",
     acceptsPrompt: true,
   },
   {

@@ -1,0 +1,16 @@
+{
+  "model": "veo-3.1-fast-generate-preview",
+  "durationSeconds": 8,
+  "resolution": "4k",
+  "aspectRatio": "16:9",
+  "maximumGenerationCostUsd": 2.4,
+  "source": "public/media/partner-landing/merchant-network/supplier-catalog-veo-fast-source-4k-v1.png",
+  "originalOutput": "public/media/partner-landing/merchant-network/supplier-catalog-veo3-fast-native-4k-v3-original.mp4",
+  "output": "public/media/partner-landing/merchant-network/supplier-catalog-veo3-fast-native-4k-v3.mp4",
+  "prompt": "Locked-off front-facing premium fashion SaaS interface animation. Only the horizontal product listing cards move. Create a dense three-row flow: pale grayscale cards on the left slide steadily right, reach the thin cobalt-blue vertical divider, cross it, and instantly transition to vivid full color exactly at the boundary, then continue only a short distance on the right. At least eight cards visibly cross during the clip. Keep cards tightly grouped around the divider and continuously repopulate the nearby left side with grayscale cards while colored cards leave the nearby right cluster.\n\nKeep the divider perfectly static as one thin, straight, uninterrupted vertical blue line with rounded ends. Keep the white background, pale blue wave glow, product designs, card geometry, shadows, and abstract UI strokes fixed and sharp. Keep the camera locked with no pan, zoom, tilt, crop, or reframing. Preserve one divider only. Preserve the products without morphing. The final frame matches the starting composition for a seamless website loop.",
+  "negativePrompt": "badge, icon, logo, circle on divider, square on divider, duplicate divider, bent divider, branching line, people, new objects, camera movement, zoom, product morphing, card warping, text mutation, flicker, empty product flow, large gaps between cards",
+  "status": "complete",
+  "operation": "models/veo-3.1-fast-generate-preview/operations/guiu7qlr25hh",
+  "reservedAt": "2026-08-28T19:01:33.132Z",
+  "completedAt": "2026-08-28T19:06:49.072Z"
+}

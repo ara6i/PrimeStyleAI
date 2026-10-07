@@ -496,7 +496,12 @@ function ConnectionsWorkflow({ view }: { view: MerchantTabView }) {
           aria-hidden
         />
         <div className={styles.mapHub}>
-          <Image src="/icon.svg" width={45} height={45} alt="" />
+          <Image
+            src="/media/partner-landing/primestyleai-legacy-dashboard-icon.svg"
+            width={45}
+            height={45}
+            alt=""
+          />
           <span>
             <small>Authorized connection</small>
             <strong>PrimeStyleAI</strong>
